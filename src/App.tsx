@@ -7,6 +7,10 @@ import WeatherPage from './pages/WeatherPage/WeatherPage'
 import ChecklistPage from './pages/ChecklistPage/ChecklistPage'
 import LoginPage from './pages/LoginPage/LoginPage'
 import SignupPage from './pages/SignupPage/SignupPage'
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 function App() {
   return (
