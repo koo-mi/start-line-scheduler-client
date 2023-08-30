@@ -89,7 +89,7 @@ const LoginPage = ({ changeLoginState }) => {
                     required
                     error={!!errors.email}
                     helperText={errors.email}
-                    sx={{ mt: 2, mb: 2 }}
+                    sx={{ mt: 2, mb: 2}}
                 />
 
                 <TextField

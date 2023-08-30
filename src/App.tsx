@@ -12,6 +12,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import BottomNav from './components/BottomNav/BottomNav';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/weather" element={<WeatherPage />} />
           <Route path="/checklist" element={<ChecklistPage />} />
         </Routes>
+        <BottomNav />
       </BrowserRouter>
     </>
   )

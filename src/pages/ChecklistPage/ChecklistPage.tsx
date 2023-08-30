@@ -9,11 +9,13 @@ import ChecklistEdit from "../../components/ChecklistEdit/ChecklistEdit";
 import ChecklistDelete from "../../components/ChecklistDelete/ChecklistDelete";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
+import Error from "../../components/Error/Error";
 
 const ChecklistPage = () => {
 
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     const [checklist, setChecklist] = useState([]);
     const [targetId, setTargetId] = useState("");
@@ -42,6 +44,7 @@ const ChecklistPage = () => {
     const [refreshList, setRefreshList] = useState(true);
     function updateList() { setRefreshList(!refreshList) };
 
+
     // Axios variables
     const URL = import.meta.env.VITE_SERVER_URL
     const token = sessionStorage.authToken;
@@ -60,23 +63,27 @@ const ChecklistPage = () => {
                         Authorization: `Bearer ${token}`
                     }
                 })
+
                 setChecklist(listData.data);
                 setIsLoading(false);
             } catch (err) {
                 // Will come back and change
-                console.log(err.response.data.message);
+                setHasError(true);
             }
         }
         getChecklistData();
     }, [refreshList])
 
+    if (hasError) {
+        return <Error />
+    }
+
     if (isLoading) {
-        // Will come back and change
         return <Loading />
     }
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" sx={{mb: "4.5rem"}}>
             {/* Add Modal */}
             <Modal
                 open={showAddModal}

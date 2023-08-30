@@ -71,7 +71,7 @@ const HomePage = () => {
     }
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" sx={{mb: "4.5rem"}}>
             {/* Direction Component */}
             <Box sx={{ bgcolor: '#cfe8fc', mt: 2, display: "flex", flexDirection: "column" }} borderRadius={3}>
                 {/* Select Location */}
