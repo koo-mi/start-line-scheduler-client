@@ -18,7 +18,7 @@ import { loginValidationSchema } from "../../schemas/loginValidationSchema"
 
 
 /* Login */
-const LoginPage = () => {
+const LoginPage = ({ changeLoginState }) => {
 
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [loginErrMsg, setLoginErrMsg] = useState<string>("");
@@ -52,6 +52,7 @@ const LoginPage = () => {
             // Get token from the server
             const res = await axios.post(`${URL}/login`, { username: val.email, password: val.password });
             sessionStorage.authToken = res.data.token;
+            changeLoginState(true);
             navigate("/");
 
         } catch (err: any) {
@@ -120,11 +121,11 @@ const LoginPage = () => {
                         <Alert severity='error'>{loginErrMsg}</Alert>
                         : ""
                 }
-                <Button type="submit" variant="contained" fullWidth sx={{ mt: 1.5, mb: 3, p: 1}}>
+                <Button type="submit" variant="contained" fullWidth sx={{ mt: 1.5, mb: 3, p: 1 }}>
                     Sign In
                 </Button>
             </form>
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems:"center", gap: 1 }}>
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 1 }}>
                 <Typography>Don't have an account?</Typography>
                 <Link href="/signup" underline="none" fontWeight={700}>Sign up</Link>
             </Box>

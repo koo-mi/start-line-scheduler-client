@@ -10,3 +10,8 @@
     display: flex;
     flex-direction: column;
 }
+
+@mixin crossed {
+    color: grey;
+    text-decoration: line-through;
+}

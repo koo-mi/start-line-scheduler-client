@@ -104,7 +104,7 @@ const SignupPage = () => {
     // Render
     return (
         <Container component="main" maxWidth="xs" sx={{ p: 3 }}>
-            <Typography component="h1" variant="h4" sx={{ mt: 3, mb: 1, fontWeight: 700 }}>Sign up</Typography>
+            <Typography component="h1" variant="h4" sx={{ mt: 1, mb: 1, fontWeight: 700 }}>Sign up</Typography>
             {/* Form */}
             <form onSubmit={handleSubmit}>
                 <Box sx={{ display: 'flex', flexDirection: "column", gap: 2, mt: 3 }}>
@@ -115,7 +115,6 @@ const SignupPage = () => {
                         value={values.name}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        autoFocus
                         fullWidth
                         required
                         error={!!errors.name}
@@ -129,7 +128,6 @@ const SignupPage = () => {
                         value={values.email}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        autoFocus
                         fullWidth
                         required
                         error={!!errors.email}
@@ -169,7 +167,6 @@ const SignupPage = () => {
                         value={values.home_street_address}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        autoFocus
                         fullWidth
                         required
                         error={!!errors.home_street_address}
@@ -183,7 +180,6 @@ const SignupPage = () => {
                             value={values.home_city}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            autoFocus
                             fullWidth
                             required
                             error={!!errors.home_city}
@@ -196,7 +192,6 @@ const SignupPage = () => {
                             value={values.home_province}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            autoFocus
                             fullWidth
                             required
                             error={!!errors.home_province}
@@ -212,7 +207,6 @@ const SignupPage = () => {
                         value={values.work_street_address}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        autoFocus
                         fullWidth
                         required
                         error={!!errors.work_street_address}
@@ -226,7 +220,6 @@ const SignupPage = () => {
                             value={values.work_city}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            autoFocus
                             fullWidth
                             required
                             error={!!errors.work_city}
@@ -239,7 +232,6 @@ const SignupPage = () => {
                             value={values.work_province}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            autoFocus
                             fullWidth
                             required
                             error={!!errors.work_province}
@@ -279,7 +271,7 @@ const SignupPage = () => {
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>
-                            { timeError && <Typography component="p" variant='body2'sx={{mt: 0.5, color: "#d32f2f"}}>Target time is required.</Typography>}
+                            {timeError && <Typography component="p" variant='body2' sx={{ mt: 0.5, color: "#d32f2f" }}>Target time is required.</Typography>}
                         </Box>
                     </Box>
                 </Box>

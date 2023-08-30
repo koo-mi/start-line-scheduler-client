@@ -1,0 +1,146 @@
+import "./ChecklistEdit.scss"
+import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, Typography, } from "@mui/material";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { checklistValidationSchema } from "../../schemas/checklistValidationSchema";
+import axios from "axios";
+
+const ChecklistEdit = ({ handleEditClose, targetId, updateList }) => {
+
+    const [itemData, setItemData] = useState({});
+    const [submitted, setSubmitted] = useState(false);
+
+    // Axios variables
+    const URL = import.meta.env.VITE_SERVER_URL;
+    const token = sessionStorage.authToken;
+
+
+    useEffect(() => {
+        async function getItemInfo() {
+            // Get item data by ID
+            const listItemData = await axios.get(`${URL}/checklist/${targetId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            setItemData(listItemData.data);
+        }
+
+        getItemInfo();
+    }, [])
+
+    const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
+        initialValues: {
+            "title": itemData.title || "",
+            "description": itemData.description || "",
+            "isDaily": itemData.isDaily || false,
+            "priority": itemData.priority || "medium"
+        },
+        enableReinitialize: true,
+        validationSchema: checklistValidationSchema,
+        validateOnChange: submitted,
+        validateOnBlur: submitted,
+        onSubmit,
+    })
+
+    async function onSubmit(val) {
+        setSubmitted(true);
+
+        await axios.put(`${URL}/checklist/${targetId}`,
+            {
+                title: val.title,
+                description: val.description,
+                isDaily: val.isDaily,
+                priority: val.priority
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            handleEditClose();
+            updateList();
+    }
+
+    return (
+        <Container component="section" maxWidth="xs" className="modal" sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
+                {/* Header */}
+                <Box sx={{ display: 'flex', backgroundColor: 'white', width: '90%', flexDirection: 'column' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 2, mx: 2, borderBottom: 1 }}>
+                        <Typography component="h3" variant="h5">
+                            Edit Item
+                        </Typography>
+                        <CloseRoundedIcon onClick={handleEditClose} />
+                    </Box>
+                    {/* Form */}
+                    <form className="checklist__edit-form" onSubmit={handleSubmit}>
+                        {/* Title */}
+                        <TextField
+                            name="title"
+                            label="Title"
+                            value={values.title}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            fullWidth
+                            required
+                            error={!!errors.title}
+                            helperText={errors.title}
+                        />
+                        {/* Description */}
+                        <TextField
+                            name="description"
+                            label="Description"
+                            value={values.description}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            fullWidth
+                            error={!!errors.description}
+                            helperText={errors.description}
+                            rows={4}
+                            multiline
+                        />
+                        {/* Priority / isDaily */}
+                        <Box sx={{ display: 'flex', alignItems: "center", gap: 2 }}>
+                            <Box sx={{ width: "50%" }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="priority-label">Priority</InputLabel>
+                                    <Select
+                                        labelId="priority-label"
+                                        id="priority"
+                                        name="priority"
+                                        value={values.priority}
+                                        label="Priority"
+                                        onChange={handleChange}
+                                    >
+                                        <MenuItem value={"low"}>Low</MenuItem>
+                                        <MenuItem value={"medium"}>Medium</MenuItem>
+                                        <MenuItem value={"high"}>High</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <Box sx={{ width: "50%" }}>
+                                <FormControlLabel control={<Checkbox checked={values.isDaily} name="isDaily" onChange={handleChange} value={values.isDaily} />} label="Daily" />
+                            </Box>
+                        </Box>
+
+                        {/* Buttons */}
+                        <Box sx={{ display: 'flex', gap: 2 }}>
+                            <Button type="button" variant="outlined" onClick={handleEditClose} fullWidth sx={{ p: 1 }}>
+                                Close
+                            </Button>
+                            <Button type="submit" variant="contained" fullWidth sx={{ p: 1 }}>
+                                Edit
+                            </Button>
+                        </Box>
+                    </form>
+                </Box>
+            </Box>
+        </Container>
+    );
+};
+
+export default ChecklistEdit;

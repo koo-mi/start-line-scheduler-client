@@ -1,0 +1,64 @@
+@use '../../styles/partials/mixin' as *;
+
+.select-location{
+    &__container {
+        @include flex-center;
+        padding: 1rem 1.5rem;
+        gap: 0.75rem;
+        border-bottom: 1px solid white;
+    }
+
+    &__item {
+        @include flex-center;
+        background-color: white;
+        border-radius: 30px;
+        width: 100px;
+        height: 2rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+.direction {
+    &__container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 1rem 1.5rem;
+    }
+
+    &__text-container {
+        width: 100%;
+    }
+
+    &__text {
+        font-weight: 700;
+    }
+
+    &__display-container {
+        @include flex-center;
+        
+        position: relative;
+        width: 100%;
+    }
+
+    &__mode-icon {
+        width: 1.875rem;
+        position: absolute;
+        left: 0;
+    }
+
+    &__time-box {
+        @include flex-center;
+        padding: 1rem;
+        background-color: white;
+        width: 210px;
+        border-radius: 10px;
+        margin: 0.75rem;
+    }
+
+    &__time {
+        font-size: 1.5rem;
+        color: red;
+    }
+}
+

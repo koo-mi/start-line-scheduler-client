@@ -1,0 +1,39 @@
+@use '../../styles/partials/mixin' as *;
+.checklist {
+
+    &__item {
+        width: 100%;
+        display: flex;
+    }
+
+    &__item-box {
+        @include flex-column;
+        width: 100%;
+        background-color: #CFE8FC;
+        padding: 1rem;
+        border-radius: 10px;
+        gap: 0.5rem;
+    }
+
+    &__item-title-box {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__item-title {
+        &--crossed {
+            @include crossed;
+        }
+    }
+
+    &__item-icons {
+        display: flex;
+        gap: 0.5rem;
+    }   
+
+    &__item-text {
+        &--crossed {
+            @include crossed;
+        }
+    }
+}

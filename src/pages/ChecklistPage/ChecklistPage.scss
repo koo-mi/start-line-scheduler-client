@@ -1,0 +1,21 @@
+@use '../../styles/partials/mixin' as *;
+
+.checklist {
+    &__header {
+        @include flex-center;
+        width: 100%;
+        position: relative;
+        padding: 1rem 0 1.5rem;
+    }
+
+    &__add-icon {
+        position: absolute;
+        right: 0.5rem;
+    }
+
+    &__list{
+        @include flex-column;
+        list-style-type: none;
+        gap: 1rem;
+    }
+}

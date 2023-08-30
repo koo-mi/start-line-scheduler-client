@@ -1,0 +1,22 @@
+@use '../../styles/partials/mixin' as *;
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    @include flex-center;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.blinking {
+    color: #1565c0;
+    animation: blink 1.5s ease-in infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0%;
+    }
+}

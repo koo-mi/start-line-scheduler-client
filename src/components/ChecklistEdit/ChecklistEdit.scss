@@ -1,0 +1,9 @@
+@use '../../styles/partials/mixin' as *;
+
+.checklist{
+    &__edit-form {
+        @include flex-column;
+        margin: 1rem;
+        gap: 1rem;
+    }
+}
