@@ -143,6 +143,7 @@ const ChecklistPage = () => {
                             description={item.description}
                             isDaily={item.isDaily}
                             priority={item.priority}
+                            isChecked={item.isChecked}
                             id={item.id}
                             handleDeleteOpen={handleDeleteOpen}
                             handleEditOpen={handleEditOpen}

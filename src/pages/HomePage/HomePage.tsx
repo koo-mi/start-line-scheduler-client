@@ -7,6 +7,7 @@ import { Container, Box } from "@mui/material"
 import arrowIcon from "../../assets/icons/arrow_icon.svg";
 import transitIcon from "../../assets/icons/transit_icon.svg";
 import Loading from '../../components/Loading/Loading';
+import ChecklistItemSimplified from '../../components/ChecklistItemSimplified/ChecklistItemSimplified';
 
 
 const HomePage = () => {
@@ -14,10 +15,12 @@ const HomePage = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
 
+    // Holds data from the API
     const [directionData, setDirectionData] = useState({});
     const [locationData, setLocationData] = useState({});
-    const [checklistData, setChecklistData] = useState({});
+    const [checklistData, setChecklistData] = useState([]);
 
+    // for Axios call
     const URL = import.meta.env.VITE_SERVER_URL
     const token = sessionStorage.authToken;
 
@@ -57,7 +60,7 @@ const HomePage = () => {
                 setIsLoading(false);
             } catch (err) {
                 // Will come back and change
-                console.log(err.response.data.message);   
+                console.log(err.response.data.message);
             }
         }
 
@@ -65,13 +68,13 @@ const HomePage = () => {
 
     }, [sessionStorage.authToken])
 
+    // If it's still loading
     if (isLoading) {
-        // Will come back and change
-        return <Loading/>
+        return <Loading />
     }
 
     return (
-        <Container maxWidth="sm" sx={{mb: "4.5rem"}}>
+        <Container maxWidth="sm" sx={{ mb: "4.5rem" }}>
             {/* Direction Component */}
             <Box sx={{ bgcolor: '#cfe8fc', mt: 2, display: "flex", flexDirection: "column" }} borderRadius={3}>
                 {/* Select Location */}
@@ -99,8 +102,19 @@ const HomePage = () => {
             </Box>
 
             {/* Checklist Component */}
-            <Box sx={{ bgcolor: '#cfe8fc', mt: 2, display: "flex", flexDirection: "column" }} borderRadius={3}>
-
+            <Box component="ul" className='checklist-home' borderRadius={3}>
+                {
+                    checklistData.map((item) => {
+                        return <ChecklistItemSimplified
+                            key={item.id}
+                            title={item.title}
+                            isDaily={item.isDaily}
+                            priority={item.priority}
+                            isChecked={item.isChecked}
+                            id={item.id}
+                        />
+                    })
+                }
             </Box>
         </Container>
     );
