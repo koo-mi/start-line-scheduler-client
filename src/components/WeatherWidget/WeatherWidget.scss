@@ -1,0 +1,63 @@
+@use '../../styles/partials/mixin' as *;
+
+.weather-widget {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #cfe8fc;
+    margin-top: 1rem;
+    padding: 0.75rem 2rem;
+
+    &__weather {
+        @include flex-column;
+    }
+
+    &__current-weather {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+
+        & img {
+            height: 2.5rem;
+        }
+
+        & p {
+            font-size: 1.25rem;
+        }
+    }
+    
+    &__temp {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    &__current-temp {
+        font-size: 2rem;
+    }
+
+    &__min-max {
+        @include flex-column;
+        gap: 0.3rem;
+        padding: 0.1875rem 0;
+
+        & p {
+            font-size: 0.75rem;
+        }
+    }
+
+    &__feels {
+        font-size: 0.9rem;
+    }
+
+    &__datetime {
+        @include flex-column;       
+    }
+}
+
+
+p.weather-widget__time {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
+    font-weight: 500;
+}

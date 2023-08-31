@@ -8,6 +8,7 @@ import arrowIcon from "../../assets/icons/arrow_icon.svg";
 import transitIcon from "../../assets/icons/transit_icon.svg";
 import Loading from '../../components/Loading/Loading';
 import ChecklistItemSimplified from '../../components/ChecklistItemSimplified/ChecklistItemSimplified';
+import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
 
 
 const HomePage = () => {
@@ -62,6 +63,9 @@ const HomePage = () => {
                 // Will come back and change
                 console.log(err.response.data.message);
             }
+
+            
+
         }
 
         getSummary();
@@ -75,6 +79,10 @@ const HomePage = () => {
 
     return (
         <Container maxWidth="sm" sx={{ mb: "4.5rem" }}>
+
+            {/* Weather Component */}
+            <WeatherWidget />
+
             {/* Direction Component */}
             <Box sx={{ bgcolor: '#cfe8fc', mt: 2, display: "flex", flexDirection: "column" }} borderRadius={3}>
                 {/* Select Location */}
