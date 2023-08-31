@@ -1,0 +1,118 @@
+@use '../../styles/partials/mixin' as *;
+
+.direction-detail {
+
+    &__header {
+        @include flex-center;
+        width: 100%;
+        position: relative;
+        padding: 1rem 0 1.5rem;
+    }
+
+    &__location-icon {
+        position: absolute;
+        right: 0.5rem;
+    }
+    
+    &__info-box {
+        @include flex-column;
+        padding: 1rem 1.5rem 1rem;
+    }
+
+    &__time-cont{
+        @include flex-column;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 1rem; 
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    &__time-text {
+        font-size: 1.75rem;
+        font-weight: 500;
+    }
+
+    &__dd-text {
+        color: grey;
+        text-align: right;
+    }
+
+
+    &__inst-box {
+        @include flex-column;
+        margin-top: 1.5rem;
+        gap: 0.5rem;
+    }
+
+    &__inst {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    &__inst-item {
+        width: 100%;
+        border: 1px solid #1976d2;
+        padding: 0.75rem 0.5rem;
+        border-radius: 10px;
+        background-color: white;
+    }
+
+    &__inst-duration {
+        width: 26%;
+        text-align: center;
+        flex-shrink: 0;
+        padding: 0.5rem;
+        border: 1px solid #1976d2;
+        border-radius: 10px;
+        color: #004891;
+        background-color: white;
+        font-weight: 500;
+    }
+
+    &__container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 1rem 1.5rem 0.5rem;
+        border-bottom: 1px solid white;
+    }
+
+    &__text-container {
+        width: 100%;
+    }
+
+    &__text {
+        font-weight: 700;
+    }
+
+    &__display-container {
+        @include flex-center;
+        
+        position: relative;
+        width: 100%;
+    }
+
+    &__mode-icon {
+        width: 1.875rem;
+        position: absolute;
+        left: 0;
+    }
+
+    &__time-box {
+        @include flex-center;
+        padding: 1rem;
+        background-color: white;
+        width: 210px;
+        border-radius: 10px;
+        margin: 0.75rem;
+    }
+
+    &__time {
+        font-size: 1.5rem;
+        color: red;
+    }
+
+}

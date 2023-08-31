@@ -129,7 +129,7 @@ const ChecklistPage = () => {
 
             {/* Checklist Header */}
             <Box className="checklist__header">
-                <Typography component="h2" variant="h5">Checklist</Typography>
+                <Typography component="h2" variant="h5" sx={{fontWeight: 500}}>Checklist</Typography>
                 <NoteAddOutlinedIcon className="checklist__add-icon" fontSize="large" onClick={() => { setShowAddModal(true) }} />
             </Box>
 

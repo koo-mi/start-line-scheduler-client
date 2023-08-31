@@ -20,7 +20,7 @@ const WeatherWidget = () => {
             try {
                 const weatherRes = await axios.get(`${WEATHER_API_URL}?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`);
 
-                setWeatherData(weatherRes.data)
+                setWeatherData(weatherRes.data);
                 setIsLoading(false);
 
             } catch (err) {
@@ -37,9 +37,8 @@ const WeatherWidget = () => {
 
         // Timer
         const timer = setInterval(() => setDate(new Date()), 10000);
-
-        return function cleanup() { clearInterval(timer) }
-    }, [])
+        return function cleanup() { clearInterval(timer) };
+    }, []);
 
     if (isLoading) {
         return "Loading...";
@@ -58,7 +57,7 @@ const WeatherWidget = () => {
             <Box className="weather-widget__weather">
                 <Box className="weather-widget__current-weather">
                     <Typography>{weatherData.weather[0].main}</Typography>
-                    <img src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`} alt={`${weatherData.weather[0].main} icon`}/>
+                    <img src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`} alt={`${weatherData.weather[0].main} icon`} />
                 </Box>
                 <Box className="weather-widget__temp">
                     <p className="weather-widget__current-temp">{Math.round(weatherData.main.temp)}&deg;C</p>
