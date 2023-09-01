@@ -13,6 +13,7 @@ const WeatherWidget = () => {
 
     const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
     const WEATHER_API_URL = import.meta.env.VITE_WEATHER_API_URL;
+    const WEATHER_ICON_URL = import.meta.env.VITE_WEATHER_ICON_URL;
 
 
     useEffect(() => {
@@ -57,7 +58,7 @@ const WeatherWidget = () => {
             <Box className="weather-widget__weather">
                 <Box className="weather-widget__current-weather">
                     <Typography>{weatherData.weather[0].main}</Typography>
-                    <img src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`} alt={`${weatherData.weather[0].main} icon`} />
+                    <img src={`${WEATHER_ICON_URL}/${weatherData.weather[0].icon}.png`} alt={`${weatherData.weather[0].main} icon`} />
                 </Box>
                 <Box className="weather-widget__temp">
                     <p className="weather-widget__current-temp">{Math.round(weatherData.main.temp)}&deg;C</p>
