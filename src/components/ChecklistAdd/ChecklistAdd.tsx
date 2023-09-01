@@ -2,9 +2,9 @@ import "./ChecklistAdd.scss"
 import { useState } from "react";
 import { useFormik } from "formik";
 import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, Typography, } from "@mui/material";
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { checklistValidationSchema } from "../../schemas/checklistValidationSchema";
 import axios from "axios";
+import ModalHeader from "../ModalHeader/ModalHeader";
 
 
 const ChecklistAdd = ({ handleAddClose, updateList }) => {
@@ -49,12 +49,9 @@ const ChecklistAdd = ({ handleAddClose, updateList }) => {
     return (
         <Container component="section" maxWidth="xs" className="modal" sx={{ display: 'flex' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
-                {/* Header */}
                 <Box sx={{ display: 'flex', backgroundColor: 'white', width: '90%', flexDirection: 'column' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 2, mx: 2, borderBottom: 1 }}>
-                        <Typography component="h3" variant="h5">Add New Item</Typography>
-                        <CloseRoundedIcon onClick={handleAddClose} />
-                    </Box>
+                    {/* Header */}
+                    <ModalHeader title="Add New Item" handleClose={handleAddClose} />
                     {/* Form */}
                     <form className="checklist__add-form" onSubmit={handleSubmit}>
                         {/* Title */}

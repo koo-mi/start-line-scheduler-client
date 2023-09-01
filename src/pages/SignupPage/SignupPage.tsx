@@ -69,11 +69,7 @@ const SignupPage = () => {
             return setTimeError(true);
         }
 
-        // Format default: home, work, time
-        const default_home = `${val.home_street_address} ${val.home_city} ${val.home_province}`.replaceAll(' ', '+');
-
-        const default_work = `${val.work_street_address} ${val.work_city} ${val.work_province}`.replaceAll(' ', '+');
-
+        // Format default time
         const default_target_time = `${targetTime.$H} ${targetTime.$m}`
 
         // Create new account 
@@ -82,8 +78,14 @@ const SignupPage = () => {
                 name: val.name,
                 username: val.email,
                 password: val.password,
+                home_street: val.home_street_address,
+                home_city: val.home_city,
+                home_province: val.home_province,
+                work_street: val.work_street_address,
+                work_city: val.work_city,
+                work_province: val.work_province,
                 default_mode: val.default_mode,
-                default_home, default_work, default_target_time
+                default_target_time,
             })
             // Redirect to login page
             navigate("/login")

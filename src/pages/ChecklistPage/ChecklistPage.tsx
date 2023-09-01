@@ -6,10 +6,10 @@ import ChecklistItem from "../../components/ChecklistItem/ChecklistItem";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ChecklistEdit from "../../components/ChecklistEdit/ChecklistEdit";
-import ChecklistDelete from "../../components/ChecklistDelete/ChecklistDelete";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
 import Error from "../../components/Error/Error";
+import DeleteModal from "../../components/DeleteModal/DeleteModal";
 
 const ChecklistPage = () => {
 
@@ -120,10 +120,12 @@ const ChecklistPage = () => {
                 aria-describedby="delete-modal"
             >
                 <>
-                    <ChecklistDelete
+                    <DeleteModal
                         handleDeleteClose={handleDeleteClose}
                         targetId={targetId}
-                        updateList={updateList} />
+                        updateList={updateList} 
+                        type="item"
+                        endpoint="checklist"/>
                 </>
             </Modal>
 

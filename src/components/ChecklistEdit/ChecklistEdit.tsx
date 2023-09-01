@@ -1,10 +1,10 @@
 import "./ChecklistEdit.scss"
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, Typography, } from "@mui/material";
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { checklistValidationSchema } from "../../schemas/checklistValidationSchema";
 import axios from "axios";
+import ModalHeader from "../ModalHeader/ModalHeader";
 
 const ChecklistEdit = ({ handleEditClose, targetId, updateList }) => {
 
@@ -61,21 +61,16 @@ const ChecklistEdit = ({ handleEditClose, targetId, updateList }) => {
                 }
             })
 
-            handleEditClose();
-            updateList();
+        handleEditClose();
+        updateList();
     }
 
     return (
         <Container component="section" maxWidth="xs" className="modal" sx={{ display: 'flex' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
-                {/* Header */}
                 <Box sx={{ display: 'flex', backgroundColor: 'white', width: '90%', flexDirection: 'column' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 2, mx: 2, borderBottom: 1 }}>
-                        <Typography component="h3" variant="h5">
-                            Edit Item
-                        </Typography>
-                        <CloseRoundedIcon onClick={handleEditClose} />
-                    </Box>
+                    {/* Header */}
+                    <ModalHeader title="Edit Checklist" handleClose={handleEditClose} />
                     {/* Form */}
                     <form className="checklist__edit-form" onSubmit={handleSubmit}>
                         {/* Title */}

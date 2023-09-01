@@ -13,6 +13,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import BottomNav from './components/BottomNav/BottomNav';
+import LocationPage from './pages/LocationPage/LocationPage';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/login" element={<LoginPage changeLoginState={changeLoginState}/>} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/direction" element={<DirectionPage />} />
+          <Route path="/direction/location" element={<LocationPage />} />
           <Route path="/weather" element={<WeatherPage />} />
           <Route path="/checklist" element={<ChecklistPage />} />
         </Routes>

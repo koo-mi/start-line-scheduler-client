@@ -9,6 +9,8 @@ import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlin
 
 const DirectionPage = () => {
 
+    const navigate = useNavigate();
+
     const [directionData, setDirectionData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
@@ -51,7 +53,7 @@ const DirectionPage = () => {
             <Box className="direction-detail__header" sx={{pb:0}}>
                 <Typography component="h2" variant="h5" sx={{fontWeight: 500}}
                 >Direction</Typography>
-                <AddLocationAltOutlinedIcon className="direction-detail__location-icon" fontSize="large"/>
+                <AddLocationAltOutlinedIcon className="direction-detail__location-icon" fontSize="large" onClick={()=>{navigate("/direction/location")}}/>
             </Box>
 
             <Box sx={{ bgcolor: '#cfe8fc', mt: 2, display: "flex", flexDirection: "column" }} borderRadius={3}>
