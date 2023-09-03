@@ -25,10 +25,12 @@ const LoginPage = ({ changeLoginState }) => {
 
     const navigate = useNavigate();
 
-    // If already logged in, redirect to HomePage
-    if (!!sessionStorage.authToken) {
-        navigate("/");
-    }
+    useEffect(() => {
+        // If already logged in, redirect to HomePage
+        if (!!sessionStorage.authToken) {
+            navigate("/");
+        }
+    }, [])
 
     // Validation using formik
     const { values, errors, handleChange, handleBlur, handleSubmit, submitCount } = useFormik({
@@ -89,7 +91,7 @@ const LoginPage = ({ changeLoginState }) => {
                     required
                     error={!!errors.email}
                     helperText={errors.email}
-                    sx={{ mt: 2, mb: 2}}
+                    sx={{ mt: 2, mb: 2 }}
                 />
 
                 <TextField

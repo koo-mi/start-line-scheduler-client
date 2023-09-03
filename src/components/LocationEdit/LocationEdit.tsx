@@ -4,19 +4,20 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { locationValidationSchema } from "../../schemas/locationValidationSchema";
 import axios from "axios";
+import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
 
 const LocationEdit = ({ handleEditClose, updateList, id }) => {
 
     const [formData, setFormData] = useState({});
-    
+
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [address, setAddress] = useState("");
 
     // Formik
     const { values, errors, handleChange, handleBlur } = useFormik({
         initialValues: {
             "name": formData.name || "",
-            "street": formData.street || "",
             "city": formData.city || "",
             "province": formData.province || "",
             "isDefault": false
@@ -32,7 +33,7 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
     const URL = import.meta.env.VITE_SERVER_URL;
     const token = sessionStorage.authToken;
 
-    useEffect(()=>{
+    useEffect(() => {
         async function getLocDataById() {
             const locData = await axios.get(`${URL}/direction/location/${id}`, {
                 headers: {
@@ -40,6 +41,7 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
                 }
             })
 
+            setAddress(locData.data.street);
             setFormData(locData.data);
             setIsLoading(false);
         }
@@ -58,7 +60,7 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
         await axios.put(`${URL}/direction/location/${id}`,
             {
                 name: values.name,
-                street: values.street,
+                street: address,
                 city: values.city,
                 province: values.province
             },
@@ -74,6 +76,27 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
 
     if (isLoading) {
         return (<p>Loading...</p>)
+    }
+
+    /* Search */
+
+    async function handleAddressSelect(value) {
+        const result = await geocodeByAddress(value);
+        const formattedAddress = result[0].formatted_address.split(",")
+
+        if (!/\d/.test(formattedAddress[0])) {
+            formattedAddress.shift();
+        }
+
+        setAddress(formattedAddress[0]);
+        values.city = formattedAddress[1];
+        values.province = formattedAddress[2].split(' ')[1];
+    }
+
+    // Limit address result to only contain address in US/Canada
+    const searchOptions = {
+        componentRestrictions: { country: ["us", "ca"] },
+        types: ['address']
     }
 
     return (
@@ -96,18 +119,56 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
                             error={!!errors.name}
                             helperText={errors.name}
                         />
-                        {/* Street */}
-                        <TextField
-                            name="street"
-                            label="Street Address"
-                            value={values.street}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            fullWidth
-                            required
-                            error={!!errors.street}
-                            helperText={errors.street}
-                        />
+                        {/* Search Field */}
+                        <PlacesAutocomplete
+                            value={address}
+                            onChange={setAddress}
+                            onSelect={handleAddressSelect}
+                            searchOptions={searchOptions}
+                            highlightFirstSuggestion={true}
+                        >
+                            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                <div>
+                                    <TextField
+                                        name="home_street_address"
+                                        label="Street Address"
+                                        fullWidth
+                                        required
+                                        error={!!errors.street}
+                                        helperText={errors.street}
+                                        {...getInputProps({
+                                            placeholder: 'Search Address ...',
+                                            className: 'location-search-input',
+                                        })}
+                                    />
+                                    <div className="autocomplete-dropdown-container">
+                                        {loading && <div>Loading...</div>}
+                                        {suggestions.map((suggestion, i) => {
+                                            const className = suggestion.active
+                                                ? 'suggestion-item--active'
+                                                : 'suggestion-item';
+                                            // inline style for demonstration purpose
+                                            const style = suggestion.active
+                                                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                            return (
+                                                <div
+                                                    {...getSuggestionItemProps(suggestion, {
+                                                        className,
+                                                        style,
+                                                    })}
+                                                    key={i}
+                                                >
+                                                    <span>{suggestion.description}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+                        </PlacesAutocomplete>
+
+                        
                         <Box sx={{ display: 'flex', gap: 2 }}>
                             {/* City */}
                             <TextField

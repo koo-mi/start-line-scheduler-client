@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { locationValidationSchema } from "../../schemas/locationValidationSchema";
 import axios from "axios";
+import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
 
 const LocationAdd = ({ handleAddClose, updateList }) => {
 
@@ -40,7 +41,7 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
             await axios.post(`${URL}/direction/location`,
                 {
                     name: values.name,
-                    street: values.street,
+                    street: address,
                     city: values.city,
                     province: values.province
                 },
@@ -52,9 +53,31 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
 
             handleAddClose();
             updateList();
-        } catch(err) {
+        } catch (err) {
             console.log(err);
         }
+    }
+
+    /* Search */
+    const [address, setAddress] = useState("");
+
+    async function handleAddressSelect(value) {
+        const result = await geocodeByAddress(value);
+        const formattedAddress = result[0].formatted_address.split(",")
+
+        if (!/\d/.test(formattedAddress[0])) {
+            formattedAddress.shift();
+        }
+
+        setAddress(formattedAddress[0]);
+        values.city = formattedAddress[1];
+        values.province = formattedAddress[2].split(' ')[1];
+    }
+
+    // Limit address result to only contain address in US/Canada
+    const searchOptions = {
+        componentRestrictions: { country: ["us", "ca"] },
+        types: ['address']
     }
 
 
@@ -78,18 +101,55 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
                             error={!!errors.name}
                             helperText={errors.name}
                         />
-                        {/* Street */}
-                        <TextField
-                            name="street"
-                            label="Street Address"
-                            value={values.street}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            fullWidth
-                            required
-                            error={!!errors.street}
-                            helperText={errors.street}
-                        />
+                        {/* Search Field */}
+                        <PlacesAutocomplete
+                            value={address}
+                            onChange={setAddress}
+                            onSelect={handleAddressSelect}
+                            searchOptions={searchOptions}
+                            highlightFirstSuggestion={true}
+                        >
+                            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                <div>
+                                    <TextField
+                                        name="home_street_address"
+                                        label="Street Address"
+                                        fullWidth
+                                        required
+                                        error={!!errors.street}
+                                        helperText={errors.street}
+                                        {...getInputProps({
+                                            placeholder: 'Search Address ...',
+                                            className: 'location-search-input',
+                                        })}
+                                    />
+                                    <div className="autocomplete-dropdown-container">
+                                        {loading && <div>Loading...</div>}
+                                        {suggestions.map((suggestion, i) => {
+                                            const className = suggestion.active
+                                                ? 'suggestion-item--active'
+                                                : 'suggestion-item';
+                                            // inline style for demonstration purpose
+                                            const style = suggestion.active
+                                                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                            return (
+                                                <div
+                                                    {...getSuggestionItemProps(suggestion, {
+                                                        className,
+                                                        style,
+                                                    })}
+                                                    key={i}
+                                                >
+                                                    <span>{suggestion.description}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+                        </PlacesAutocomplete>
+                        
                         <Box sx={{ display: 'flex', gap: 2 }}>
                             {/* City */}
                             <TextField

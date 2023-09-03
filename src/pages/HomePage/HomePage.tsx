@@ -87,6 +87,10 @@ const HomePage = () => {
             } catch (err) {
                 // Will come back and change
                 console.log(err.response.data.message);
+                if (err.response.data.message = "Invalid Token") {
+                    sessionStorage.clear();
+                    navigate("/login");
+                }
             }
         }
 

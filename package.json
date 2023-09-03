@@ -23,6 +23,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
+    "react-places-autocomplete": "^7.3.0",
     "react-router-dom": "^6.15.0",
     "sass": "^1.66.1",
     "yup": "^1.2.0"
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/react-places-autocomplete": "^7.2.9",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",

@@ -18,3 +18,19 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+/* For address search box */
+.autocomplete-dropdown-container {
+    position: absolute;
+    z-index: 100;
+    border: 1px solid grey;
+}
+
+.suggestion-item {
+    padding: 0.5rem;
+
+    &--active {
+    padding: 0.5rem;
+
+    }
+}
