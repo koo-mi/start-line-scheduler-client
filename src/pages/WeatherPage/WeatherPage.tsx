@@ -45,9 +45,6 @@ const WeatherPage = () => {
         return <p>Loading...</p>;
     }
 
-    console.log(currentWeather)
-    console.log(forecast);
-
 
     function formatForecastTime(dt) {
         const timeOnly = dt.split(' ')[1].split(':')[0];

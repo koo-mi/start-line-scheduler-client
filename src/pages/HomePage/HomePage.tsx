@@ -1,14 +1,15 @@
-import './HomePage.scss';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { Container, Box } from "@mui/material"
-
+import { Container, Box, Select, MenuItem, FormControl, Modal, Snackbar, Alert } from "@mui/material"
 import arrowIcon from "../../assets/icons/arrow_icon.svg";
 import transitIcon from "../../assets/icons/transit_icon.svg";
 import Loading from '../../components/Loading/Loading';
 import ChecklistItemSimplified from '../../components/ChecklistItemSimplified/ChecklistItemSimplified';
 import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import './HomePage.scss';
+import TimeSelectModal from '../../components/TimeSelectModal/TimeSelectModal';
 
 
 const HomePage = () => {
@@ -16,10 +17,16 @@ const HomePage = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
 
+    const [departure, setDeparture] = useState();
+    const [arrival, setArrival] = useState();
+
     // Holds data from the API
     const [directionData, setDirectionData] = useState({});
     const [locationData, setLocationData] = useState({});
     const [checklistData, setChecklistData] = useState([]);
+
+    const [showTimeModal, setShowTimeModal] = useState(false);
+    const [locError, setLocError] = useState(false);
 
     // for Axios call
     const URL = import.meta.env.VITE_SERVER_URL
@@ -33,19 +40,35 @@ const HomePage = () => {
         async function getSummary() {
             // Get profile data
             try {
-                const profile = await axios.get(`${URL}/summary`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                const { default_home, default_work, default_mode, default_target_time } = profile.data;
+                if (!sessionStorage.start || !sessionStorage.end || !sessionStorage.mode || !sessionStorage.time) {
+
+                    const profile = await axios.get(`${URL}/summary`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    const { default_home, default_work, default_mode, default_target_time } = profile.data;
+
+                    sessionStorage.start = default_home;
+                    sessionStorage.end = default_work;
+                    sessionStorage.mode = default_mode;
+                    sessionStorage.time = default_target_time;
+                    sessionStorage.type = "arrival"
+
+                }
+
+                // If start / end address are the same show err message
+                if (sessionStorage.start === sessionStorage.end) {
+                    return setLocError(true);
+                }
 
                 // Get summary data
                 const summary = await axios.post(`${URL}/summary`, {
-                    origin: default_home,
-                    dest: default_work,
-                    mode: default_mode,
-                    time: default_target_time
+                    origin: sessionStorage.start,
+                    dest: sessionStorage.end,
+                    mode: sessionStorage.mode,
+                    time: sessionStorage.time,
+                    type: sessionStorage.type
                 },
                     {
                         headers: {
@@ -57,28 +80,89 @@ const HomePage = () => {
                 setDirectionData(summary.data.directionData);
                 setLocationData(summary.data.locationData);
                 setChecklistData(summary.data.checklistData);
+                setDeparture(sessionStorage.start);
+                setArrival(sessionStorage.end);
 
                 setIsLoading(false);
             } catch (err) {
                 // Will come back and change
                 console.log(err.response.data.message);
             }
-
-            
-
         }
 
         getSummary();
 
-    }, [sessionStorage.authToken])
+    }, [sessionStorage.authToken, sessionStorage.time, sessionStorage.type, sessionStorage.start, sessionStorage.end])
 
     // If it's still loading
     if (isLoading) {
         return <Loading />
     }
 
+    function handleStartChange(e) {
+        setDeparture(e.target.value);
+        sessionStorage.start = e.target.value;
+    }
+
+    function handleEndChange(e) {
+        setArrival(e.target.value);
+        sessionStorage.end = e.target.value;
+    }
+
+    function formatTargetTime(time) {
+        // for "hr mm" format
+        const splitTime = time.split(' ');
+        let [hr, min] = splitTime;
+
+        // If the minute is 1 digit, add 0
+        if (min.length === 1) {
+            min = `0${min}`;
+        }
+
+        hr = Number(hr);
+
+        if (hr === 0) {
+            return `12:${min}am`;
+        } else if (hr < 12) {
+            return `${hr}:${min}am`;
+        } else if (hr === 12) {
+            return `12:${min}pm`;
+        } else {
+            return `${hr - 12}:${min}pm`;
+        }
+    }
+
+    function handleTimeClose() { setShowTimeModal(false); }
+
+    function chooseType() {
+        if (sessionStorage.type === "arrival") {
+            return "Arrive by"
+        } else if (sessionStorage.type === "departure") {
+            return "Depart at"
+        }
+    }
+
+
     return (
         <Container maxWidth="sm" sx={{ mb: "4.5rem" }}>
+
+            <Modal
+                open={showTimeModal}
+                onClose={handleTimeClose}
+                aria-labelledby="time-modal"
+                aria-describedby="time-modal"
+            >
+                <>
+                    <TimeSelectModal handleTimeClose={handleTimeClose} />
+                </>
+            </Modal>
+
+            <Snackbar open={locError} autoHideDuration={4000} onClose={() => { setLocError(false) }}>
+                <Alert onClose={() => { setLocError(false) }} severity="error" sx={{ width: '100%', mx: 2, my: 5 }}>
+                    You must select different location for departure and arrival
+                </Alert>
+            </Snackbar>
+
 
             {/* Weather Component */}
             <WeatherWidget />
@@ -86,19 +170,58 @@ const HomePage = () => {
             {/* Direction Component */}
             <Box sx={{ bgcolor: '#cfe8fc', mt: 2, display: "flex", flexDirection: "column" }} borderRadius={3}>
                 {/* Select Location */}
-                <div className='select-location__container'>
-                    <div className='select-location__item'>
-                        <p>Home</p>
+                <div className="select-location__container">
+
+                    <div className='select-location__time-selection' onClick={() => { setShowTimeModal(true) }}>
+                        <p>{chooseType()} {formatTargetTime(sessionStorage.time)}</p>
+                        <ArrowDropDownIcon />
                     </div>
-                    <img src={arrowIcon} alt="arrow icon" />
-                    <div className='select-location__item'>
-                        <p>Work</p>
+
+                    <div className='select-location__location-selection'>
+
+                        {/* Departure */}
+                        <FormControl fullWidth>
+                            <Select
+                                id="start"
+                                value={departure}
+                                onChange={handleStartChange}
+                                inputProps={{ IconComponent: () => null }}
+                            >
+                                {
+                                    locationData.map((location) => {
+                                        const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
+
+                                        return <MenuItem key={location.id} value={address}>{location.name}</MenuItem>
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
+
+                        <img src={arrowIcon} alt="arrow icon" />
+
+                        {/* Arrival */}
+                        <FormControl fullWidth>
+                            <Select
+                                id="end"
+                                value={arrival}
+                                onChange={handleEndChange}
+                                inputProps={{ IconComponent: () => null }}
+                            >
+                                {
+                                    locationData.map((location) => {
+                                        const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
+
+                                        return <MenuItem key={location.id} value={address}>{location.name}</MenuItem>
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
                     </div>
                 </div>
                 {/* Display Direction Output */}
                 <div className='direction__container'>
                     <div className="direction__text-container">
-                        <p className='direction__text'>You need to leave by...</p>
+                        <p className='direction__text'>{sessionStorage.type === "arrival" ? "You need to leave by...": "You will get there at..."}</p>
                     </div>
                     <div className="direction__display-container">
                         <img src={transitIcon} alt="transit icon" className='direction__mode-icon' />

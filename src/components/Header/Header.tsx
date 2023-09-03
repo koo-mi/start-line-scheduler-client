@@ -17,7 +17,7 @@ const Header = ({isLogin, changeLoginState}) => {
                 {
                     isLogin ?
                         <Button variant="outlined" color="inherit" onClick={()=>{
-                            sessionStorage.removeItem("authToken");
+                            sessionStorage.clear();
                             changeLoginState(false);
                             navigate("/login");
                         }}>Log Out</Button>

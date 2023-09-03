@@ -281,8 +281,11 @@ const SignupPage = () => {
                     signUpErrMsg && <Alert severity='error'>{signUpErrMsg}</Alert>
                 }
                 {/* Submit Button */}
-                <Button type="submit" variant="contained" fullWidth sx={{ mt: 3, mb: 3, p: 1 }}>
+                <Button type="submit" variant="contained" fullWidth sx={{ mt: 3, p: 1 }}>
                     Sign Up
+                </Button>
+                <Button type="button" variant="outlined" color='error' onClick={()=>{navigate("/login")}} fullWidth sx={{ mt: 1.5, mb: 3, p: 1 }}>
+                    Cancel
                 </Button>
             </form>
         </Container>
