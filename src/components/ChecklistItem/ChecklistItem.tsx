@@ -4,14 +4,18 @@ import EditIcon from '@mui/icons-material/Edit';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import { useState } from 'react';
 import axios from 'axios';
+import { checklistItem } from '../../model/type';
+import { URL, token } from '../../utils/variables';
 
-const ChecklistItem = ({ id, title, description, isDaily, priority, isChecked, handleEditOpen, handleDeleteOpen }) => {
+// Props
+interface OwnProps extends checklistItem {
+    handleEditOpen(id: string): void,
+    handleDeleteOpen(id: string): void
+}
 
-    const [checked, setChecked] = useState(isChecked);
+const ChecklistItem = ({ id, title, description, isDaily, priority, isChecked, handleEditOpen, handleDeleteOpen }: OwnProps) => {
 
-    // for Axios call
-    const URL = import.meta.env.VITE_SERVER_URL
-    const token = sessionStorage.authToken;
+    const [checked, setChecked] = useState<boolean>(isChecked);
     
     async function handleCheck() {
         try {
@@ -22,7 +26,6 @@ const ChecklistItem = ({ id, title, description, isDaily, priority, isChecked, h
                 })
             setChecked(!checked);
         } catch (err) {
-            // Will come back to this
             console.log("unable to update at the moment")
         }
     }
@@ -34,8 +37,8 @@ const ChecklistItem = ({ id, title, description, isDaily, priority, isChecked, h
                 <div className='checklist__item-title-box'>
                     <h3 className={`checklist__item-title ${checked ? "checklist__item-title--crossed" : ""}`}>{title}</h3>
                     <div className='checklist__item-icons'>
-                        <EditIcon onClick={(() => { handleEditOpen(id) })} />
-                        <BackspaceIcon onClick={() => { handleDeleteOpen(id) }} />
+                        <EditIcon onClick={(() => { handleEditOpen(`${id}`) })} />
+                        <BackspaceIcon onClick={() => { handleDeleteOpen(`${id}`) }} />
                     </div>
                 </div>
                 {

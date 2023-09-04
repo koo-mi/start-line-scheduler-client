@@ -11,6 +11,7 @@ import Loading from "../../components/Loading/Loading";
 import Error from "../../components/Error/Error";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { checklistSummary } from "../../model/type";
+import { URL, token } from "../../utils/variables";
 
 const ChecklistPage = () => {
 
@@ -45,11 +46,7 @@ const ChecklistPage = () => {
     const [refreshList, setRefreshList] = useState(true);
     function updateList() { setRefreshList(!refreshList) };
 
-
-    // Axios variables
-    const URL = import.meta.env.VITE_SERVER_URL
-    const token = sessionStorage.authToken;
-
+    
     useEffect(() => {
         // If not logged in, redirect to login page
         if (!sessionStorage.authToken) {

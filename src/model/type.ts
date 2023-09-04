@@ -17,7 +17,7 @@ export type directionStep = {
 export type locationSummary = locationItem[]
 
 export type locationItem = {
-    id: Number,
+    id: number,
     name: string,
     street: string,
     city: string,
@@ -29,9 +29,9 @@ export type locationItem = {
 export type checklistSummary = checklistItem[]
 
 export type checklistItem = {
-    id: Number,
+    id: number,
     title: string,
-    description: string,
+    description?: string,
     priority: string,
     isChecked: boolean,
     isDaily: boolean
@@ -65,17 +65,17 @@ export type WeatherData = {
 }
 
 export type WeatherMain = {
-    feels_like: Number,
-    humidity: Number,
-    pressure: Number,
-    temp: Number,
-    temp_max: Number,
-    temp_min: Number,
+    feels_like: number,
+    humidity: number,
+    pressure: number,
+    temp: number,
+    temp_max: number,
+    temp_min: number,
 }
 
 export type WeatherSys = {
-    sunrise: Number,
-    sunset: Number
+    sunrise: number,
+    sunset: number
 }
 
 export type WeatherInfo = {
@@ -85,7 +85,7 @@ export type WeatherInfo = {
 }[]
 
 export type Wind = {
-    speed: Number,
+    speed: number,
 }
 
 /* Forecast */
@@ -95,7 +95,7 @@ export type ForecastData = ForecastItem[];
 export type ForecastItem = {
     dt_txt: string,
     main: {
-        temp: Number
+        temp: number
     },
     weather: WeatherInfo,
     wind: Wind

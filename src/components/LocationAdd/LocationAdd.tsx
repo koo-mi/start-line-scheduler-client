@@ -7,6 +7,7 @@ import { locationValidationSchema } from "../../schemas/locationValidationSchema
 import axios from "axios";
 import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
 import { ModalBasic } from "../../model/type";
+import { URL, searchOptions, token } from "../../utils/variables";
 
 interface OwnProps extends ModalBasic {}
 
@@ -30,10 +31,6 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
         validateOnBlur: submitted,
         onSubmit
     })
-
-    // For Axios call
-    const URL = import.meta.env.VITE_SERVER_URL;
-    const token = sessionStorage.authToken;
 
     // When user sumbits the form
     async function onSubmit(e: FormikValues) {
@@ -66,27 +63,21 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
     }
 
     /* Search */
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState<string>("");
 
     async function handleAddressSelect(value: string) {
         const result = await geocodeByAddress(value);
-        const formattedAddress = result[0].formatted_address.split(",")
+        const formattedAddress: string[] = result[0].formatted_address.split(",")
 
         if (!/\d/.test(formattedAddress[0])) {
             formattedAddress.shift();
         }
 
-        const addressTrim = formattedAddress.map((el) => el.trim());
+        const addressTrim: string[] = formattedAddress.map((el) => el.trim());
 
         setAddress(addressTrim[0]);
         values.city = addressTrim[1];
         values.province = addressTrim[2].split(' ')[0];
-    }
-
-    // Limit address result to only contain address in US/Canada
-    const searchOptions = {
-        componentRestrictions: { country: ["us", "ca"] },
-        types: ['address']
     }
 
     // Default onChange

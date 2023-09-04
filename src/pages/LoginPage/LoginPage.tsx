@@ -3,22 +3,12 @@ import { useFormik } from "formik";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {
-    Container,
-    TextField,
-    Checkbox,
-    Button,
-    FormControlLabel,
-    Link,
-    Grid,
-    Typography,
-    Box,
-    Alert,
+    Container, TextField, Checkbox, Button, FormControlLabel, Link, Grid, Typography, Box, Alert,
 } from "@mui/material";
 import { loginValidationSchema } from "../../schemas/loginValidationSchema"
 import { LoginState } from '../../model/type';
+import { URL } from '../../utils/variables';
 
-
-/* Login */
 const LoginPage = ({ changeLoginState }: LoginState) => {
 
     const [submitted, setSubmitted] = useState<boolean>(false);
@@ -45,9 +35,8 @@ const LoginPage = ({ changeLoginState }: LoginState) => {
         onSubmit,
     })
 
-    // When user click Sign in button
-    const URL = import.meta.env.VITE_SERVER_URL;
-    async function onSubmit(val: any) {
+    // Submit
+    async function onSubmit(val: any): Promise<void> {
 
         setLoginErrMsg("");     // Reset error message
 

@@ -8,6 +8,7 @@ import LocationEdit from "../../components/LocationEdit/LocationEdit";
 import LocationItem from "../../components/LocationItem/LocationItem";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { locationSummary } from "../../model/type";
+import { URL, token } from "../../utils/variables";
 
 
 const LocationPage = () => {
@@ -41,9 +42,6 @@ const LocationPage = () => {
     const [refreshList, setRefreshList] = useState<boolean>(true);
     function updateList(): void { setRefreshList(!refreshList) };
 
-    // for Axios call
-    const URL = import.meta.env.VITE_SERVER_URL
-    const token = sessionStorage.authToken;
 
     useEffect(() => {
         async function getLocation(): Promise<void> {

@@ -9,12 +9,14 @@ import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlin
 import TimeSelectModal from "../../components/TimeSelectModal/TimeSelectModal";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { directionSummary, locationSummary } from "../../model/type";
+import { URL, token } from "../../utils/variables";
+import { chooseType, formatTargetTime } from "../../utils/functions";
 
 const DirectionPage = () => {
 
     const navigate = useNavigate();
 
-    const [directionData, setDirectionData] = useState<directionSummary>(null);
+    const [directionData, setDirectionData] = useState<directionSummary>({});
     const [locationData, setLocationData] = useState<locationSummary>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [departure, setDeparture] = useState<string>("");
@@ -23,13 +25,10 @@ const DirectionPage = () => {
     // Modal & Snackbar
     const [showTimeModal, setShowTimeModal] = useState<boolean>(false);
     const [locError, setLocError] = useState<boolean>(false);
+
     function handleTimeClose(): void { setShowTimeModal(false); };
 
-
-    // for Axios call
-    const URL: string = import.meta.env.VITE_SERVER_URL
-    const token: string = sessionStorage.authToken;
-
+    
     useEffect(() => {
         async function getDirectionData(): Promise<void> {
 
@@ -62,41 +61,8 @@ const DirectionPage = () => {
         getDirectionData();
     }, [sessionStorage.start, sessionStorage.end, sessionStorage.time, sessionStorage.type])
 
-    console.log(directionData);
-
     // Will come back to this
     if (isLoading) { return (<p>Loading...</p>) }
-
-    function chooseType() {
-        if (sessionStorage.type === "arrival") {
-            return "Arrive by"
-        } else if (sessionStorage.type === "departure") {
-            return "Depart at"
-        }
-    }
-
-    function formatTargetTime(time: string) {
-        // for "hr mm" format
-        const splitTime = time.split(' ');
-        let [hr, min] = splitTime;
-
-        // If the minute is 1 digit, add 0
-        if (min.length === 1) {
-            min = `0${min}`;
-        }
-
-        const hour = Number(hr);
-
-        if (hour === 0) {
-            return `12:${min}am`;
-        } else if (hour < 12) {
-            return `${hour}:${min}am`;
-        } else if (hour === 12) {
-            return `12:${min}pm`;
-        } else {
-            return `${hour - 12}:${min}pm`;
-        }
-    }
 
     function handleStartChange(e: SelectChangeEvent) {
         setDeparture(e.target.value);

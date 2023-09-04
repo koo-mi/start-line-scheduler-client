@@ -2,14 +2,12 @@ import "./ChecklistItemSimplified.scss";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
+import { checklistItem } from "../../model/type";
+import { URL, token } from "../../utils/variables";
 
-const ChecklistItemSimplified = ({ id, title, isDaily, priority, isChecked }) => {
+const ChecklistItemSimplified = ({ id, title, isDaily, priority, isChecked }: checklistItem) => {
 
     const [checked, setChecked] = useState(isChecked);
-
-    // for Axios call
-    const URL = import.meta.env.VITE_SERVER_URL
-    const token = sessionStorage.authToken;
 
     async function handleCheck() {
         try {

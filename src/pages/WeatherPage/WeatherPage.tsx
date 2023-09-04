@@ -3,20 +3,15 @@ import { useEffect, useState } from "react";
 import "./WeatherPage.scss";
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { ForecastData, WeatherData } from "../../model/type";
+import { FORECAST_API_URL, WEATHER_API_KEY, WEATHER_API_URL, WEATHER_ICON_URL } from "../../utils/variables";
 
 
 const WeatherPage = () => {
 
-    const [currentWeather, setCurrentWeather] = useState<WeatherData>(null);
+    const [currentWeather, setCurrentWeather] = useState<WeatherData>({});
     const [forecast, setForecast] = useState<ForecastData>([]);
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    const WEATHER_API_KEY: string = import.meta.env.VITE_WEATHER_API_KEY;
-    const WEATHER_API_URL: string = import.meta.env.VITE_WEATHER_API_URL;
-    const FORECAST_API_URL: string = import.meta.env.VITE_FORECAST_API_URL;
-    const WEATHER_ICON_URL: string = import.meta.env.VITE_WEATHER_ICON_URL;
-
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         async function getWeather(lat: number, lon: number) {
@@ -61,7 +56,7 @@ const WeatherPage = () => {
         }
     }
 
-    function formatSunTime(dt: string): string {
+    function formatSunTime(dt: number): string {
         const timeOnly: string = new Date(dt).toTimeString().split(' ')[0];
         const hrmmss: string[] = timeOnly.split(":");
 
@@ -107,7 +102,7 @@ const WeatherPage = () => {
                             <p className="weather-page__detail-property">{"Wind (m/s)"}</p>
                         </div>
                         <div className="weather-page__detail-box">
-                            <p className="weather-page__detail-value">{formatSunTime(`${currentWeather.sys.sunrise}`)}</p>
+                            <p className="weather-page__detail-value">{formatSunTime(currentWeather.sys.sunrise)}</p>
                             <p className="weather-page__detail-property">Sunrise</p>
                         </div>
                     </div>
@@ -121,7 +116,7 @@ const WeatherPage = () => {
                             <p className="weather-page__detail-property">Humidity</p>
                         </div>
                         <div className="weather-page__detail-box">
-                            <p className="weather-page__detail-value">{formatSunTime(`${currentWeather.sys.sunset}`)}</p>
+                            <p className="weather-page__detail-value">{formatSunTime(currentWeather.sys.sunset)}</p>
                             <p className="weather-page__detail-property">Sunset</p>
                         </div>
                     </div>
@@ -132,22 +127,22 @@ const WeatherPage = () => {
                     <div className="forecast">
                         <p>{formatForecastTime(forecast[0].dt_txt)}</p>
                         <img src={`${WEATHER_ICON_URL}/${forecast[0].weather[0].icon}.png`} />
-                        <p>{Math.round(Number(forecast[0].main.temp))}&deg;</p>
+                        <p>{Math.round(forecast[0].main.temp)}&deg;</p>
                     </div>
                     <div className="forecast">
                         <p>{formatForecastTime(forecast[1].dt_txt)}</p>
                         <img src={`${WEATHER_ICON_URL}/${forecast[1].weather[0].icon}.png`} />
-                        <p>{Math.round(Number(forecast[1].main.temp))}&deg;</p>
+                        <p>{Math.round(forecast[1].main.temp)}&deg;</p>
                     </div>
                     <div className="forecast">
                         <p>{formatForecastTime(forecast[2].dt_txt)}</p>
                         <img src={`${WEATHER_ICON_URL}/${forecast[2].weather[0].icon}.png`} />
-                        <p>{Math.round(Number(forecast[2].main.temp))}&deg;</p>
+                        <p>{Math.round(forecast[2].main.temp)}&deg;</p>
                     </div>
                     <div className="forecast">
                         <p>{formatForecastTime(forecast[3].dt_txt)}</p>
                         <img src={`${WEATHER_ICON_URL}/${forecast[3].weather[0].icon}.png`} />
-                        <p>{Math.round(Number(forecast[3].main.temp))}&deg;</p>
+                        <p>{Math.round(forecast[3].main.temp)}&deg;</p>
                     </div>
                 </section>
 

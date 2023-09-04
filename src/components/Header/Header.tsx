@@ -2,8 +2,14 @@ import "./Header.scss"
 import { AppBar, Toolbar, Link, Button } from "@mui/material"
 import logo from "../../assets/images/logo.png"
 import { useNavigate } from "react-router-dom";
+import { LoginState } from "../../model/type";
 
-const Header = ({isLogin, changeLoginState}) => {
+// Props
+interface OwnProps extends LoginState {
+    isLogin: boolean
+}
+
+const Header = ({isLogin, changeLoginState}: OwnProps) => {
 
     const navigate = useNavigate();
 

@@ -4,30 +4,32 @@ import { useState } from "react";
 import { LocalizationProvider, StaticTimePicker } from '@mui/x-date-pickers';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { HandleClose } from "../../model/type";
-
 
 
 const TimeSelectModal = ({handleClose}: HandleClose) => {
 
-    const [type, setType] = useState(sessionStorage.type);
-    const [time, setTime] = useState<Dayjs>(dayjs(`2023-09-01T${sessionStorage.time?.split(' ')[0]}:${sessionStorage.time?.split(' ')[1]}`));;
+    const [type, setType] = useState<string>(sessionStorage.type);
+    const [time, setTime] = useState<any>(dayjs(`2023-09-01T${sessionStorage.time?.split(' ')[0]}:${sessionStorage.time?.split(' ')[1]}`));;
 
-    function handleChange(newAlignment: string) {
+    const handleChange = (
+        event: React.MouseEvent<HTMLElement>,
+        newAlignment: string,
+    ) => {
         setType(newAlignment);
     };
 
-    function handleAccept() {
+    function handleAccept(): void {
         sessionStorage.time = `${time.$H} ${time.$m}`
     }
 
-    function handleClick (e: any){
+    function handleClick (e: any): void {
         sessionStorage.type = e.target.value;
     }
 
-    function handleDepartNow () {
-        const currTime = dayjs(new Date());
+    function handleDepartNow (): void {
+        const currTime: any = dayjs(new Date());
         sessionStorage.time = `${currTime.$H} ${currTime.$m}`
         sessionStorage.type = "departure";
         handleClose();
@@ -41,7 +43,7 @@ const TimeSelectModal = ({handleClose}: HandleClose) => {
                         className="time-modal__select-type"
                         color="primary"
                         value={type}
-                        onChange={()=>{handleChange}}
+                        onChange={handleChange}
                         exclusive
                     >
                         <ToggleButton value="departure" onClick={handleClick}>Depart at</ToggleButton>
@@ -56,7 +58,7 @@ const TimeSelectModal = ({handleClose}: HandleClose) => {
                             <DemoItem>
                                 <StaticTimePicker 
                                 value={time} 
-                                onChange={(newValue)=>{setTime(newValue)}}
+                                onChange={(newValue: any)=>{setTime(newValue)}}
                                 onAccept={handleAccept}
                                 onClose={handleClose}
                                 />

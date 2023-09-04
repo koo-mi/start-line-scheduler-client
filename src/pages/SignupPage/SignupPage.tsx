@@ -4,23 +4,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { loginValidationSchema } from "../../schemas/loginValidationSchema"
 import {
-    Container,
-    TextField,
-    Button,
-    FormControl,
-    Typography,
-    Box,
-    Alert,
-    Select,
-    MenuItem,
-    InputLabel
+    Container, TextField, Button, FormControl, Typography, Box, Alert, Select, MenuItem, InputLabel
 } from "@mui/material";
-import { Dayjs } from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import PlacesAutocomplete, { geocodeByAddress } from 'react-places-autocomplete';
+import { URL, searchOptions } from "../../utils/variables";
 
 /* Sign up */
 const SignupPage = () => {
@@ -28,7 +19,7 @@ const SignupPage = () => {
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [signUpErrMsg, setSignUpErrMsg] = useState<string>("");
 
-    const [targetTime, setTargetTime] = useState<Dayjs | null>(null);
+    const [targetTime, setTargetTime] = useState<any>(null);
     const [timeError, setTimeError] = useState<boolean>(false);
 
     const navigate = useNavigate();
@@ -59,10 +50,8 @@ const SignupPage = () => {
         onSubmit,
     })
 
-    // When user click Sign up button
-    const URL = import.meta.env.VITE_SERVER_URL;
+    // Submit
     async function onSubmit(val: FormikValues) {
-
         // Set/Reset Time Error Alert
         timeError ? setTimeError(false) : ""
         if (!targetTime) {
@@ -85,7 +74,7 @@ const SignupPage = () => {
                 work_city: val.work_city,
                 work_province: val.work_province,
                 default_mode: val.default_mode,
-                default_target_time,    
+                default_target_time,
             })
             // Redirect to login page
             navigate("/login")
@@ -111,7 +100,7 @@ const SignupPage = () => {
 
     async function handleHomeSelect(value: string) {
         const result = await geocodeByAddress(value);
-        const formattedAddress:string[] = result[0].formatted_address.split(",")
+        const formattedAddress: string[] = result[0].formatted_address.split(",")
 
         if (!/\d/.test(formattedAddress[0])) {
             formattedAddress.shift();
@@ -134,17 +123,10 @@ const SignupPage = () => {
 
         const addressTrim = formattedAddress.map((el) => el.trim());
 
-
         setWorkAddress(addressTrim[0]);
         values.work_city = addressTrim[1];
         values.work_province = addressTrim[2].split(' ')[0];
     }
-
-    // Limit address result to only contain address in US/Canada
-    const searchOptions = {
-        componentRestrictions: { country: ["us", "ca"] },
-        types: ['address']
-      }
 
     // Render
     return (

@@ -6,10 +6,12 @@ import { checklistValidationSchema } from "../../schemas/checklistValidationSche
 import axios from "axios";
 import ModalHeader from "../ModalHeader/ModalHeader";
 import { ModalBasic } from "../../model/type";
+import { URL, token } from "../../utils/variables";
 
 const ChecklistAdd = ({ handleClose, updateList }: ModalBasic) => {
     const [submitted, setSubmitted] = useState<boolean>(false);
 
+    // Formik
     const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: {
             "title": "",
@@ -17,15 +19,13 @@ const ChecklistAdd = ({ handleClose, updateList }: ModalBasic) => {
             "isDaily": false,
             "priority": "medium"
         },
-        validationSchema: checklistValidationSchema,
+        validationSchema: checklistValidationSchema,    
         validateOnChange: submitted,
         validateOnBlur: submitted,
         onSubmit,
     })
 
-    const URL = import.meta.env.VITE_SERVER_URL;
-    const token = sessionStorage.authToken;
-
+    // Submit
     async function onSubmit(val: FormikValues) {
         setSubmitted(true);
 

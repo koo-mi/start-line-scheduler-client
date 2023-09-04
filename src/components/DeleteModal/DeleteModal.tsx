@@ -3,6 +3,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import axios from "axios";
 import { ModalBasic } from "../../model/type";
+import { URL, token } from "../../utils/variables";
 
 interface OwnProps extends ModalBasic {
     targetId: string,
@@ -12,11 +13,7 @@ interface OwnProps extends ModalBasic {
 
 const DeleteModal = ({ handleClose, targetId, updateList, type, endpoint }: OwnProps) => {
 
-    // Axios variables
-    const URL = import.meta.env.VITE_SERVER_URL
-    const token = sessionStorage.authToken;
-
-    async function handleDelete() {
+    async function handleDelete(): Promise<void> {
         await axios.delete(`${URL}/${endpoint}/${targetId}`, {
             headers: {
                 Authorization: `Bearer ${token}`

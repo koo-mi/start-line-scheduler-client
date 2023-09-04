@@ -6,6 +6,7 @@ import { checklistValidationSchema } from "../../schemas/checklistValidationSche
 import axios from "axios";
 import ModalHeader from "../ModalHeader/ModalHeader";
 import { ModalBasic, checklistItem } from "../../model/type";
+import { URL, token } from "../../utils/variables";
 
 interface OwnProps extends ModalBasic {
     targetId: string
@@ -13,13 +14,9 @@ interface OwnProps extends ModalBasic {
 
 const ChecklistEdit = ({ handleClose, targetId, updateList }: OwnProps) => {
 
-    const [itemData, setItemData] = useState<checklistItem>(null);
+    const [itemData, setItemData] = useState<checklistItem>({});
     const [submitted, setSubmitted] = useState<boolean>(false);
-
-    // Axios variables
-    const URL = import.meta.env.VITE_SERVER_URL;
-    const token = sessionStorage.authToken;
-
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         async function getItemInfo() {
@@ -31,11 +28,13 @@ const ChecklistEdit = ({ handleClose, targetId, updateList }: OwnProps) => {
                     }
                 })
             setItemData(listItemData.data);
+            setIsLoading(false);
         }
 
         getItemInfo();
     }, [])
 
+    // Formik
     const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: {
             "title": itemData.title || "",
@@ -50,6 +49,7 @@ const ChecklistEdit = ({ handleClose, targetId, updateList }: OwnProps) => {
         onSubmit,
     })
 
+    // When Submit
     async function onSubmit(val: FormikValues) {
         setSubmitted(true);
 
@@ -68,6 +68,11 @@ const ChecklistEdit = ({ handleClose, targetId, updateList }: OwnProps) => {
 
         handleClose();
         updateList();
+    }
+
+    // Loading
+    if (isLoading) {
+        return <p>Loading...</p>
     }
 
     return (

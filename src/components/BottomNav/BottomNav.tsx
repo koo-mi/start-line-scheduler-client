@@ -19,7 +19,7 @@ const BottomNav = () => {
 
     const [value, setValue] = useState(dir);
 
-    const handleChange = (newValue: string) => {
+    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
 
@@ -28,7 +28,7 @@ const BottomNav = () => {
     }
 
     return (
-        <BottomNavigation className="nav" value={value} onChange={()=>{handleChange}}>
+        <BottomNavigation className="nav" value={value} onChange={handleChange}>
             <BottomNavigationAction
                 onClick={() => { navigate("/") }}
                 label="Home"

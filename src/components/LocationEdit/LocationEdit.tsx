@@ -6,6 +6,7 @@ import { locationValidationSchema } from "../../schemas/locationValidationSchema
 import axios from "axios";
 import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
 import { ModalBasic, locationItem } from "../../model/type";
+import { URL, searchOptions, token } from "../../utils/variables";
 
 interface OwnProps extends ModalBasic {
     id: string
@@ -13,13 +14,12 @@ interface OwnProps extends ModalBasic {
 
 const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
 
-    const [formData, setFormData] = useState<locationItem>(null);
+    const [formData, setFormData] = useState<locationItem>({});
 
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [address, setAddress] = useState("");
-
-    const [prevAddress, setPrevAddress] = useState("");
+    const [address, setAddress] = useState<string>("");
+    const [prevAddress, setPrevAddress] = useState<string>("");
 
     // Formik
     const { values, errors, handleChange, handleBlur } = useFormik({
@@ -38,6 +38,7 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
         onSubmit,
     })
 
+    // format the value for isDefault
     function findDefault():string {
         if (formData.isWork) {
             return "work";
@@ -46,10 +47,6 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
         }
         return ""
     }
-
-    // For Axios call
-    const URL = import.meta.env.VITE_SERVER_URL;
-    const token = sessionStorage.authToken;
 
     useEffect(() => {
         async function getLocDataById() {
@@ -68,10 +65,8 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
 
         getLocDataById();
     }, [])
-    
-    console.log(formData);
 
-    // When user sumbits the form
+    // Submit
     async function onSubmit(e: FormikValues) {
         e.preventDefault();
 
@@ -107,6 +102,7 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
         updateList();
     }
 
+    // Loading
     if (isLoading) {
         return (<p>Loading...</p>)
     }
@@ -116,7 +112,6 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
     async function handleAddressSelect(value: string) {
         const result = await geocodeByAddress(value);
         const formattedAddress = result[0].formatted_address.split(",")
-
 
         if (!/\d/.test(formattedAddress[0])) {
             formattedAddress.shift();
@@ -129,12 +124,7 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
         values.province = addressTrim[2].split(' ')[0];
     }
 
-    // Limit address result to only contain address in US/Canada
-    const searchOptions = {
-        componentRestrictions: { country: ["us", "ca"] },
-        types: ['address']
-    }
-
+    
     /* Default */
 
     function handleDefaultChange(e: SelectChangeEvent<string>) {

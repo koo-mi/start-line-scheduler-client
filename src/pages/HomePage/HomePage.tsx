@@ -11,6 +11,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import './HomePage.scss';
 import TimeSelectModal from '../../components/TimeSelectModal/TimeSelectModal';
 import { checklistSummary, directionSummary, locationSummary } from '../../model/type';
+import { URL, token } from '../../utils/variables';
+import { chooseType, formatTargetTime } from '../../utils/functions';
 
 
 const HomePage = () => {
@@ -22,16 +24,12 @@ const HomePage = () => {
     const [arrival, setArrival] = useState<string>("");
 
     // Holds data from the API
-    const [directionData, setDirectionData] = useState<directionSummary>(null);
+    const [directionData, setDirectionData] = useState<directionSummary>({});
     const [locationData, setLocationData] = useState<locationSummary>([]);
     const [checklistData, setChecklistData] = useState<checklistSummary>([]);
 
     const [showTimeModal, setShowTimeModal] = useState(false);
     const [locError, setLocError] = useState(false);
-
-    // for Axios call
-    const URL = import.meta.env.VITE_SERVER_URL
-    const token = sessionStorage.authToken;
 
     useEffect(() => {
         if (!sessionStorage.authToken) {
@@ -55,7 +53,6 @@ const HomePage = () => {
                     sessionStorage.mode = default_mode;
                     sessionStorage.time = default_target_time;
                     sessionStorage.type = "arrival"
-
                 }
 
                 // If start / end address are the same show err message
@@ -99,9 +96,6 @@ const HomePage = () => {
 
     }, [sessionStorage.authToken, sessionStorage.time, sessionStorage.type, sessionStorage.start, sessionStorage.end])
 
-
-    console.log(checklistData);
-
     // If it's still loading
     if (isLoading) {
         return <Loading />
@@ -117,38 +111,7 @@ const HomePage = () => {
         sessionStorage.end = e.target.value;
     }
 
-    function formatTargetTime(time: string) {
-        // for "hr mm" format
-        const splitTime: string[] = time.split(' ');
-        let [hr, min] = splitTime;
-
-        // If the minute is 1 digit, add 0
-        if (min.length === 1) {
-            min = `0${min}`;
-        }
-
-        const hour = Number(hr);
-
-        if (hour === 0) {
-            return `12:${min}am`;
-        } else if (hour < 12) {
-            return `${hour}:${min}am`;
-        } else if (hour === 12) {
-            return `12:${min}pm`;
-        } else {
-            return `${hour - 12}:${min}pm`;
-        }
-    }
-
     function handleTimeClose() { setShowTimeModal(false); }
-
-    function chooseType() {
-        if (sessionStorage.type === "arrival") {
-            return "Arrive by"
-        } else if (sessionStorage.type === "departure") {
-            return "Depart at"
-        }
-    }
 
     return (
         <Container maxWidth="sm" sx={{ mb: "4.5rem" }}>
