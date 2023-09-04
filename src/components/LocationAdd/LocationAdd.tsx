@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Container, FormControlLabel, TextField } from "@mui/material";
+import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Snackbar, TextField } from "@mui/material";
 import "./LocationAdd.scss";
 import ModalHeader from "../ModalHeader/ModalHeader";
 import { useFormik } from "formik";
@@ -10,6 +10,7 @@ import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete"
 const LocationAdd = ({ handleAddClose, updateList }) => {
 
     const [submitted, setSubmitted] = useState<boolean>(false);
+    const [defaultPlace, setDefaultPlace] = useState("");
 
     // Formik
     const { values, errors, handleChange, handleBlur } = useFormik({
@@ -18,7 +19,8 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
             "street": "",
             "city": "",
             "province": "",
-            "isDefault": false
+            "isWork": false,
+            "isHome": false
         },
         validationSchema: locationValidationSchema,
         validateOnChange: submitted,
@@ -43,7 +45,9 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
                     name: values.name,
                     street: address,
                     city: values.city,
-                    province: values.province
+                    province: values.province,
+                    isHome: values.isHome,
+                    isWork: values.isWork
                 },
                 {
                     headers: {
@@ -69,9 +73,11 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
             formattedAddress.shift();
         }
 
-        setAddress(formattedAddress[0]);
-        values.city = formattedAddress[1];
-        values.province = formattedAddress[2].split(' ')[1];
+        const addressTrim = formattedAddress.map((el) => el.trim());
+
+        setAddress(addressTrim[0]);
+        values.city = addressTrim[1];
+        values.province = addressTrim[2].split(' ')[0];
     }
 
     // Limit address result to only contain address in US/Canada
@@ -80,9 +86,22 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
         types: ['address']
     }
 
+    // Default onChange
+    function handleDefaultChange(e) {
+        if (e.target.value === "home") {
+            setDefaultPlace("home");
+            values.isHome = true;
+            values.isWork = false;
+        } else if (e.target.value === "work") {
+            setDefaultPlace("work");
+            values.isHome = false;
+            values.isWork = true;
+        }
+    }
 
     return (
         <Container component="section" maxWidth="xs" className="modal" sx={{ display: 'flex' }}>
+
             <Box sx={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
                 <Box sx={{ display: 'flex', backgroundColor: 'white', width: '90%', flexDirection: 'column' }}>
                     {/* Header */}
@@ -149,7 +168,7 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
                                 </div>
                             )}
                         </PlacesAutocomplete>
-                        
+
                         <Box sx={{ display: 'flex', gap: 2 }}>
                             {/* City */}
                             <TextField
@@ -177,12 +196,20 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
                             />
                         </Box>
 
-                        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-                            <Box sx={{ width: "50%" }}></Box>
-                            <Box sx={{ width: "50%" }}>
-                                <FormControlLabel control={<Checkbox checked={values.isDefault} name="isDefault" onChange={handleChange} value={values.isDefault} />} label="Default" />
-                            </Box>
-                        </Box>
+                        {/* Choose Default */}
+                        <FormControl>
+                            <FormLabel id="select-default">Default</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="select-default"
+                                value={defaultPlace}
+                                onChange={handleDefaultChange}
+                                name="isDefault"
+                            >
+                                <FormControlLabel value="home" control={<Radio />} label="Home" />
+                                <FormControlLabel value="work" control={<Radio />} label="Work" />
+                            </RadioGroup>
+                        </FormControl>
 
                         {/* Buttons */}
                         <Box sx={{ display: 'flex', gap: 2 }}>

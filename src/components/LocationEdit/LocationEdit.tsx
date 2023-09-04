@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Container, FormControlLabel, TextField } from "@mui/material";
+import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import ModalHeader from "../ModalHeader/ModalHeader";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
@@ -14,13 +14,17 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [address, setAddress] = useState("");
 
+    const [prevAddress, setPrevAddress] = useState("");
+
     // Formik
     const { values, errors, handleChange, handleBlur } = useFormik({
         initialValues: {
             "name": formData.name || "",
             "city": formData.city || "",
             "province": formData.province || "",
-            "isDefault": false
+            "isDefault": findDefault() || "",
+            "isWork": formData.isWork,
+            "isHome": formData.isHome,
         },
         enableReinitialize: true,
         validationSchema: locationValidationSchema,
@@ -28,6 +32,15 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
         validateOnBlur: submitted,
         onSubmit,
     })
+
+    function findDefault():string {
+        if (formData.isWork) {
+            return "work";
+        } else if (formData.isHome) {
+            return "home";
+        }
+        return ""
+    }
 
     // For Axios call
     const URL = import.meta.env.VITE_SERVER_URL;
@@ -40,6 +53,8 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
                     Authorization: `Bearer ${token}`
                 }
             })
+
+            setPrevAddress(`${locData.data.street} ${locData.data.city} ${locData.data.province}`.replaceAll(' ', '+'));
 
             setAddress(locData.data.street);
             setFormData(locData.data);
@@ -62,13 +77,24 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
                 name: values.name,
                 street: address,
                 city: values.city,
-                province: values.province
+                province: values.province,
+                isHome: values.isHome,
+                isWork: values.isWork,
             },
             {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
+
+        // Edit session storage data if it is currently selected location
+        if (prevAddress === sessionStorage.start) {
+            sessionStorage.start = `${address} ${values.city} ${values.province}`.replaceAll(' ', '+')
+        }
+
+        if (prevAddress === sessionStorage.end) {
+            sessionStorage.end = `${address} ${values.city} ${values.province}`.replaceAll(' ', '+')
+        }
 
         handleEditClose();
         updateList();
@@ -84,19 +110,32 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
         const result = await geocodeByAddress(value);
         const formattedAddress = result[0].formatted_address.split(",")
 
+
         if (!/\d/.test(formattedAddress[0])) {
             formattedAddress.shift();
         }
 
-        setAddress(formattedAddress[0]);
-        values.city = formattedAddress[1];
-        values.province = formattedAddress[2].split(' ')[1];
+        const addressTrim = formattedAddress.map((el) => el.trim());
+
+        setAddress(addressTrim[0]);
+        values.city = addressTrim[1];
+        values.province = addressTrim[2].split(' ')[0];
     }
 
     // Limit address result to only contain address in US/Canada
     const searchOptions = {
         componentRestrictions: { country: ["us", "ca"] },
         types: ['address']
+    }
+
+    /* Default */
+
+    function handleDefaultChange(e) {
+        if (e.target.value === "home") {
+            setFormData({...formData, isHome: true, isWork: false})
+        } else if (e.target.value === "work") {
+            setFormData({...formData, isHome: false, isWork: true})
+        }
     }
 
     return (
@@ -168,7 +207,7 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
                             )}
                         </PlacesAutocomplete>
 
-                        
+
                         <Box sx={{ display: 'flex', gap: 2 }}>
                             {/* City */}
                             <TextField
@@ -196,12 +235,20 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
                             />
                         </Box>
 
-                        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-                            <Box sx={{ width: "50%" }}></Box>
-                            <Box sx={{ width: "50%" }}>
-                                <FormControlLabel control={<Checkbox checked={values.isDefault} name="isDefault" onChange={handleChange} value={values.isDefault} />} label="Default" />
-                            </Box>
-                        </Box>
+                        {/* Choose Default */}
+                        <FormControl>
+                            <FormLabel id="select-default">Default</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="select-default"
+                                value={values.isDefault}
+                                onChange={handleDefaultChange}
+                                name="isDefault"
+                            >
+                                <FormControlLabel value="home" control={<Radio />} label="Home" />
+                                <FormControlLabel value="work" control={<Radio />} label="Work" />
+                            </RadioGroup>
+                        </FormControl>
 
                         {/* Buttons */}
                         <Box sx={{ display: 'flex', gap: 2 }}>

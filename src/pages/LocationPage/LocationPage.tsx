@@ -62,13 +62,6 @@ const LocationPage = () => {
         return (<p>Loading...</p>)
     }
 
-
-    // Axios call for edit is not set 
-    // Axios call for edit is not set 
-    // Axios call for edit is not set 
-    // Axios call for edit is not set 
-
-
     return (
         <Container maxWidth="sm" sx={{ mb: "4.5rem" }}>
 

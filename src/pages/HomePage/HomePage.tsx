@@ -230,7 +230,8 @@ const HomePage = () => {
                     <div className="direction__display-container">
                         <img src={transitIcon} alt="transit icon" className='direction__mode-icon' />
                         <div className='direction__time-box'>
-                            <h3 className='direction__time'>{directionData.departureTime}</h3>
+                            <h3 className='direction__time'>
+                                {sessionStorage.type === "arrival" ? `${directionData.departureTime}` : `${directionData.arrivalTime}`}</h3>
                         </div>
                     </div>
                 </div>

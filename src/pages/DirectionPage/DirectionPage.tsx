@@ -196,7 +196,7 @@ const DirectionPage = () => {
                     <div className="direction-detail__display-container">
                         <img src={transitIcon} alt="transit icon" className='direction-detail__mode-icon' />
                         <div className='direction-detail__time-box'>
-                            <h3 className='direction-detail__time'>{directionData.departureTime}</h3>
+                            <h3 className='direction-detail__time'>{sessionStorage.type === "arrival" ? `${directionData.departureTime}` : `${directionData.arrivalTime}`}</h3>
                         </div>
                     </div>
                 </div>

@@ -117,9 +117,11 @@ const SignupPage = () => {
             formattedAddress.shift();
         }
 
-        setHomeAddress(formattedAddress[0]);
-        values.home_city = formattedAddress[1];
-        values.home_province = formattedAddress[2].split(' ')[1];
+        const addressTrim = formattedAddress.map((el) => el.trim());
+
+        setHomeAddress(addressTrim[0]);
+        values.home_city = addressTrim[1];
+        values.home_province = addressTrim[2].split(' ')[1];
     }
 
     async function handleWorkSelect(value) {
@@ -130,9 +132,12 @@ const SignupPage = () => {
             formattedAddress.shift();
         }
 
-        setWorkAddress(formattedAddress[0]);
-        values.work_city = formattedAddress[1];
-        values.work_province = formattedAddress[2].split(' ')[1];
+        const addressTrim = formattedAddress.map((el) => el.trim());
+
+
+        setWorkAddress(addressTrim[0]);
+        values.work_city = addressTrim[1];
+        values.work_province = addressTrim[2].split(' ')[0];
     }
 
     // Limit address result to only contain address in US/Canada
