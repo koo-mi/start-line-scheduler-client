@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useFormik } from "formik";
+import { FormikValues, useFormik } from "formik";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { loginValidationSchema } from "../../schemas/loginValidationSchema"
@@ -61,7 +61,7 @@ const SignupPage = () => {
 
     // When user click Sign up button
     const URL = import.meta.env.VITE_SERVER_URL;
-    async function onSubmit(val: any) {
+    async function onSubmit(val: FormikValues) {
 
         // Set/Reset Time Error Alert
         timeError ? setTimeError(false) : ""
@@ -105,13 +105,13 @@ const SignupPage = () => {
 
 
     /* For address search function */
-    const [homeAddress, setHomeAddress] = useState("");
-    const [workAddress, setWorkAddress] = useState("");
+    const [homeAddress, setHomeAddress] = useState<string>("");
+    const [workAddress, setWorkAddress] = useState<string>("");
 
 
-    async function handleHomeSelect(value) {
+    async function handleHomeSelect(value: string) {
         const result = await geocodeByAddress(value);
-        const formattedAddress = result[0].formatted_address.split(",")
+        const formattedAddress:string[] = result[0].formatted_address.split(",")
 
         if (!/\d/.test(formattedAddress[0])) {
             formattedAddress.shift();
@@ -124,7 +124,7 @@ const SignupPage = () => {
         values.home_province = addressTrim[2].split(' ')[1];
     }
 
-    async function handleWorkSelect(value) {
+    async function handleWorkSelect(value: string) {
         const result = await geocodeByAddress(value);
         const formattedAddress = result[0].formatted_address.split(",")
 

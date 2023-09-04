@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { Container, Box, Select, MenuItem, FormControl, Modal, Snackbar, Alert } from "@mui/material"
+import { Container, Box, Select, MenuItem, FormControl, Modal, Snackbar, Alert, SelectChangeEvent } from "@mui/material"
 import arrowIcon from "../../assets/icons/arrow_icon.svg";
 import transitIcon from "../../assets/icons/transit_icon.svg";
 import Loading from '../../components/Loading/Loading';
@@ -10,20 +10,21 @@ import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import './HomePage.scss';
 import TimeSelectModal from '../../components/TimeSelectModal/TimeSelectModal';
+import { checklistSummary, directionSummary, locationSummary } from '../../model/type';
 
 
 const HomePage = () => {
 
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [departure, setDeparture] = useState();
-    const [arrival, setArrival] = useState();
+    const [departure, setDeparture] = useState<string>("");
+    const [arrival, setArrival] = useState<string>("");
 
     // Holds data from the API
-    const [directionData, setDirectionData] = useState({});
-    const [locationData, setLocationData] = useState({});
-    const [checklistData, setChecklistData] = useState([]);
+    const [directionData, setDirectionData] = useState<directionSummary>(null);
+    const [locationData, setLocationData] = useState<locationSummary>([]);
+    const [checklistData, setChecklistData] = useState<checklistSummary>([]);
 
     const [showTimeModal, setShowTimeModal] = useState(false);
     const [locError, setLocError] = useState(false);
@@ -84,7 +85,7 @@ const HomePage = () => {
                 setArrival(sessionStorage.end);
 
                 setIsLoading(false);
-            } catch (err) {
+            } catch (err: any) {
                 // Will come back and change
                 console.log(err.response.data.message);
                 if (err.response.data.message = "Invalid Token") {
@@ -98,24 +99,27 @@ const HomePage = () => {
 
     }, [sessionStorage.authToken, sessionStorage.time, sessionStorage.type, sessionStorage.start, sessionStorage.end])
 
+
+    console.log(checklistData);
+
     // If it's still loading
     if (isLoading) {
         return <Loading />
     }
 
-    function handleStartChange(e) {
+    function handleStartChange(e: SelectChangeEvent<string>) {
         setDeparture(e.target.value);
         sessionStorage.start = e.target.value;
     }
 
-    function handleEndChange(e) {
+    function handleEndChange(e: SelectChangeEvent<string>) {
         setArrival(e.target.value);
         sessionStorage.end = e.target.value;
     }
 
-    function formatTargetTime(time) {
+    function formatTargetTime(time: string) {
         // for "hr mm" format
-        const splitTime = time.split(' ');
+        const splitTime: string[] = time.split(' ');
         let [hr, min] = splitTime;
 
         // If the minute is 1 digit, add 0
@@ -123,16 +127,16 @@ const HomePage = () => {
             min = `0${min}`;
         }
 
-        hr = Number(hr);
+        const hour = Number(hr);
 
-        if (hr === 0) {
+        if (hour === 0) {
             return `12:${min}am`;
-        } else if (hr < 12) {
-            return `${hr}:${min}am`;
-        } else if (hr === 12) {
+        } else if (hour < 12) {
+            return `${hour}:${min}am`;
+        } else if (hour === 12) {
             return `12:${min}pm`;
         } else {
-            return `${hr - 12}:${min}pm`;
+            return `${hour - 12}:${min}pm`;
         }
     }
 
@@ -146,7 +150,6 @@ const HomePage = () => {
         }
     }
 
-
     return (
         <Container maxWidth="sm" sx={{ mb: "4.5rem" }}>
 
@@ -157,7 +160,7 @@ const HomePage = () => {
                 aria-describedby="time-modal"
             >
                 <>
-                    <TimeSelectModal handleTimeClose={handleTimeClose} />
+                    <TimeSelectModal handleClose={handleTimeClose} />
                 </>
             </Modal>
 
@@ -195,7 +198,7 @@ const HomePage = () => {
                                     locationData.map((location) => {
                                         const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
 
-                                        return <MenuItem key={location.id} value={address}>{location.name}</MenuItem>
+                                        return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
                                     })
                                 }
                             </Select>
@@ -215,7 +218,7 @@ const HomePage = () => {
                                     locationData.map((location) => {
                                         const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
 
-                                        return <MenuItem key={location.id} value={address}>{location.name}</MenuItem>
+                                        return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
                                     })
                                 }
                             </Select>
@@ -225,7 +228,7 @@ const HomePage = () => {
                 {/* Display Direction Output */}
                 <div className='direction__container'>
                     <div className="direction__text-container">
-                        <p className='direction__text'>{sessionStorage.type === "arrival" ? "You need to leave by...": "You will get there at..."}</p>
+                        <p className='direction__text'>{sessionStorage.type === "arrival" ? "You need to leave by..." : "You will get there at..."}</p>
                     </div>
                     <div className="direction__display-container">
                         <img src={transitIcon} alt="transit icon" className='direction__mode-icon' />
@@ -242,7 +245,7 @@ const HomePage = () => {
                 {
                     checklistData.map((item) => {
                         return <ChecklistItemSimplified
-                            key={item.id}
+                            key={`${item.id}`}
                             title={item.title}
                             isDaily={item.isDaily}
                             priority={item.priority}

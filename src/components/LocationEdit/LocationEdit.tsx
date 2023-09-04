@@ -1,14 +1,19 @@
-import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
+import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, SelectChangeEvent, TextField } from "@mui/material";
 import ModalHeader from "../ModalHeader/ModalHeader";
-import { useFormik } from "formik";
+import { FormikValues, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { locationValidationSchema } from "../../schemas/locationValidationSchema";
 import axios from "axios";
 import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
+import { ModalBasic, locationItem } from "../../model/type";
 
-const LocationEdit = ({ handleEditClose, updateList, id }) => {
+interface OwnProps extends ModalBasic {
+    id: string
+}
 
-    const [formData, setFormData] = useState({});
+const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
+
+    const [formData, setFormData] = useState<locationItem>(null);
 
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -63,9 +68,11 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
 
         getLocDataById();
     }, [])
+    
+    console.log(formData);
 
     // When user sumbits the form
-    async function onSubmit(e) {
+    async function onSubmit(e: FormikValues) {
         e.preventDefault();
 
         if (!submitted) {
@@ -96,7 +103,7 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
             sessionStorage.end = `${address} ${values.city} ${values.province}`.replaceAll(' ', '+')
         }
 
-        handleEditClose();
+        handleClose();
         updateList();
     }
 
@@ -106,7 +113,7 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
 
     /* Search */
 
-    async function handleAddressSelect(value) {
+    async function handleAddressSelect(value: string) {
         const result = await geocodeByAddress(value);
         const formattedAddress = result[0].formatted_address.split(",")
 
@@ -130,7 +137,7 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
 
     /* Default */
 
-    function handleDefaultChange(e) {
+    function handleDefaultChange(e: SelectChangeEvent<string>) {
         if (e.target.value === "home") {
             setFormData({...formData, isHome: true, isWork: false})
         } else if (e.target.value === "work") {
@@ -143,7 +150,7 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
             <Box sx={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
                 <Box sx={{ display: 'flex', backgroundColor: 'white', width: '90%', flexDirection: 'column' }}>
                     {/* Header */}
-                    <ModalHeader title="Edit Location" handleClose={handleEditClose} />
+                    <ModalHeader title="Edit Location" handleClose={handleClose} />
 
                     {/* Form */}
                     <form className="checklist__add-form" onSubmit={onSubmit}>
@@ -173,8 +180,6 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
                                         label="Street Address"
                                         fullWidth
                                         required
-                                        error={!!errors.street}
-                                        helperText={errors.street}
                                         {...getInputProps({
                                             placeholder: 'Search Address ...',
                                             className: 'location-search-input',
@@ -252,7 +257,7 @@ const LocationEdit = ({ handleEditClose, updateList, id }) => {
 
                         {/* Buttons */}
                         <Box sx={{ display: 'flex', gap: 2 }}>
-                            <Button type="button" variant="outlined" onClick={handleEditClose} fullWidth sx={{ p: 1 }}>
+                            <Button type="button" variant="outlined" onClick={handleClose} fullWidth sx={{ p: 1 }}>
                                 Close
                             </Button>
                             <Button type="submit" variant="contained" fullWidth sx={{ p: 1 }}>

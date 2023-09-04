@@ -1,15 +1,20 @@
 import "./ChecklistEdit.scss"
 import { useEffect, useState } from "react";
-import { useFormik } from "formik";
+import { FormikValues, useFormik } from "formik";
 import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { checklistValidationSchema } from "../../schemas/checklistValidationSchema";
 import axios from "axios";
 import ModalHeader from "../ModalHeader/ModalHeader";
+import { ModalBasic, checklistItem } from "../../model/type";
 
-const ChecklistEdit = ({ handleEditClose, targetId, updateList }) => {
+interface OwnProps extends ModalBasic {
+    targetId: string
+}
 
-    const [itemData, setItemData] = useState({});
-    const [submitted, setSubmitted] = useState(false);
+const ChecklistEdit = ({ handleClose, targetId, updateList }: OwnProps) => {
+
+    const [itemData, setItemData] = useState<checklistItem>(null);
+    const [submitted, setSubmitted] = useState<boolean>(false);
 
     // Axios variables
     const URL = import.meta.env.VITE_SERVER_URL;
@@ -45,7 +50,7 @@ const ChecklistEdit = ({ handleEditClose, targetId, updateList }) => {
         onSubmit,
     })
 
-    async function onSubmit(val) {
+    async function onSubmit(val: FormikValues) {
         setSubmitted(true);
 
         await axios.put(`${URL}/checklist/${targetId}`,
@@ -61,7 +66,7 @@ const ChecklistEdit = ({ handleEditClose, targetId, updateList }) => {
                 }
             })
 
-        handleEditClose();
+        handleClose();
         updateList();
     }
 
@@ -70,7 +75,7 @@ const ChecklistEdit = ({ handleEditClose, targetId, updateList }) => {
             <Box sx={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
                 <Box sx={{ display: 'flex', backgroundColor: 'white', width: '90%', flexDirection: 'column' }}>
                     {/* Header */}
-                    <ModalHeader title="Edit Checklist" handleClose={handleEditClose} />
+                    <ModalHeader title="Edit Checklist" handleClose={handleClose} />
                     {/* Form */}
                     <form className="checklist__edit-form" onSubmit={handleSubmit}>
                         {/* Title */}
@@ -124,7 +129,7 @@ const ChecklistEdit = ({ handleEditClose, targetId, updateList }) => {
 
                         {/* Buttons */}
                         <Box sx={{ display: 'flex', gap: 2 }}>
-                            <Button type="button" variant="outlined" onClick={handleEditClose} fullWidth sx={{ p: 1 }}>
+                            <Button type="button" variant="outlined" onClick={handleClose} fullWidth sx={{ p: 1 }}>
                                 Close
                             </Button>
                             <Button type="submit" variant="contained" fullWidth sx={{ p: 1 }}>

@@ -2,18 +2,19 @@ import "./WeatherWidget.scss";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { WeatherData } from "../../model/type";
 
 
 const WeatherWidget = () => {
 
-    const [weatherData, setWeatherData] = useState({});
-    const [date, setDate] = useState(new Date());
+    const [weatherData, setWeatherData] = useState<WeatherData>(null);
+    const [date, setDate] = useState<Date>(new Date());
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-    const WEATHER_API_URL = import.meta.env.VITE_WEATHER_API_URL;
-    const WEATHER_ICON_URL = import.meta.env.VITE_WEATHER_ICON_URL;
+    const WEATHER_API_KEY: string = import.meta.env.VITE_WEATHER_API_KEY;
+    const WEATHER_API_URL: string = import.meta.env.VITE_WEATHER_API_URL;
+    const WEATHER_ICON_URL: string = import.meta.env.VITE_WEATHER_ICON_URL;
 
 
     useEffect(() => {
@@ -61,14 +62,14 @@ const WeatherWidget = () => {
                     <img src={`${WEATHER_ICON_URL}/${weatherData.weather[0].icon}.png`} alt={`${weatherData.weather[0].main} icon`} />
                 </Box>
                 <Box className="weather-widget__temp">
-                    <p className="weather-widget__current-temp">{Math.round(weatherData.main.temp)}&deg;C</p>
+                    <p className="weather-widget__current-temp">{Math.round(Number(weatherData.main.temp))}&deg;C</p>
                     <Box className="weather-widget__min-max">
-                        <p>{Math.round(weatherData.main.temp_max)}</p>
-                        <p>{Math.round(weatherData.main.temp_min)}</p>
+                        <p>{Math.round(Number(weatherData.main.temp_max))}</p>
+                        <p>{Math.round(Number(weatherData.main.temp_min))}</p>
                     </Box>
                 </Box>
                 <Box>
-                    <p className="weather-widget__feels">Feels like {Math.round(weatherData.main.feels_like)}&deg;C</p>
+                    <p className="weather-widget__feels">Feels like {Math.round(Number(weatherData.main.feels_like))}&deg;C</p>
                 </Box>
 
             </Box>

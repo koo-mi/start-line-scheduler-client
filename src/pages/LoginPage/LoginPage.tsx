@@ -15,10 +15,11 @@ import {
     Alert,
 } from "@mui/material";
 import { loginValidationSchema } from "../../schemas/loginValidationSchema"
+import { LoginState } from '../../model/type';
 
 
 /* Login */
-const LoginPage = ({ changeLoginState }) => {
+const LoginPage = ({ changeLoginState }: LoginState) => {
 
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [loginErrMsg, setLoginErrMsg] = useState<string>("");

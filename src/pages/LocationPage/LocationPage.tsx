@@ -7,45 +7,46 @@ import LocationAdd from "../../components/LocationAdd/LocationAdd";
 import LocationEdit from "../../components/LocationEdit/LocationEdit";
 import LocationItem from "../../components/LocationItem/LocationItem";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
+import { locationSummary } from "../../model/type";
 
 
 const LocationPage = () => {
 
-    const [locData, setLocData] = useState([]);
-    const [targetId, setTargetId] = useState("");
+    const [locData, setLocData] = useState<locationSummary>([]);
+    const [targetId, setTargetId] = useState<string>("");
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     // States for controlling modal
-    const [showAddModal, setShowAddModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
+    const [showAddModal, setShowAddModal] = useState<boolean>(false);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     // For closing modals
-    function handleAddClose() { setShowAddModal(false) };
-    function handleDeleteClose() { setShowDeleteModal(false) };
-    function handleEditClose() { setShowEditModal(false) };
+    function handleAddClose(): void { setShowAddModal(false) };
+    function handleDeleteClose(): void { setShowDeleteModal(false) };
+    function handleEditClose(): void { setShowEditModal(false) };
 
     // For opening modals
-    function handleEditOpen(id) {
+    function handleEditOpen(id: string): void {
         setTargetId(id);
         setShowEditModal(true);
     }
-    function handleDeleteOpen(id) {
+    function handleDeleteOpen(id: string): void {
         setTargetId(id);
         setShowDeleteModal(true);
     }
 
     // For detecting any change (add, delete, edit)
-    const [refreshList, setRefreshList] = useState(true);
-    function updateList() { setRefreshList(!refreshList) };
+    const [refreshList, setRefreshList] = useState<boolean>(true);
+    function updateList(): void { setRefreshList(!refreshList) };
 
     // for Axios call
     const URL = import.meta.env.VITE_SERVER_URL
     const token = sessionStorage.authToken;
 
     useEffect(() => {
-        async function getLocation() {
+        async function getLocation(): Promise<void> {
             const locations = await axios.get(`${URL}/direction/location`, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -73,7 +74,7 @@ const LocationPage = () => {
                 aria-describedby="add-modal"
             >
                 <>
-                    <LocationAdd handleAddClose={handleAddClose} updateList={updateList} />
+                    <LocationAdd handleClose={handleAddClose} updateList={updateList} />
                 </>
             </Modal>
 
@@ -85,7 +86,7 @@ const LocationPage = () => {
                 aria-describedby="edit-modal"
             >
                 <>
-                    <LocationEdit handleEditClose={handleEditClose} updateList={updateList} id={targetId} />
+                    <LocationEdit handleClose={handleEditClose} updateList={updateList} id={targetId} />
                 </>
             </Modal>
 
@@ -97,7 +98,7 @@ const LocationPage = () => {
                 aria-describedby="delete-modal"
             >
                 <>
-                    <DeleteModal handleDeleteClose={handleDeleteClose} targetId={targetId} updateList={updateList} type="location" endpoint="direction/location"/>
+                    <DeleteModal handleClose={handleDeleteClose} targetId={targetId} updateList={updateList} type="location" endpoint="direction/location"/>
                 </>
             </Modal>
 
@@ -116,7 +117,7 @@ const LocationPage = () => {
                     {
                         locData.map((item) => {
                             return (<LocationItem
-                                key={item.id}
+                                key={`${item.id}`}
                                 id={item.id}
                                 name={item.name}
                                 street={item.street}

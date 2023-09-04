@@ -10,20 +10,21 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
 import Error from "../../components/Error/Error";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
+import { checklistSummary } from "../../model/type";
 
 const ChecklistPage = () => {
 
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [hasError, setHasError] = useState<boolean>(false);
 
-    const [checklist, setChecklist] = useState([]);
-    const [targetId, setTargetId] = useState("");
+    const [checklist, setChecklist] = useState<checklistSummary>([]);
+    const [targetId, setTargetId] = useState<string>("");
 
     // States for controlling modal
-    const [showAddModal, setShowAddModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
+    const [showAddModal, setShowAddModal] = useState<boolean>(false);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     // For closing modals
     function handleAddClose() { setShowAddModal(false) };
@@ -31,11 +32,11 @@ const ChecklistPage = () => {
     function handleEditClose() { setShowEditModal(false) };
 
     // For opening modals
-    function handleEditOpen(id) {
+    function handleEditOpen(id: string) {
         setTargetId(id);
         setShowEditModal(true);
     }
-    function handleDeleteOpen(id) {
+    function handleDeleteOpen(id: string) {
         setTargetId(id);
         setShowDeleteModal(true);
     }
@@ -92,7 +93,7 @@ const ChecklistPage = () => {
                 aria-describedby="add-modal"
             >
                 <>
-                    <ChecklistAdd handleAddClose={handleAddClose}
+                    <ChecklistAdd handleClose={handleAddClose}
                         updateList={updateList} />
                 </>
             </Modal>
@@ -106,7 +107,7 @@ const ChecklistPage = () => {
             >
                 <>
                     <ChecklistEdit
-                        handleEditClose={handleEditClose}
+                        handleClose={handleEditClose}
                         targetId={targetId}
                         updateList={updateList} />
                 </>
@@ -121,7 +122,7 @@ const ChecklistPage = () => {
             >
                 <>
                     <DeleteModal
-                        handleDeleteClose={handleDeleteClose}
+                        handleClose={handleDeleteClose}
                         targetId={targetId}
                         updateList={updateList} 
                         type="item"
@@ -140,7 +141,7 @@ const ChecklistPage = () => {
                 {
                     checklist.map((item) => {
                         return <ChecklistItem
-                            key={item.id}
+                            key={`${item.id}`}
                             title={item.title}
                             description={item.description}
                             isDaily={item.isDaily}

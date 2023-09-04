@@ -1,14 +1,14 @@
 import "./ChecklistAdd.scss"
 import { useState } from "react";
-import { useFormik } from "formik";
-import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, Typography, } from "@mui/material";
+import { FormikValues, useFormik } from "formik";
+import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { checklistValidationSchema } from "../../schemas/checklistValidationSchema";
 import axios from "axios";
 import ModalHeader from "../ModalHeader/ModalHeader";
+import { ModalBasic } from "../../model/type";
 
-
-const ChecklistAdd = ({ handleAddClose, updateList }) => {
-    const [submitted, setSubmitted] = useState(false);
+const ChecklistAdd = ({ handleClose, updateList }: ModalBasic) => {
+    const [submitted, setSubmitted] = useState<boolean>(false);
 
     const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: {
@@ -26,7 +26,7 @@ const ChecklistAdd = ({ handleAddClose, updateList }) => {
     const URL = import.meta.env.VITE_SERVER_URL;
     const token = sessionStorage.authToken;
 
-    async function onSubmit(val) {
+    async function onSubmit(val: FormikValues) {
         setSubmitted(true);
 
         await axios.post(`${URL}/checklist`,
@@ -42,7 +42,7 @@ const ChecklistAdd = ({ handleAddClose, updateList }) => {
                 }
             });
 
-        handleAddClose();
+        handleClose();
         updateList();
     }
 
@@ -51,7 +51,7 @@ const ChecklistAdd = ({ handleAddClose, updateList }) => {
             <Box sx={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
                 <Box sx={{ display: 'flex', backgroundColor: 'white', width: '90%', flexDirection: 'column' }}>
                     {/* Header */}
-                    <ModalHeader title="Add New Item" handleClose={handleAddClose} />
+                    <ModalHeader title="Add New Item" handleClose={handleClose} />
                     {/* Form */}
                     <form className="checklist__add-form" onSubmit={handleSubmit}>
                         {/* Title */}
@@ -105,7 +105,7 @@ const ChecklistAdd = ({ handleAddClose, updateList }) => {
 
                         {/* Buttons */}
                         <Box sx={{ display: 'flex', gap: 2 }}>
-                            <Button type="button" variant="outlined" onClick={handleAddClose} fullWidth sx={{ p: 1 }}>
+                            <Button type="button" variant="outlined" onClick={handleClose} fullWidth sx={{ p: 1 }}>
                                 Close
                             </Button>
                             <Button type="submit" variant="contained" fullWidth sx={{ p: 1 }}>

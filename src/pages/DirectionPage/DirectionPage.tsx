@@ -1,5 +1,5 @@
 import "./DirectionPage.scss";
-import { Alert, Box, Container, FormControl, MenuItem, Modal, Select, Snackbar, Typography } from "@mui/material";
+import { Alert, Box, Container, FormControl, MenuItem, Modal, Select, SelectChangeEvent, Snackbar, Typography } from "@mui/material";
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
@@ -8,29 +8,30 @@ import transitIcon from "../../assets/icons/transit_icon.svg";
 import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined';
 import TimeSelectModal from "../../components/TimeSelectModal/TimeSelectModal";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { directionSummary, locationSummary } from "../../model/type";
 
 const DirectionPage = () => {
 
     const navigate = useNavigate();
 
-    const [directionData, setDirectionData] = useState({});
-    const [locationData, setLocationData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [departure, setDeparture] = useState();
-    const [arrival, setArrival] = useState();
+    const [directionData, setDirectionData] = useState<directionSummary>(null);
+    const [locationData, setLocationData] = useState<locationSummary>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [departure, setDeparture] = useState<string>("");
+    const [arrival, setArrival] = useState<string>("");
 
     // Modal & Snackbar
-    const [showTimeModal, setShowTimeModal] = useState(false);
-    const [locError, setLocError] = useState(false);
-    function handleTimeClose() { setShowTimeModal(false); }
+    const [showTimeModal, setShowTimeModal] = useState<boolean>(false);
+    const [locError, setLocError] = useState<boolean>(false);
+    function handleTimeClose(): void { setShowTimeModal(false); };
 
 
     // for Axios call
-    const URL = import.meta.env.VITE_SERVER_URL
-    const token = sessionStorage.authToken;
+    const URL: string = import.meta.env.VITE_SERVER_URL
+    const token: string = sessionStorage.authToken;
 
     useEffect(() => {
-        async function getDirectionData() {
+        async function getDirectionData(): Promise<void> {
 
             // If start / end address are the same show err message
             if (sessionStorage.start === sessionStorage.end) {
@@ -61,6 +62,8 @@ const DirectionPage = () => {
         getDirectionData();
     }, [sessionStorage.start, sessionStorage.end, sessionStorage.time, sessionStorage.type])
 
+    console.log(directionData);
+
     // Will come back to this
     if (isLoading) { return (<p>Loading...</p>) }
 
@@ -72,7 +75,7 @@ const DirectionPage = () => {
         }
     }
 
-    function formatTargetTime(time) {
+    function formatTargetTime(time: string) {
         // for "hr mm" format
         const splitTime = time.split(' ');
         let [hr, min] = splitTime;
@@ -82,25 +85,25 @@ const DirectionPage = () => {
             min = `0${min}`;
         }
 
-        hr = Number(hr);
+        const hour = Number(hr);
 
-        if (hr === 0) {
+        if (hour === 0) {
             return `12:${min}am`;
-        } else if (hr < 12) {
-            return `${hr}:${min}am`;
-        } else if (hr === 12) {
+        } else if (hour < 12) {
+            return `${hour}:${min}am`;
+        } else if (hour === 12) {
             return `12:${min}pm`;
         } else {
-            return `${hr - 12}:${min}pm`;
+            return `${hour - 12}:${min}pm`;
         }
     }
 
-    function handleStartChange(e) {
+    function handleStartChange(e: SelectChangeEvent) {
         setDeparture(e.target.value);
         sessionStorage.start = e.target.value;
     }
 
-    function handleEndChange(e) {
+    function handleEndChange(e: SelectChangeEvent) {
         setArrival(e.target.value);
         sessionStorage.end = e.target.value;
     }
@@ -117,7 +120,7 @@ const DirectionPage = () => {
                 aria-describedby="time-modal"
             >
                 <>
-                    <TimeSelectModal handleTimeClose={handleTimeClose} />
+                    <TimeSelectModal handleClose={handleTimeClose} />
                 </>
             </Modal>
 
@@ -160,7 +163,7 @@ const DirectionPage = () => {
                                     locationData.map((location) => {
                                         const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
 
-                                        return <MenuItem key={location.id} value={address}>{location.name}</MenuItem>
+                                        return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
                                     })
                                 }
                             </Select>
@@ -180,7 +183,7 @@ const DirectionPage = () => {
                                     locationData.map((location) => {
                                         const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
 
-                                        return <MenuItem key={location.id} value={address}>{location.name}</MenuItem>
+                                        return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
                                     })
                                 }
                             </Select>
@@ -191,7 +194,7 @@ const DirectionPage = () => {
                 {/* Display Direction Output */}
                 <div className='direction-detail__container'>
                     <div className="direction-detail__text-container">
-                        <p className='direction-detail__text'>{sessionStorage.type === "arrival" ? "You need to leave by...": "You will get there at..."}</p>
+                        <p className='direction-detail__text'>{sessionStorage.type === "arrival" ? "You need to leave by..." : "You will get there at..."}</p>
                     </div>
                     <div className="direction-detail__display-container">
                         <img src={transitIcon} alt="transit icon" className='direction-detail__mode-icon' />

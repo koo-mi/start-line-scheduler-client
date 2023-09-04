@@ -1,13 +1,16 @@
-import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Snackbar, TextField } from "@mui/material";
+import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, SelectChangeEvent, TextField } from "@mui/material";
 import "./LocationAdd.scss";
 import ModalHeader from "../ModalHeader/ModalHeader";
-import { useFormik } from "formik";
+import { FormikValues, useFormik } from "formik";
 import { useState } from "react";
 import { locationValidationSchema } from "../../schemas/locationValidationSchema";
 import axios from "axios";
 import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
+import { ModalBasic } from "../../model/type";
 
-const LocationAdd = ({ handleAddClose, updateList }) => {
+interface OwnProps extends ModalBasic {}
+
+const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
 
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [defaultPlace, setDefaultPlace] = useState("");
@@ -33,7 +36,7 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
     const token = sessionStorage.authToken;
 
     // When user sumbits the form
-    async function onSubmit(e) {
+    async function onSubmit(e: FormikValues) {
         e.preventDefault();
         if (!submitted) {
             setSubmitted(true);
@@ -55,7 +58,7 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
                     }
                 });
 
-            handleAddClose();
+            handleClose();
             updateList();
         } catch (err) {
             console.log(err);
@@ -65,7 +68,7 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
     /* Search */
     const [address, setAddress] = useState("");
 
-    async function handleAddressSelect(value) {
+    async function handleAddressSelect(value: string) {
         const result = await geocodeByAddress(value);
         const formattedAddress = result[0].formatted_address.split(",")
 
@@ -87,7 +90,7 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
     }
 
     // Default onChange
-    function handleDefaultChange(e) {
+    function handleDefaultChange(e: SelectChangeEvent<string>) {
         if (e.target.value === "home") {
             setDefaultPlace("home");
             values.isHome = true;
@@ -105,7 +108,7 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
             <Box sx={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
                 <Box sx={{ display: 'flex', backgroundColor: 'white', width: '90%', flexDirection: 'column' }}>
                     {/* Header */}
-                    <ModalHeader title="Add New Location" handleClose={handleAddClose} />
+                    <ModalHeader title="Add New Location" handleClose={handleClose} />
 
                     {/* Form */}
                     <form className="checklist__add-form" onSubmit={onSubmit}>
@@ -213,7 +216,7 @@ const LocationAdd = ({ handleAddClose, updateList }) => {
 
                         {/* Buttons */}
                         <Box sx={{ display: 'flex', gap: 2 }}>
-                            <Button type="button" variant="outlined" onClick={handleAddClose} fullWidth sx={{ p: 1 }}>
+                            <Button type="button" variant="outlined" onClick={handleClose} fullWidth sx={{ p: 1 }}>
                                 Close
                             </Button>
                             <Button type="submit" variant="contained" fullWidth sx={{ p: 1 }}>

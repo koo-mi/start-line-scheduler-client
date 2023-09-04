@@ -2,9 +2,15 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import axios from "axios";
+import { ModalBasic } from "../../model/type";
 
+interface OwnProps extends ModalBasic {
+    targetId: string,
+    type: string,
+    endpoint: string,
+}
 
-const DeleteModal = ({ handleDeleteClose, targetId, updateList, type, endpoint }) => {
+const DeleteModal = ({ handleClose, targetId, updateList, type, endpoint }: OwnProps) => {
 
     // Axios variables
     const URL = import.meta.env.VITE_SERVER_URL
@@ -16,7 +22,7 @@ const DeleteModal = ({ handleDeleteClose, targetId, updateList, type, endpoint }
                 Authorization: `Bearer ${token}`
             }
         });
-        handleDeleteClose();
+        handleClose();
         updateList();
     }
 
@@ -26,7 +32,7 @@ const DeleteModal = ({ handleDeleteClose, targetId, updateList, type, endpoint }
                 <Box sx={{ display: 'flex', backgroundColor: 'white', width: '90%', flexDirection: 'column', p: 2 }}>
                     {/* Header */}
                     <Box sx={{ textAlign: "right" }}>
-                        <CloseRoundedIcon onClick={handleDeleteClose} />
+                        <CloseRoundedIcon onClick={handleClose} />
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Typography component="h3" variant="h5" sx={{ fontWeight: 700 }}>
@@ -42,7 +48,7 @@ const DeleteModal = ({ handleDeleteClose, targetId, updateList, type, endpoint }
 
                     {/* Button */}
                     <Box sx={{ display: 'flex', gap: 2 }}>
-                        <Button type="button" variant="outlined" onClick={handleDeleteClose} fullWidth sx={{ p: 1 }}>
+                        <Button type="button" variant="outlined" onClick={handleClose} fullWidth sx={{ p: 1 }}>
                             Close
                         </Button>
                         <Button type="button" variant="contained" color="error" fullWidth sx={{ p: 1 }} startIcon={<BackspaceIcon />} onClick={handleDelete}>

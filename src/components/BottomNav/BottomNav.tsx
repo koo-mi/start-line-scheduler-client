@@ -13,13 +13,13 @@ const BottomNav = () => {
 
     // Based on the directory name, change the default value
     const currentDir = useLocation();
-    let dir = currentDir.pathname.split("/")[1];
+    let dir: string = currentDir.pathname.split("/")[1];
 
     if (dir === "") {dir = "home"} 
 
     const [value, setValue] = useState(dir);
 
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    const handleChange = (newValue: string) => {
         setValue(newValue);
     };
 
@@ -28,7 +28,7 @@ const BottomNav = () => {
     }
 
     return (
-        <BottomNavigation className="nav" value={value} onChange={handleChange}>
+        <BottomNavigation className="nav" value={value} onChange={()=>{handleChange}}>
             <BottomNavigationAction
                 onClick={() => { navigate("/") }}
                 label="Home"

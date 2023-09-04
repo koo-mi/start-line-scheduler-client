@@ -5,16 +5,16 @@ import { LocalizationProvider, StaticTimePicker } from '@mui/x-date-pickers';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from "dayjs";
+import { HandleClose } from "../../model/type";
 
-const TimeSelectModal = ({handleTimeClose}) => {
+
+
+const TimeSelectModal = ({handleClose}: HandleClose) => {
 
     const [type, setType] = useState(sessionStorage.type);
     const [time, setTime] = useState<Dayjs>(dayjs(`2023-09-01T${sessionStorage.time?.split(' ')[0]}:${sessionStorage.time?.split(' ')[1]}`));;
 
-    const handleChange = (
-        event: React.MouseEvent<HTMLElement>,
-        newAlignment: string,
-    ) => {
+    function handleChange(newAlignment: string) {
         setType(newAlignment);
     };
 
@@ -22,16 +22,15 @@ const TimeSelectModal = ({handleTimeClose}) => {
         sessionStorage.time = `${time.$H} ${time.$m}`
     }
 
-    function handleClick (e){
+    function handleClick (e: any){
         sessionStorage.type = e.target.value;
     }
 
-
-    function handleDepartNow (e) {
+    function handleDepartNow () {
         const currTime = dayjs(new Date());
         sessionStorage.time = `${currTime.$H} ${currTime.$m}`
         sessionStorage.type = "departure";
-        handleTimeClose();
+        handleClose();
     }
 
     return (
@@ -42,7 +41,7 @@ const TimeSelectModal = ({handleTimeClose}) => {
                         className="time-modal__select-type"
                         color="primary"
                         value={type}
-                        onChange={handleChange}
+                        onChange={()=>{handleChange}}
                         exclusive
                     >
                         <ToggleButton value="departure" onClick={handleClick}>Depart at</ToggleButton>
@@ -59,7 +58,7 @@ const TimeSelectModal = ({handleTimeClose}) => {
                                 value={time} 
                                 onChange={(newValue)=>{setTime(newValue)}}
                                 onAccept={handleAccept}
-                                onClose={handleTimeClose}
+                                onClose={handleClose}
                                 />
                             </DemoItem>
                         </DemoContainer>
