@@ -3,7 +3,7 @@
 
 Start-Line Scheduler is all-in-one app that combines key features like calculating the optimal commute time, providing weather updates, and managing a to-do list to help users strategically plan their morning.
 
-This is my first project using Vite, TypeScript, MUI and Prisma. 
+This is my first project using Vite, TypeScript, MUI and Prisma.
 
 **Client Repo:**  [https://github.com/koo-mi/start-line-scheduler-client](https://github.com/koo-mi/start-line-scheduler-client)
 
@@ -25,19 +25,26 @@ This is my first project using Vite, TypeScript, MUI and Prisma.
 ## 🏃 Run Locally
 
 **Clone the project**
-```bash
-Client
-    - git clone https://github.com/koo-mi/start-line-scheduler-client.git
 
-Server 
+Client
+```bash
+    - git clone https://github.com/koo-mi/start-line-scheduler-client.git
+```
+Server
+```bash 
     - git clone https://github.com/koo-mi/start-line-scheduler-server.git
 ```
 
 **Go to the project directory**
-```bash
-  cd my-project
-```
 
+Client
+```bash
+  cd start-line-scheduler-client/
+```
+Server
+```bash
+  cd start-line-scheduler-server/
+```
 **Install dependencies**
 ```bash
   npm install
@@ -48,12 +55,34 @@ Server
   refer to .env.sample
 ```
 
-**Setup Database**
+**Setup Database (Server Only)**
+
+Create MySQL DB 
 ```bash
-  refer to .env.sample
+  CREATE DATABASE start_line_scheduler
+```
+
+Prisma Migrate
+```bash
+  npx prisma migrate dev --name init 
+```
+```bash
+  npx prisma generate
 ```
 
 **Start the server**
 ```bash
   npm run dev
 ```
+
+
+## 🗺️ Site Map
+- Home Page (Dashboard)
+- Direction Page
+    - Location Page
+        - Add / Edit / Delete Modal
+- Weather Page
+- Checklist Page
+    - Add / Edit / Delete Modal
+- Login Page
+- Signup Page
