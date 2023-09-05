@@ -357,10 +357,10 @@ const SignupPage = () => {
                                 onChange={handleChange}
                                 fullWidth
                             >
-                                <MenuItem value={"driving"}>Driving</MenuItem>
+                                <MenuItem value={"driving"} disabled>Driving</MenuItem>
                                 <MenuItem value={"transit"}>Transit</MenuItem>
-                                <MenuItem value={"walking"}>Walking</MenuItem>
-                                <MenuItem value={"bicycling"}>Bicycling</MenuItem>
+                                <MenuItem value={"walking"} disabled>Walking</MenuItem>
+                                <MenuItem value={"bicycling"} disabled>Bicycling</MenuItem>
                             </Select>
                         </FormControl>
 
