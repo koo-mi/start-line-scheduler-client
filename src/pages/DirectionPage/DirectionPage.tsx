@@ -9,7 +9,7 @@ import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlin
 import TimeSelectModal from "../../components/TimeSelectModal/TimeSelectModal";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { directionSummary, locationSummary } from "../../model/type";
-import { URL, token } from "../../utils/variables";
+import { URL } from "../../utils/variables";
 import { chooseType, formatTargetTime } from "../../utils/functions";
 
 const DirectionPage = () => {
@@ -28,6 +28,7 @@ const DirectionPage = () => {
 
     function handleTimeClose(): void { setShowTimeModal(false); };
 
+    const token = sessionStorage.authToken;
     
     useEffect(() => {
         async function getDirectionData(): Promise<void> {

@@ -11,7 +11,7 @@ import Loading from "../../components/Loading/Loading";
 import Error from "../../components/Error/Error";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { checklistSummary } from "../../model/type";
-import { URL, token } from "../../utils/variables";
+import { URL } from "../../utils/variables";
 
 const ChecklistPage = () => {
 
@@ -46,6 +46,7 @@ const ChecklistPage = () => {
     const [refreshList, setRefreshList] = useState(true);
     function updateList() { setRefreshList(!refreshList) };
 
+    const token = sessionStorage.authToken;
     
     useEffect(() => {
         // If not logged in, redirect to login page

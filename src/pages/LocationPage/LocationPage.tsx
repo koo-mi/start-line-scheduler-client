@@ -8,7 +8,7 @@ import LocationEdit from "../../components/LocationEdit/LocationEdit";
 import LocationItem from "../../components/LocationItem/LocationItem";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import { locationSummary } from "../../model/type";
-import { URL, token } from "../../utils/variables";
+import { URL } from "../../utils/variables";
 
 
 const LocationPage = () => {
@@ -42,6 +42,7 @@ const LocationPage = () => {
     const [refreshList, setRefreshList] = useState<boolean>(true);
     function updateList(): void { setRefreshList(!refreshList) };
 
+    const token = sessionStorage.authToken;
 
     useEffect(() => {
         async function getLocation(): Promise<void> {

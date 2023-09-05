@@ -11,7 +11,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import './HomePage.scss';
 import TimeSelectModal from '../../components/TimeSelectModal/TimeSelectModal';
 import { checklistSummary, directionSummary, locationSummary } from '../../model/type';
-import { URL, token } from '../../utils/variables';
+import { URL } from '../../utils/variables';
 import { chooseType, formatTargetTime } from '../../utils/functions';
 
 
@@ -30,6 +30,8 @@ const HomePage = () => {
 
     const [showTimeModal, setShowTimeModal] = useState(false);
     const [locError, setLocError] = useState(false);
+
+    const token = sessionStorage.authToken;
 
     useEffect(() => {
         if (!sessionStorage.authToken) {
