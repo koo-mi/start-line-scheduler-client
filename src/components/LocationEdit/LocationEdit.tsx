@@ -6,7 +6,7 @@ import { locationValidationSchema } from "../../schemas/locationValidationSchema
 import axios from "axios";
 import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
 import { ModalBasic, locationItem } from "../../model/type";
-import { URL, searchOptions, token } from "../../utils/variables";
+import { URL, searchOptions } from "../../utils/variables";
 
 interface OwnProps extends ModalBasic {
     id: string
@@ -47,6 +47,8 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
         }
         return ""
     }
+
+    const token = sessionStorage.authToken;
 
     useEffect(() => {
         async function getLocDataById() {

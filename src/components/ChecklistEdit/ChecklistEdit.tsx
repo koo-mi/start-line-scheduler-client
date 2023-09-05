@@ -6,7 +6,7 @@ import { checklistValidationSchema } from "../../schemas/checklistValidationSche
 import axios from "axios";
 import ModalHeader from "../ModalHeader/ModalHeader";
 import { ModalBasic, checklistItem } from "../../model/type";
-import { URL, token } from "../../utils/variables";
+import { URL } from "../../utils/variables";
 
 interface OwnProps extends ModalBasic {
     targetId: string
@@ -17,6 +17,8 @@ const ChecklistEdit = ({ handleClose, targetId, updateList }: OwnProps) => {
     const [itemData, setItemData] = useState<checklistItem>({});
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const token = sessionStorage.authToken;
 
     useEffect(() => {
         async function getItemInfo() {

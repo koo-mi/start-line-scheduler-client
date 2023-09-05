@@ -1,5 +1,4 @@
 export const URL = import.meta.env.VITE_SERVER_URL;
-export const token = sessionStorage.authToken;
 
 export const WEATHER_API_URL: string = import.meta.env.VITE_WEATHER_API_URL;
 export const WEATHER_API_KEY: string = import.meta.env.VITE_WEATHER_API_KEY;

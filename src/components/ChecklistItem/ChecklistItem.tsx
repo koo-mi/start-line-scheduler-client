@@ -5,7 +5,7 @@ import BackspaceIcon from '@mui/icons-material/Backspace';
 import { useState } from 'react';
 import axios from 'axios';
 import { checklistItem } from '../../model/type';
-import { URL, token } from '../../utils/variables';
+import { URL } from '../../utils/variables';
 
 // Props
 interface OwnProps extends checklistItem {
@@ -16,6 +16,8 @@ interface OwnProps extends checklistItem {
 const ChecklistItem = ({ id, title, description, isDaily, priority, isChecked, handleEditOpen, handleDeleteOpen }: OwnProps) => {
 
     const [checked, setChecked] = useState<boolean>(isChecked);
+    
+    const token = sessionStorage.authToken;
     
     async function handleCheck() {
         try {

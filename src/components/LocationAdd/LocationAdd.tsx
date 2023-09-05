@@ -7,7 +7,7 @@ import { locationValidationSchema } from "../../schemas/locationValidationSchema
 import axios from "axios";
 import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
 import { ModalBasic } from "../../model/type";
-import { URL, searchOptions, token } from "../../utils/variables";
+import { URL, searchOptions } from "../../utils/variables";
 
 interface OwnProps extends ModalBasic {}
 
@@ -15,6 +15,8 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
 
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [defaultPlace, setDefaultPlace] = useState("");
+
+    const token = sessionStorage.authToken;
 
     // Formik
     const { values, errors, handleChange, handleBlur } = useFormik({

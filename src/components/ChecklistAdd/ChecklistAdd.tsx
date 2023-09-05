@@ -6,10 +6,12 @@ import { checklistValidationSchema } from "../../schemas/checklistValidationSche
 import axios from "axios";
 import ModalHeader from "../ModalHeader/ModalHeader";
 import { ModalBasic } from "../../model/type";
-import { URL, token } from "../../utils/variables";
+import { URL } from "../../utils/variables";
 
 const ChecklistAdd = ({ handleClose, updateList }: ModalBasic) => {
     const [submitted, setSubmitted] = useState<boolean>(false);
+
+    const token = sessionStorage.authToken;
 
     // Formik
     const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
