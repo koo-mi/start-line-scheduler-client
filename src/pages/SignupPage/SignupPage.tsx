@@ -36,8 +36,6 @@ const SignupPage = () => {
             "email": "",
             "password": "",
             "confirm_password": "",
-            "home_address": "",
-            "work_address": "",
             "default_mode": "",
         },
         validationSchema: loginValidationSchema,
@@ -57,17 +55,21 @@ const SignupPage = () => {
         // Format default time
         const default_target_time = `${targetTime.$H} ${targetTime.$m}`
 
+        const data = {
+            name: val.name,
+            username: val.email,
+            password: val.password,
+            home_address: homeAddress,
+            work_address: workAddress,
+            default_mode: val.default_mode,
+            default_target_time,
+        }
+
+        console.log(data);
         // Create new account 
         try {
-            await axios.post(`${URL}/signup`, {
-                name: val.name,
-                username: val.email,
-                password: val.password,
-                home_address: homeAddress,
-                work_address: workAddress,
-                default_mode: val.default_mode,
-                default_target_time,
-            })
+            await axios.post(`${URL}/signup`, data)
+
             // Redirect to login page
             navigate("/login")
         } catch (err: any) {
@@ -181,8 +183,6 @@ const SignupPage = () => {
                                     label="Street Address"
                                     fullWidth
                                     required
-                                    error={!!errors.home_address}
-                                    helperText={errors.home_address}
                                     {...getInputProps({
                                         placeholder: 'Search Address ...',
                                         className: 'location-search-input',
@@ -233,8 +233,6 @@ const SignupPage = () => {
                                     label="Street Address"
                                     fullWidth
                                     required
-                                    error={!!errors.work_address}
-                                    helperText={errors.work_address}
                                     {...getInputProps({
                                         placeholder: 'Search Address ...',
                                         className: 'location-search-input',
