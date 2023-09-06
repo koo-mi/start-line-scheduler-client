@@ -14,7 +14,7 @@ interface OwnProps extends ModalBasic {
 
 const ChecklistEdit = ({ handleClose, targetId, updateList }: OwnProps) => {
 
-    const [itemData, setItemData] = useState<checklistItem>({});
+    const [itemData, setItemData] = useState<checklistItem | null>(null);
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -39,10 +39,10 @@ const ChecklistEdit = ({ handleClose, targetId, updateList }: OwnProps) => {
     // Formik
     const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: {
-            "title": itemData.title || "",
-            "description": itemData.description || "",
-            "isDaily": itemData.isDaily || false,
-            "priority": itemData.priority || "medium"
+            "title": itemData!.title || "",
+            "description": itemData!.description || "",
+            "isDaily": itemData!.isDaily || false,
+            "priority": itemData!.priority || "medium"
         },
         enableReinitialize: true,
         validationSchema: checklistValidationSchema,

@@ -8,7 +8,7 @@ import { WEATHER_API_KEY, WEATHER_API_URL, WEATHER_ICON_URL } from "../../utils/
 
 const WeatherWidget = () => {
 
-    const [weatherData, setWeatherData] = useState<WeatherData>({});
+    const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
     const [date, setDate] = useState<Date>(new Date());
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -54,25 +54,25 @@ const WeatherWidget = () => {
         <Box className="weather-widget" borderRadius={3}>
             <Box className="weather-widget__weather">
                 <Box className="weather-widget__current-weather">
-                    <Typography>{weatherData.weather[0].main}</Typography>
-                    <img src={`${WEATHER_ICON_URL}/${weatherData.weather[0].icon}.png`} alt={`${weatherData.weather[0].main} icon`} />
+                    <Typography>{weatherData!.weather[0].main}</Typography>
+                    <img src={`${WEATHER_ICON_URL}/${weatherData!.weather[0].icon}.png`} alt={`${weatherData!.weather[0].main} icon`} />
                 </Box>
                 <Box className="weather-widget__temp">
-                    <p className="weather-widget__current-temp">{Math.round(weatherData.main.temp)}&deg;C</p>
+                    <p className="weather-widget__current-temp">{Math.round(weatherData!.main.temp)}&deg;C</p>
                     <Box className="weather-widget__min-max">
-                        <p>{Math.round(weatherData.main.temp_max)}</p>
-                        <p>{Math.round(weatherData.main.temp_min)}</p>
+                        <p>{Math.round(weatherData!.main.temp_max)}</p>
+                        <p>{Math.round(weatherData!.main.temp_min)}</p>
                     </Box>
                 </Box>
                 <Box>
-                    <p className="weather-widget__feels">Feels like {Math.round(weatherData.main.feels_like)}&deg;C</p>
+                    <p className="weather-widget__feels">Feels like {Math.round(weatherData!.main.feels_like)}&deg;C</p>
                 </Box>
 
             </Box>
             <Box className="weather-widget__datetime">
                 <Typography className="weather-widget__time">{timeDisplay}</Typography>
                 <Typography>{dateDisplay}</Typography>
-                <Typography>{weatherData.name}</Typography>
+                <Typography>{weatherData!.name}</Typography>
             </Box>
         </Box>
     );

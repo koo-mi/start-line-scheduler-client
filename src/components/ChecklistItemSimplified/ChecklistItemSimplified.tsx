@@ -5,7 +5,7 @@ import { useState } from "react";
 import { checklistItem } from "../../model/type";
 import { URL } from "../../utils/variables";
 
-const ChecklistItemSimplified = ({ id, title, isDaily, priority, isChecked }: checklistItem) => {
+const ChecklistItemSimplified = ({ id, title, isChecked }: checklistItem) => {
 
     const [checked, setChecked] = useState(isChecked);
 

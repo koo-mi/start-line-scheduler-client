@@ -77,7 +77,7 @@ const DirectionPage = () => {
 
     return (
 
-        <Container maxWidth="sm" sx={{ mb: "4.5rem" }}>
+        <Container component="main" id="main-container" sx={{ mb: "4.5rem" }}>
 
             {/* Time Selection Modal */}
             <Modal

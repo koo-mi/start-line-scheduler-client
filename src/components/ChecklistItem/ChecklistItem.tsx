@@ -13,7 +13,7 @@ interface OwnProps extends checklistItem {
     handleDeleteOpen(id: string): void
 }
 
-const ChecklistItem = ({ id, title, description, isDaily, priority, isChecked, handleEditOpen, handleDeleteOpen }: OwnProps) => {
+const ChecklistItem = ({ id, title, description, isChecked, handleEditOpen, handleDeleteOpen }: OwnProps) => {
 
     const [checked, setChecked] = useState<boolean>(isChecked);
     

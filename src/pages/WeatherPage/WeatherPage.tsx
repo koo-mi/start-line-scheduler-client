@@ -8,7 +8,7 @@ import { FORECAST_API_URL, WEATHER_API_KEY, WEATHER_API_URL, WEATHER_ICON_URL } 
 
 const WeatherPage = () => {
 
-    const [currentWeather, setCurrentWeather] = useState<WeatherData>({});
+    const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(null);
     const [forecast, setForecast] = useState<ForecastData>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -72,19 +72,19 @@ const WeatherPage = () => {
                 <section className="weather-page__main-info">
                     <div className="weather-page__location">
                         <LocationOnOutlinedIcon />
-                        <h2>{currentWeather.name}</h2>
+                        <h2>{currentWeather!.name}</h2>
                     </div>
 
                     <h4 className="weather-page__date">{new Date().toDateString()}</h4>
 
                     <div className="weather-page__temp-box" >
                         <div>
-                            <img src={`${WEATHER_ICON_URL}/${currentWeather.weather[0].icon}.png`} alt={currentWeather.weather[0].main} />
+                            <img src={`${WEATHER_ICON_URL}/${currentWeather!.weather[0].icon}.png`} alt={currentWeather!.weather[0].main} />
                         </div>
                         <div>
                             <div className="weather-page__temp-status">
-                                <p className="weather-page__temp">{Math.round(Number(currentWeather.main.temp))}&deg;C</p>
-                                <p className="weather-page__status">{currentWeather.weather[0].main}</p>
+                                <p className="weather-page__temp">{Math.round(Number(currentWeather!.main.temp))}&deg;C</p>
+                                <p className="weather-page__status">{currentWeather!.weather[0].main}</p>
                             </div>
                         </div>
                     </div>
@@ -94,29 +94,29 @@ const WeatherPage = () => {
                 <section className="weather-page__detail-info">
                     <div className="weather-page__detail-row">
                         <div className="weather-page__detail-box">
-                            <p className="weather-page__detail-value">{Math.round(Number(currentWeather.main.temp_max))}</p>
+                            <p className="weather-page__detail-value">{Math.round(Number(currentWeather!.main.temp_max))}</p>
                             <p className="weather-page__detail-property">High</p>
                         </div>
                         <div className="weather-page__detail-box">
-                            <p className="weather-page__detail-value">{`${currentWeather.wind.speed}`}</p>
+                            <p className="weather-page__detail-value">{`${currentWeather!.wind.speed}`}</p>
                             <p className="weather-page__detail-property">{"Wind (m/s)"}</p>
                         </div>
                         <div className="weather-page__detail-box">
-                            <p className="weather-page__detail-value">{formatSunTime(currentWeather.sys.sunrise)}</p>
+                            <p className="weather-page__detail-value">{formatSunTime(currentWeather!.sys.sunrise)}</p>
                             <p className="weather-page__detail-property">Sunrise</p>
                         </div>
                     </div>
                     <div className="weather-page__detail-row">
                         <div className="weather-page__detail-box">
-                            <p className="weather-page__detail-value">{Math.round(Number(currentWeather.main.temp_min))}</p>
+                            <p className="weather-page__detail-value">{Math.round(Number(currentWeather!.main.temp_min))}</p>
                             <p className="weather-page__detail-property">Low</p>
                         </div>
                         <div className="weather-page__detail-box">
-                            <p className="weather-page__detail-value">{`${currentWeather.main.humidity}`}</p>
+                            <p className="weather-page__detail-value">{`${currentWeather!.main.humidity}`}</p>
                             <p className="weather-page__detail-property">Humidity</p>
                         </div>
                         <div className="weather-page__detail-box">
-                            <p className="weather-page__detail-value">{formatSunTime(currentWeather.sys.sunset)}</p>
+                            <p className="weather-page__detail-value">{formatSunTime(currentWeather!.sys.sunset)}</p>
                             <p className="weather-page__detail-property">Sunset</p>
                         </div>
                     </div>

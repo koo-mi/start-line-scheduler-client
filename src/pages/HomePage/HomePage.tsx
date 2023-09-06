@@ -24,7 +24,7 @@ const HomePage = () => {
     const [arrival, setArrival] = useState<string>("");
 
     // Holds data from the API
-    const [directionData, setDirectionData] = useState<directionSummary>({});
+    const [directionData, setDirectionData] = useState<directionSummary | null>(null);
     const [locationData, setLocationData] = useState<locationSummary>([]);
     const [checklistData, setChecklistData] = useState<checklistSummary>([]);
 
@@ -116,7 +116,7 @@ const HomePage = () => {
     function handleTimeClose() { setShowTimeModal(false); }
 
     return (
-        <Container maxWidth="sm" sx={{ mb: "4.5rem" }}>
+        <Container id='main-container' component="main" sx={{ mb: "4.5rem" }}>
 
             <Modal
                 open={showTimeModal}
@@ -199,7 +199,7 @@ const HomePage = () => {
                         <img src={transitIcon} alt="transit icon" className='direction__mode-icon' />
                         <div className='direction__time-box'>
                             <h3 className='direction__time'>
-                                {sessionStorage.type === "arrival" ? `${directionData.departureTime}` : `${directionData.arrivalTime}`}</h3>
+                                {sessionStorage.type === "arrival" ? `${directionData!.departureTime}` : `${directionData!.arrivalTime}`}</h3>
                         </div>
                     </div>
                 </div>

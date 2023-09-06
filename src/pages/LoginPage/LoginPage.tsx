@@ -61,7 +61,7 @@ const LoginPage = ({ changeLoginState }: LoginState) => {
     }, [submitCount])
 
     return (
-        <Container component="main" maxWidth="xs" sx={{ p: 3 }}>
+        <Container component="main" id='main-container' sx={{ p: 3 }}>
             <Grid container direction="column">
                 <Typography component="h1" variant="h4" sx={{ mt: 3, mb: 1, fontWeight: 700 }}>Login</Typography>
                 <Typography component="h2" variant="body1" sx={{ mb: 3, color: "grey" }}>Please sign in to continue.</Typography>

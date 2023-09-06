@@ -14,7 +14,7 @@ const TimeSelectModal = ({handleClose}: HandleClose) => {
     const [time, setTime] = useState<any>(dayjs(`2023-09-01T${sessionStorage.time?.split(' ')[0]}:${sessionStorage.time?.split(' ')[1]}`));;
 
     const handleChange = (
-        event: React.MouseEvent<HTMLElement>,
+        _event: React.MouseEvent<HTMLElement>,
         newAlignment: string,
     ) => {
         setType(newAlignment);

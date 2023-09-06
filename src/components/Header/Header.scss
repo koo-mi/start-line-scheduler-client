@@ -2,13 +2,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-width: 500px;
 
     &__logo{
         height: 2.5rem;
     }
 
     &__toolbar {
-        width: 100vw;
-        max-width: 444px;
+        width: 100%;
     }
 }

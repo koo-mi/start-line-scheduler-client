@@ -11,6 +11,15 @@
     margin: 0;
 }
 
+#root {
+    @include flex-center;
+    flex-direction: column;
+}
+
+#main-container {
+    max-width: 500px;
+}
+
 .modal {
     @include flex-center;
     position: absolute;

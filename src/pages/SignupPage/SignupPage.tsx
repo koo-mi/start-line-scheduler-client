@@ -130,7 +130,8 @@ const SignupPage = () => {
 
     // Render
     return (
-        <Container component="main" maxWidth="xs" sx={{ p: 3 }}>
+        <Container component="main" id='main-container' sx={{ p: 3 }}>
+            
             <Typography component="h1" variant="h4" sx={{ mt: 1, mb: 1, fontWeight: 700 }}>Sign up</Typography>
 
             {/* Form */}

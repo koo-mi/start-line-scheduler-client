@@ -14,7 +14,7 @@ interface OwnProps extends ModalBasic {
 
 const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
 
-    const [formData, setFormData] = useState<locationItem>({});
+    const [formData, setFormData] = useState<locationItem | null>(null);
 
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -24,12 +24,12 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
     // Formik
     const { values, errors, handleChange, handleBlur } = useFormik({
         initialValues: {
-            "name": formData.name || "",
-            "city": formData.city || "",
-            "province": formData.province || "",
+            "name": formData!.name || "",
+            "city": formData!.city || "",
+            "province": formData!.province || "",
             "isDefault": findDefault() || "",
-            "isWork": formData.isWork,
-            "isHome": formData.isHome,
+            "isWork": formData!.isWork,
+            "isHome": formData!.isHome,
         },
         enableReinitialize: true,
         validationSchema: locationValidationSchema,
@@ -40,9 +40,9 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
 
     // format the value for isDefault
     function findDefault():string {
-        if (formData.isWork) {
+        if (formData!.isWork) {
             return "work";
-        } else if (formData.isHome) {
+        } else if (formData!.isHome) {
             return "home";
         }
         return ""
@@ -131,9 +131,9 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
 
     function handleDefaultChange(e: SelectChangeEvent<string>) {
         if (e.target.value === "home") {
-            setFormData({...formData, isHome: true, isWork: false})
+            setFormData({...formData!, isHome: true, isWork: false})
         } else if (e.target.value === "work") {
-            setFormData({...formData, isHome: false, isWork: true})
+            setFormData({...formData!, isHome: false, isWork: true})
         }
     }
 
