@@ -36,12 +36,8 @@ const SignupPage = () => {
             "email": "",
             "password": "",
             "confirm_password": "",
-            "home_street_address": "",
-            "home_city": "",
-            "home_province": "",
-            "work_street_address": "",
-            "work_city": "",
-            "work_province": "",
+            "home_address": "",
+            "work_address": "",
             "default_mode": "",
         },
         validationSchema: loginValidationSchema,
@@ -67,12 +63,8 @@ const SignupPage = () => {
                 name: val.name,
                 username: val.email,
                 password: val.password,
-                home_street: homeAddress,
-                home_city: val.home_city,
-                home_province: val.home_province,
-                work_street: workAddress,
-                work_city: val.work_city,
-                work_province: val.work_province,
+                home_address: homeAddress,
+                work_address: workAddress,
                 default_mode: val.default_mode,
                 default_target_time,
             })
@@ -100,32 +92,16 @@ const SignupPage = () => {
 
     async function handleHomeSelect(value: string) {
         const result = await geocodeByAddress(value);
-        const formattedAddress: string[] = result[0].formatted_address.split(",")
+        const formattedAddress: string = result[0].formatted_address
 
-        if (!/\d/.test(formattedAddress[0])) {
-            formattedAddress.shift();
-        }
-
-        const addressTrim = formattedAddress.map((el) => el.trim());
-
-        setHomeAddress(addressTrim[0]);
-        values.home_city = addressTrim[1];
-        values.home_province = addressTrim[2].split(' ')[1];
+        setHomeAddress(formattedAddress);
     }
 
     async function handleWorkSelect(value: string) {
         const result = await geocodeByAddress(value);
-        const formattedAddress = result[0].formatted_address.split(",")
+        const formattedAddress: string = result[0].formatted_address
 
-        if (!/\d/.test(formattedAddress[0])) {
-            formattedAddress.shift();
-        }
-
-        const addressTrim = formattedAddress.map((el) => el.trim());
-
-        setWorkAddress(addressTrim[0]);
-        values.work_city = addressTrim[1];
-        values.work_province = addressTrim[2].split(' ')[0];
+        setWorkAddress(formattedAddress);
     }
 
     // Render
@@ -205,8 +181,8 @@ const SignupPage = () => {
                                     label="Street Address"
                                     fullWidth
                                     required
-                                    error={!!errors.home_street_address}
-                                    helperText={errors.home_street_address}
+                                    error={!!errors.home_address}
+                                    helperText={errors.home_address}
                                     {...getInputProps({
                                         placeholder: 'Search Address ...',
                                         className: 'location-search-input',
@@ -238,33 +214,6 @@ const SignupPage = () => {
                             </div>
                         )}
                     </PlacesAutocomplete>
-
-                    <Box sx={{ display: 'flex', gap: 2 }}>
-                        {/* Home City */}
-                        <TextField
-                            name="home_city"
-                            label="City"
-                            value={values.home_city}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            fullWidth
-                            required
-                            error={!!errors.home_city}
-                            helperText={errors.home_city}
-                        />
-                        {/* Home Province */}
-                        <TextField
-                            name="home_province"
-                            label="State / Province"
-                            value={values.home_province}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            fullWidth
-                            required
-                            error={!!errors.home_province}
-                            helperText={errors.home_province}
-                        />
-                    </Box>
 
                     {/* Work Address */}
                     <Typography component="h2" variant="h6">Work Address</Typography>
@@ -284,8 +233,8 @@ const SignupPage = () => {
                                     label="Street Address"
                                     fullWidth
                                     required
-                                    error={!!errors.home_street_address}
-                                    helperText={errors.home_street_address}
+                                    error={!!errors.work_address}
+                                    helperText={errors.work_address}
                                     {...getInputProps({
                                         placeholder: 'Search Address ...',
                                         className: 'location-search-input',
@@ -318,32 +267,6 @@ const SignupPage = () => {
                         )}
                     </PlacesAutocomplete>
 
-                    <Box sx={{ display: 'flex', gap: 2 }}>
-                        {/* Work City */}
-                        <TextField
-                            name="work_city"
-                            label="City"
-                            value={values.work_city}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            fullWidth
-                            required
-                            error={!!errors.work_city}
-                            helperText={errors.work_city}
-                        />
-                        {/* Work Province */}
-                        <TextField
-                            name="work_province"
-                            label="State / Province"
-                            value={values.work_province}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            fullWidth
-                            required
-                            error={!!errors.work_province}
-                            helperText={errors.work_province}
-                        />
-                    </Box>
                     {/* Commute Details */}
                     <Typography component="h2" variant="h6">Commute Detail</Typography>
                     <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>

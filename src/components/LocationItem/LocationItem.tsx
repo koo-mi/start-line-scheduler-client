@@ -7,7 +7,7 @@ interface OwnProps extends locationItem {
     handleEditOpen(id: string): void
 }
 
-const LocationItem = ({ id, handleDeleteOpen, handleEditOpen, name, street, city, province }: OwnProps) => {
+const LocationItem = ({ id, handleDeleteOpen, handleEditOpen, name, address }: OwnProps) => {
     return (
         <div className="location__item-box">
             <div className="location__item-heading-box">
@@ -19,7 +19,7 @@ const LocationItem = ({ id, handleDeleteOpen, handleEditOpen, name, street, city
                     <BackspaceIcon fontSize="small" onClick={()=>{handleDeleteOpen(`${id}`)}} />
                 </div>
             </div>
-        <p>{street}, {city}, {province}</p>
+        <p>{address}</p>
         </div>
     );
 };

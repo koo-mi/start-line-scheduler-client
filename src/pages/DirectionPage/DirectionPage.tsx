@@ -29,7 +29,7 @@ const DirectionPage = () => {
     function handleTimeClose(): void { setShowTimeModal(false); };
 
     const token = sessionStorage.authToken;
-    
+
     useEffect(() => {
         async function getDirectionData(): Promise<void> {
 
@@ -128,7 +128,7 @@ const DirectionPage = () => {
                             >
                                 {
                                     locationData.map((location) => {
-                                        const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
+                                        const address = location.address.replaceAll(' ', '+');
 
                                         return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
                                     })
@@ -148,7 +148,7 @@ const DirectionPage = () => {
                             >
                                 {
                                     locationData.map((location) => {
-                                        const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
+                                        const address = location.address.replaceAll(' ', '+');
 
                                         return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
                                     })

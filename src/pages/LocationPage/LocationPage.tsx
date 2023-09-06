@@ -119,9 +119,7 @@ const LocationPage = () => {
                                 key={`${item.id}`}
                                 id={item.id}
                                 name={item.name}
-                                street={item.street}
-                                city={item.city}
-                                province={item.province}
+                                address={item.address}
                                 handleEditOpen={handleEditOpen}
                                 handleDeleteOpen={handleDeleteOpen}
                             />)

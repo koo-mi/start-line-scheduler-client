@@ -80,8 +80,8 @@ const HomePage = () => {
                 setDirectionData(summary.data.directionData);
                 setLocationData(summary.data.locationData);
                 setChecklistData(summary.data.checklistData);
-                setDeparture(sessionStorage.start);
-                setArrival(sessionStorage.end);
+                setDeparture(sessionStorage.start.replaceAll('+', ' '));
+                setArrival(sessionStorage.end.replaceAll('+', ' '));
 
                 setIsLoading(false);
             } catch (err: any) {
@@ -103,11 +103,13 @@ const HomePage = () => {
         return <Loading />
     }
 
+    // Change the start (departure) select value
     function handleStartChange(e: SelectChangeEvent<string>) {
         setDeparture(e.target.value);
         sessionStorage.start = e.target.value;
     }
 
+    // Change the end (arrival) select value 
     function handleEndChange(e: SelectChangeEvent<string>) {
         setArrival(e.target.value);
         sessionStorage.end = e.target.value;
@@ -161,9 +163,7 @@ const HomePage = () => {
                             >
                                 {
                                     locationData.map((location) => {
-                                        const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
-
-                                        return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
+                                        return <MenuItem key={`${location.id}`} value={location.address}>{location.name}</MenuItem>
                                     })
                                 }
                             </Select>
@@ -181,9 +181,7 @@ const HomePage = () => {
                             >
                                 {
                                     locationData.map((location) => {
-                                        const address = `${location.street} ${location.city} ${location.province}`.replaceAll(' ', '+')
-
-                                        return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
+                                        return <MenuItem key={`${location.id}`} value={location.address}>{location.name}</MenuItem>
                                     })
                                 }
                             </Select>

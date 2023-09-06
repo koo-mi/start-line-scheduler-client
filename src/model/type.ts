@@ -19,9 +19,7 @@ export type locationSummary = locationItem[]
 export type locationItem = {
     id: number,
     name: string,
-    street: string,
-    city: string,
-    province: string,
+    address: string,
     isHome?: boolean,
     isWork?: boolean,
 }

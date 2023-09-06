@@ -19,14 +19,11 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true);
     const [address, setAddress] = useState<string>("");
-    const [prevAddress, setPrevAddress] = useState<string>("");
 
     // Formik
     const { values, errors, handleChange, handleBlur } = useFormik({
         initialValues: {
             "name": formData?.name || "",
-            "city": formData?.city || "",
-            "province": formData?.province || "",
             "isDefault": findDefault() || "",
             "isWork": formData?.isWork,
             "isHome": formData?.isHome,
@@ -58,9 +55,7 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
                 }
             })
 
-            setPrevAddress(`${locData.data.street} ${locData.data.city} ${locData.data.province}`.replaceAll(' ', '+'));
-
-            setAddress(locData.data.street);
+            setAddress(locData.data.address);
             setFormData(locData.data);
             setIsLoading(false);
         }
@@ -79,9 +74,7 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
         await axios.put(`${URL}/direction/location/${id}`,
             {
                 name: values.name,
-                street: address,
-                city: values.city,
-                province: values.province,
+                address: address,
                 isHome: values.isHome,
                 isWork: values.isWork,
             },
@@ -92,12 +85,12 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
             });
 
         // Edit session storage data if it is currently selected location
-        if (prevAddress === sessionStorage.start) {
-            sessionStorage.start = `${address} ${values.city} ${values.province}`.replaceAll(' ', '+')
+        if (values.isHome) {
+            sessionStorage.start = address.replaceAll(' ', '+');
         }
 
-        if (prevAddress === sessionStorage.end) {
-            sessionStorage.end = `${address} ${values.city} ${values.province}`.replaceAll(' ', '+')
+        if (values.isWork) {
+            sessionStorage.end = address.replaceAll(' ', '+');
         }
 
         handleClose();
@@ -113,17 +106,9 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
 
     async function handleAddressSelect(value: string) {
         const result = await geocodeByAddress(value);
-        const formattedAddress = result[0].formatted_address.split(",")
+        const formattedAddress = result[0].formatted_address
 
-        if (!/\d/.test(formattedAddress[0])) {
-            formattedAddress.shift();
-        }
-
-        const addressTrim = formattedAddress.map((el) => el.trim());
-
-        setAddress(addressTrim[0]);
-        values.city = addressTrim[1];
-        values.province = addressTrim[2].split(' ')[0];
+        setAddress(formattedAddress);
     }
 
     
@@ -168,8 +153,8 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
                             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                                 <div>
                                     <TextField
-                                        name="home_street_address"
-                                        label="Street Address"
+                                        name="home_address"
+                                        label="Address"
                                         fullWidth
                                         required
                                         {...getInputProps({
@@ -203,34 +188,6 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
                                 </div>
                             )}
                         </PlacesAutocomplete>
-
-
-                        <Box sx={{ display: 'flex', gap: 2 }}>
-                            {/* City */}
-                            <TextField
-                                name="city"
-                                label="City"
-                                value={values.city}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                fullWidth
-                                required
-                                error={!!errors.city}
-                                helperText={errors.city}
-                            />
-                            {/* Province */}
-                            <TextField
-                                name="province"
-                                label="State / Province"
-                                value={values.province}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                fullWidth
-                                required
-                                error={!!errors.province}
-                                helperText={errors.province}
-                            />
-                        </Box>
 
                         {/* Choose Default */}
                         <FormControl>
