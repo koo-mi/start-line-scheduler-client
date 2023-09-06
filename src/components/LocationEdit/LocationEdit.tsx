@@ -24,12 +24,12 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
     // Formik
     const { values, errors, handleChange, handleBlur } = useFormik({
         initialValues: {
-            "name": formData!.name || "",
-            "city": formData!.city || "",
-            "province": formData!.province || "",
+            "name": formData?.name || "",
+            "city": formData?.city || "",
+            "province": formData?.province || "",
             "isDefault": findDefault() || "",
-            "isWork": formData!.isWork,
-            "isHome": formData!.isHome,
+            "isWork": formData?.isWork,
+            "isHome": formData?.isHome,
         },
         enableReinitialize: true,
         validationSchema: locationValidationSchema,
@@ -40,9 +40,9 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
 
     // format the value for isDefault
     function findDefault():string {
-        if (formData!.isWork) {
+        if (formData?.isWork) {
             return "work";
-        } else if (formData!.isHome) {
+        } else if (formData?.isHome) {
             return "home";
         }
         return ""

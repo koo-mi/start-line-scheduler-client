@@ -39,10 +39,10 @@ const ChecklistEdit = ({ handleClose, targetId, updateList }: OwnProps) => {
     // Formik
     const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: {
-            "title": itemData!.title || "",
-            "description": itemData!.description || "",
-            "isDaily": itemData!.isDaily || false,
-            "priority": itemData!.priority || "medium"
+            "title": itemData?.title || "",
+            "description": itemData?.description || "",
+            "isDaily": itemData?.isDaily || false,
+            "priority": itemData?.priority || "medium"
         },
         enableReinitialize: true,
         validationSchema: checklistValidationSchema,
