@@ -16,7 +16,7 @@ const DirectionPage = () => {
 
     const navigate = useNavigate();
 
-    const [directionData, setDirectionData] = useState<directionSummary>({});
+    const [directionData, setDirectionData] = useState<directionSummary | null>(null);
     const [locationData, setLocationData] = useState<locationSummary>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [departure, setDeparture] = useState<string>("");
@@ -166,7 +166,7 @@ const DirectionPage = () => {
                     <div className="direction-detail__display-container">
                         <img src={transitIcon} alt="transit icon" className='direction-detail__mode-icon' />
                         <div className='direction-detail__time-box'>
-                            <h3 className='direction-detail__time'>{sessionStorage.type === "arrival" ? `${directionData.departureTime}` : `${directionData.arrivalTime}`}</h3>
+                            <h3 className='direction-detail__time'>{sessionStorage.type === "arrival" ? `${directionData!.departureTime}` : `${directionData!.arrivalTime}`}</h3>
                         </div>
                     </div>
                 </div>
@@ -174,14 +174,14 @@ const DirectionPage = () => {
 
                     <div className="direction-detail__time-cont">
                         <div>
-                            <p className="direction-detail__time-text">{directionData.departureTime} - {directionData.arrivalTime}</p>
-                            <p className="direction-detail__dd-text">{directionData.distance} / {directionData.duration}</p>
+                            <p className="direction-detail__time-text">{directionData!.departureTime} - {directionData!.arrivalTime}</p>
+                            <p className="direction-detail__dd-text">{directionData!.distance} / {directionData!.duration}</p>
                         </div>
                     </div>
 
                     <div className="direction-detail__inst-box">
                         {
-                            directionData.stepsSummary.map((step, i) => {
+                            directionData!.stepsSummary.map((step, i) => {
                                 // Remove unnecessary address detail
                                 const inst = step.instruction.split(',')[0];
                                 return (
