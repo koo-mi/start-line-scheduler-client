@@ -80,8 +80,8 @@ const HomePage = () => {
                 setDirectionData(summary.data.directionData);
                 setLocationData(summary.data.locationData);
                 setChecklistData(summary.data.checklistData);
-                setDeparture(sessionStorage.start.replaceAll('+', ' '));
-                setArrival(sessionStorage.end.replaceAll('+', ' '));
+                setDeparture(sessionStorage.start);
+                setArrival(sessionStorage.end);
 
                 setIsLoading(false);
             } catch (err: any) {
@@ -105,12 +105,22 @@ const HomePage = () => {
 
     // Change the start (departure) select value
     function handleStartChange(e: SelectChangeEvent<string>) {
+        // Prevent user from having same origin / dest 
+        if (sessionStorage.end === e.target.value) {
+            return setLocError(true);
+        }
+
         setDeparture(e.target.value);
         sessionStorage.start = e.target.value;
     }
 
     // Change the end (arrival) select value 
     function handleEndChange(e: SelectChangeEvent<string>) {
+        // Prevent user from having same origin / dest 
+        if (sessionStorage.start === e.target.value) {
+            return setLocError(true);
+        }
+
         setArrival(e.target.value);
         sessionStorage.end = e.target.value;
     }

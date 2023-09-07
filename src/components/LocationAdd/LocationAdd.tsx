@@ -9,7 +9,7 @@ import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete"
 import { ModalBasic } from "../../model/type";
 import { URL, searchOptions } from "../../utils/variables";
 
-interface OwnProps extends ModalBasic {}
+interface OwnProps extends ModalBasic { }
 
 const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
 
@@ -41,13 +41,19 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
             setSubmitted(true);
         }
 
+        // Simple validation for address 
+        const addressRe = /\d+\s.{2,},.{2,},.{2,}/;
+        const checkAddress = addressRe.test(address);
+
+        if (!checkAddress) {
+            return
+        }
+
         try {
             await axios.post(`${URL}/direction/location`,
                 {
                     name: values.name,
-                    street: address,
-                    city: values.city,
-                    province: values.province,
+                    address: address,
                     isHome: values.isHome,
                     isWork: values.isWork
                 },
@@ -69,17 +75,9 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
 
     async function handleAddressSelect(value: string) {
         const result = await geocodeByAddress(value);
-        const formattedAddress: string[] = result[0].formatted_address.split(",")
-
-        if (!/\d/.test(formattedAddress[0])) {
-            formattedAddress.shift();
-        }
-
-        const addressTrim: string[] = formattedAddress.map((el) => el.trim());
-
-        setAddress(addressTrim[0]);
-        values.city = addressTrim[1];
-        values.province = addressTrim[2].split(' ')[0];
+        const formattedAddress: string = result[0].formatted_address;
+      
+        setAddress(formattedAddress);
     }
 
     // Default onChange
@@ -127,8 +125,8 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
                             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                                 <div>
                                     <TextField
-                                        name="home_street_address"
-                                        label="Street Address"
+                                        name="address"
+                                        label="Address"
                                         fullWidth
                                         required
                                         error={!!errors.street}
@@ -164,33 +162,6 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
                                 </div>
                             )}
                         </PlacesAutocomplete>
-
-                        <Box sx={{ display: 'flex', gap: 2 }}>
-                            {/* City */}
-                            <TextField
-                                name="city"
-                                label="City"
-                                value={values.city}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                fullWidth
-                                required
-                                error={!!errors.city}
-                                helperText={errors.city}
-                            />
-                            {/* Province */}
-                            <TextField
-                                name="province"
-                                label="State / Province"
-                                value={values.province}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                fullWidth
-                                required
-                                error={!!errors.province}
-                                helperText={errors.province}
-                            />
-                        </Box>
 
                         {/* Choose Default */}
                         <FormControl>

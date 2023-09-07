@@ -52,6 +52,20 @@ const SignupPage = () => {
             return setTimeError(true);
         }
 
+        // If they provide same address for home and work
+        if(homeAddress === workAddress) {
+            return 
+        }
+
+        // Simple validation for address 
+        const addressRe = /\d+\s.{2,},.{2,},.{2,}/;
+        const checkHome = addressRe.test(homeAddress);
+        const checkWork = addressRe.test(workAddress);
+
+        if (!checkHome || !checkWork) {
+            return
+        }
+
         // Format default time
         const default_target_time = `${targetTime.$H} ${targetTime.$m}`
 
@@ -65,7 +79,6 @@ const SignupPage = () => {
             default_target_time,
         }
 
-        console.log(data);
         // Create new account 
         try {
             await axios.post(`${URL}/signup`, data)

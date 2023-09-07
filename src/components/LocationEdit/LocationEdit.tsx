@@ -36,7 +36,7 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
     })
 
     // format the value for isDefault
-    function findDefault():string {
+    function findDefault(): string {
         if (formData?.isWork) {
             return "work";
         } else if (formData?.isHome) {
@@ -71,6 +71,14 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
             setSubmitted(true);
         }
 
+        // Simple validation for address 
+        const addressRe = /\d+\s.{2,},.{2,},.{2,}/;
+        const checkAddress = addressRe.test(address);
+
+        if (!checkAddress) {
+            return
+        }
+
         await axios.put(`${URL}/direction/location/${id}`,
             {
                 name: values.name,
@@ -86,11 +94,11 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
 
         // Edit session storage data if it is currently selected location
         if (values.isHome) {
-            sessionStorage.start = address.replaceAll(' ', '+');
+            sessionStorage.start = address;
         }
 
         if (values.isWork) {
-            sessionStorage.end = address.replaceAll(' ', '+');
+            sessionStorage.end = address;
         }
 
         handleClose();
@@ -111,14 +119,14 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
         setAddress(formattedAddress);
     }
 
-    
+
     /* Default */
 
     function handleDefaultChange(e: SelectChangeEvent<string>) {
         if (e.target.value === "home") {
-            setFormData({...formData!, isHome: true, isWork: false})
+            setFormData({ ...formData!, isHome: true, isWork: false })
         } else if (e.target.value === "work") {
-            setFormData({...formData!, isHome: false, isWork: true})
+            setFormData({ ...formData!, isHome: false, isWork: true })
         }
     }
 

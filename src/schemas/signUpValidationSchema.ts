@@ -22,24 +22,6 @@ export const signUpValidationSchema: Object = yup.object().shape({
         .required("Confirm Password is required.")
         .oneOf([yup.ref('password')], "Password must match."),
 
-    home_street_address: yup.string()
-        .required("Street address is required."),
-
-    home_city: yup.string()
-        .required("City is required."),
-
-    home_province: yup.string()
-        .required("Province is required."),
-
-    work_street_address: yup.string()
-        .required("Street address is required."),
-
-    work_city: yup.string()
-        .required("City is required."),
-
-    work_province: yup.string()
-        .required("Province is required."),
-
     default_mode: yup.string()
         .required("Mode of transportation is required.")
         .oneOf(["driving", "transit", "walking", "bicycling"]),

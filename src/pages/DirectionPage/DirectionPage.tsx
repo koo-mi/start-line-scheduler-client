@@ -66,11 +66,21 @@ const DirectionPage = () => {
     if (isLoading) { return (<p>Loading...</p>) }
 
     function handleStartChange(e: SelectChangeEvent) {
+        // Prevent user from having same origin / dest 
+        if (sessionStorage.end === e.target.value) {
+            return setLocError(true);
+        }
+
         setDeparture(e.target.value);
         sessionStorage.start = e.target.value;
     }
 
     function handleEndChange(e: SelectChangeEvent) {
+        // Prevent user from having same origin / dest 
+        if (sessionStorage.start === e.target.value) {
+            return setLocError(true);
+        }
+
         setArrival(e.target.value);
         sessionStorage.end = e.target.value;
     }
@@ -128,7 +138,7 @@ const DirectionPage = () => {
                             >
                                 {
                                     locationData.map((location) => {
-                                        const address = location.address.replaceAll(' ', '+');
+                                        const address = location.address;
 
                                         return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
                                     })
@@ -148,7 +158,7 @@ const DirectionPage = () => {
                             >
                                 {
                                     locationData.map((location) => {
-                                        const address = location.address.replaceAll(' ', '+');
+                                        const address = location.address;
 
                                         return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
                                     })
