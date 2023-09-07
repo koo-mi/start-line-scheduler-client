@@ -38,10 +38,14 @@ const DirectionPage = () => {
                 return setLocError(true);
             }
 
+            // For timezone offset in different timezone
+            const date = new Date();
+
             // Get direction data
             const dirRes = await axios.get(`${URL}/direction/${sessionStorage.start}/${sessionStorage.end}/${sessionStorage.time}/${sessionStorage.mode}/${sessionStorage.type}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    timezone: date.getTimezoneOffset()/60
                 }
             })
 

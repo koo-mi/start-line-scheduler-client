@@ -62,13 +62,17 @@ const HomePage = () => {
                     return setLocError(true);
                 }
 
+                // For timezone offset in different timezone
+                const date = new Date();
+
                 // Get summary data
                 const summary = await axios.post(`${URL}/summary`, {
                     origin: sessionStorage.start,
                     dest: sessionStorage.end,
                     mode: sessionStorage.mode,
                     time: sessionStorage.time,
-                    type: sessionStorage.type
+                    type: sessionStorage.type,
+                    timezone: date.getTimezoneOffset()/60
                 },
                     {
                         headers: {
