@@ -11,7 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import PlacesAutocomplete, { geocodeByAddress } from 'react-places-autocomplete';
-import { URL, searchOptions } from "../../utils/variables";
+import { URL, addressRe, searchOptions } from "../../utils/variables";
 
 /* Sign up */
 const SignupPage = () => {
@@ -58,7 +58,6 @@ const SignupPage = () => {
         }
 
         // Simple validation for address 
-        const addressRe = /\d+\s.{2,},.{2,},.{2,}/;
         const checkHome = addressRe.test(homeAddress);
         const checkWork = addressRe.test(workAddress);
 

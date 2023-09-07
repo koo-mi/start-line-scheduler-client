@@ -87,6 +87,10 @@ const HomePage = () => {
                 setDeparture(sessionStorage.start);
                 setArrival(sessionStorage.end);
 
+                // Store start lat/lng for weather info 
+                sessionStorage.startLat = summary.data.directionData.start_location.lat;
+                sessionStorage.startLng = summary.data.directionData.start_location.lng;
+
                 setIsLoading(false);
             } catch (err: any) {
                 // Will come back and change
@@ -106,6 +110,8 @@ const HomePage = () => {
     if (isLoading) {
         return <Loading />
     }
+
+    console.log(directionData);
 
     // Change the start (departure) select value
     function handleStartChange(e: SelectChangeEvent<string>) {

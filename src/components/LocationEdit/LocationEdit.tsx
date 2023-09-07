@@ -6,7 +6,7 @@ import { locationValidationSchema } from "../../schemas/locationValidationSchema
 import axios from "axios";
 import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete";
 import { ModalBasic, locationItem } from "../../model/type";
-import { URL, searchOptions } from "../../utils/variables";
+import { URL, addressRe, searchOptions } from "../../utils/variables";
 
 interface OwnProps extends ModalBasic {
     id: string
@@ -72,10 +72,10 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
         }
 
         // Simple validation for address 
-        const addressRe = /\d+\s.{2,},.{2,},.{2,}/;
         const checkAddress = addressRe.test(address);
 
         if (!checkAddress) {
+            console.log('regex error');
             return
         }
 

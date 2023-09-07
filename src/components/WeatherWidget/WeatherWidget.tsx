@@ -26,12 +26,19 @@ const WeatherWidget = () => {
             }
         }
 
-        // Get geolocation
-        navigator.geolocation.getCurrentPosition(position => {
-            const { latitude, longitude } = position.coords;
-            // Get weather info based on geolocation
-            getWeather(latitude, longitude);
-        });
+        navigator.geolocation.watchPosition(function (_position) {
+            // Get geolocation
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+                // Get weather info based on geolocation
+                getWeather(latitude, longitude);
+            });
+        },
+            function (error) {
+                if (error.code == error.PERMISSION_DENIED)
+                    getWeather(sessionStorage.startLat, sessionStorage.startLng);
+            });
+
 
         // Timer
         const timer = setInterval(() => setDate(new Date()), 10000);

@@ -10,3 +10,7 @@ export const searchOptions = {
     componentRestrictions: { country: ["us", "ca"] },
     types: ['address']
 }
+
+// Regex
+
+export const addressRe = /.{4,},.{2,},.{2,}/;
