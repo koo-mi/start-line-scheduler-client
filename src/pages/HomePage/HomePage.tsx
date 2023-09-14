@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { Container, Box, Select, MenuItem, FormControl, Modal, Snackbar, Alert, SelectChangeEvent } from "@mui/material"
+import { Container, Box, Select, MenuItem, FormControl, Modal, Snackbar, Alert, SelectChangeEvent, IconButton, Tooltip } from "@mui/material"
 import arrowIcon from "../../assets/icons/arrow_icon.svg";
 import transitIcon from "../../assets/icons/transit_icon.svg";
 import Loading from '../../components/Loading/Loading';
@@ -9,6 +9,9 @@ import ChecklistItemSimplified from '../../components/ChecklistItemSimplified/Ch
 import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import './HomePage.scss';
+import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
+import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined';
+import SwapHorizRoundedIcon from '@mui/icons-material/SwapHorizRounded';
 import TimeSelectModal from '../../components/TimeSelectModal/TimeSelectModal';
 import { checklistSummary, directionSummary, locationSummary } from '../../model/type';
 import { URL } from '../../utils/variables';
@@ -55,6 +58,8 @@ const HomePage = () => {
                     sessionStorage.mode = default_mode;
                     sessionStorage.time = default_target_time;
                     sessionStorage.type = "arrival"
+                    sessionStorage.defStart = default_home;
+                    sessionStorage.defEnd = default_work;
                 }
 
                 // If start / end address are the same show err message
@@ -72,7 +77,7 @@ const HomePage = () => {
                     mode: sessionStorage.mode,
                     time: sessionStorage.time,
                     type: sessionStorage.type,
-                    timezone: date.getTimezoneOffset()/60
+                    timezone: date.getTimezoneOffset() / 60
                 },
                     {
                         headers: {
@@ -111,8 +116,6 @@ const HomePage = () => {
         return <Loading />
     }
 
-    console.log(directionData);
-
     // Change the start (departure) select value
     function handleStartChange(e: SelectChangeEvent<string>) {
         // Prevent user from having same origin / dest 
@@ -136,6 +139,25 @@ const HomePage = () => {
     }
 
     function handleTimeClose() { setShowTimeModal(false); }
+
+    function swapLocations() {
+        // Swapping locations
+        setDeparture(sessionStorage.end);
+        setArrival(sessionStorage.start);
+
+        const newEnd = sessionStorage.start
+        sessionStorage.start = sessionStorage.end;
+        sessionStorage.end = newEnd;
+    }
+
+    function restoreDefault() {
+        // Restore locations to default
+        setDeparture(sessionStorage.defStart);
+        setArrival(sessionStorage.defEnd);
+
+        sessionStorage.start = sessionStorage.defStart;
+        sessionStorage.end = sessionStorage.defEnd;
+    }
 
     return (
         <Container id='main-container' component="main" sx={{ mb: "4.5rem" }}>
@@ -165,10 +187,29 @@ const HomePage = () => {
             <Box sx={{ bgcolor: '#cfe8fc', mt: 2, display: "flex", flexDirection: "column" }} borderRadius={3}>
                 {/* Select Location */}
                 <div className="select-location__container">
+                    <div className='select-location__actions'>
+                        <div className='select-location__time-selection' onClick={() => { setShowTimeModal(true) }}>
+                            <p>{chooseType()} {formatTargetTime(sessionStorage.time)}</p>
+                            <ArrowDropDownIcon />
+                        </div>
 
-                    <div className='select-location__time-selection' onClick={() => { setShowTimeModal(true) }}>
-                        <p>{chooseType()} {formatTargetTime(sessionStorage.time)}</p>
-                        <ArrowDropDownIcon />
+                        <div className='select-location__icons'>
+                            <Tooltip title="swap location" placement='top'>
+                                <IconButton color='inherit' onClick={swapLocations}>
+                                    <SwapHorizRoundedIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="restore default" placement='top'>
+                                <IconButton color='inherit' onClick={restoreDefault}>
+                                    <SettingsBackupRestoreIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="location page" placement='top'>
+                                <IconButton color='inherit' onClick={() => { navigate("./direction/location") }}>
+                                    <AddLocationAltOutlinedIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
                     </div>
 
                     <div className='select-location__location-selection'>

@@ -1,11 +1,13 @@
 import "./DirectionPage.scss";
-import { Alert, Box, Container, FormControl, MenuItem, Modal, Select, SelectChangeEvent, Snackbar, Typography } from "@mui/material";
+import { Alert, Box, Container, FormControl, IconButton, MenuItem, Modal, Select, SelectChangeEvent, Snackbar, Tooltip, Typography } from "@mui/material";
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import arrowIcon from "../../assets/icons/arrow_icon.svg";
 import transitIcon from "../../assets/icons/transit_icon.svg";
 import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined';
+import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
+import SwapHorizRoundedIcon from '@mui/icons-material/SwapHorizRounded';
 import TimeSelectModal from "../../components/TimeSelectModal/TimeSelectModal";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { directionSummary, locationSummary } from "../../model/type";
@@ -45,7 +47,7 @@ const DirectionPage = () => {
             const dirRes = await axios.get(`${URL}/direction/${sessionStorage.start}/${sessionStorage.end}/${sessionStorage.time}/${sessionStorage.mode}/${sessionStorage.type}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    timezone: date.getTimezoneOffset()/60
+                    timezone: date.getTimezoneOffset() / 60
                 }
             })
 
@@ -89,6 +91,25 @@ const DirectionPage = () => {
         sessionStorage.end = e.target.value;
     }
 
+    function swapLocations() {
+        // Swapping locations
+        setDeparture(sessionStorage.end);
+        setArrival(sessionStorage.start);
+
+        const newEnd = sessionStorage.start
+        sessionStorage.start = sessionStorage.end;
+        sessionStorage.end = newEnd;
+    }
+
+    function restoreDefault() {
+        // Restore locations to default
+        setDeparture(sessionStorage.defStart);
+        setArrival(sessionStorage.defEnd);
+
+        sessionStorage.start = sessionStorage.defStart;
+        sessionStorage.end = sessionStorage.defEnd;
+    }
+
     return (
 
         <Container component="main" id="main-container" sx={{ mb: "4.5rem" }}>
@@ -125,9 +146,24 @@ const DirectionPage = () => {
                 {/* Select Location */}
                 <div className="select-location__container">
 
-                    <div className='select-location__time-selection' onClick={() => { setShowTimeModal(true) }}>
-                        <p>{chooseType()} {formatTargetTime(sessionStorage.time)}</p>
-                        <ArrowDropDownIcon />
+
+                    <div className='select-location__actions'>
+                        <div className='select-location__time-selection' onClick={() => { setShowTimeModal(true) }}>
+                            <p>{chooseType()} {formatTargetTime(sessionStorage.time)}</p>
+                            <ArrowDropDownIcon />
+                        </div>
+                        <div className='select-location__icons'>
+                            <Tooltip title="swap location" placement='top'>
+                                <IconButton color='inherit' onClick={swapLocations}>
+                                    <SwapHorizRoundedIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="restore default" placement='top'>
+                            <IconButton color='inherit' onClick={restoreDefault}>
+                                <SettingsBackupRestoreIcon />
+                            </IconButton>
+                            </Tooltip>
+                        </div>
                     </div>
 
                     <div className='select-location__location-selection'>

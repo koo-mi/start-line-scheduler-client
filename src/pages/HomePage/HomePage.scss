@@ -19,6 +19,12 @@
         }
     }
 
+    &__actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
     &__time-selection {
         display: flex;
         align-items: center;
