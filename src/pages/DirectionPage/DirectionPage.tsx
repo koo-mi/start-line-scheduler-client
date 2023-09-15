@@ -1,18 +1,15 @@
 import "./DirectionPage.scss";
-import { Alert, Box, Container, FormControl, IconButton, MenuItem, Modal, Select, SelectChangeEvent, Snackbar, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Container, Modal, SelectChangeEvent, Snackbar, Typography } from "@mui/material";
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import arrowIcon from "../../assets/icons/arrow_icon.svg";
-import transitIcon from "../../assets/icons/transit_icon.svg";
 import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined';
-import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
-import SwapHorizRoundedIcon from '@mui/icons-material/SwapHorizRounded';
 import TimeSelectModal from "../../components/TimeSelectModal/TimeSelectModal";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { directionSummary, locationSummary } from "../../model/type";
 import { URL } from "../../utils/variables";
-import { chooseType, formatTargetTime } from "../../utils/functions";
+import DirectionControl from "../../components/DirectionControl/DirectionControl";
+import LocationSelection from "../../components/LocationSelection/LocationSelection";
+import DirectionTimeOutput from "../../components/DirectionTimeOutput/DirectionTimeOutput";
 
 const DirectionPage = () => {
 
@@ -110,6 +107,10 @@ const DirectionPage = () => {
         sessionStorage.end = sessionStorage.defEnd;
     }
 
+    function openTimeModal() {
+        setShowTimeModal(true);
+    }
+
     return (
 
         <Container component="main" id="main-container" sx={{ mb: "4.5rem" }}>
@@ -141,85 +142,30 @@ const DirectionPage = () => {
                 <AddLocationAltOutlinedIcon className="direction-detail__location-icon" fontSize="large" onClick={() => { navigate("/direction/location") }} />
             </Box>
 
+            {/* Direction Details */}
             <Box sx={{ bgcolor: '#cfe8fc', mt: 2, display: "flex", flexDirection: "column" }} borderRadius={3}>
 
                 {/* Select Location */}
                 <div className="select-location__container">
-
-
-                    <div className='select-location__actions'>
-                        <div className='select-location__time-selection' onClick={() => { setShowTimeModal(true) }}>
-                            <p>{chooseType()} {formatTargetTime(sessionStorage.time)}</p>
-                            <ArrowDropDownIcon />
-                        </div>
-                        <div className='select-location__icons'>
-                            <Tooltip title="swap location" placement='top'>
-                                <IconButton color='inherit' onClick={swapLocations}>
-                                    <SwapHorizRoundedIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="restore default" placement='top'>
-                            <IconButton color='inherit' onClick={restoreDefault}>
-                                <SettingsBackupRestoreIcon />
-                            </IconButton>
-                            </Tooltip>
-                        </div>
-                    </div>
-
-                    <div className='select-location__location-selection'>
-
-                        {/* Departure */}
-                        <FormControl fullWidth>
-                            <Select
-                                id="start"
-                                value={departure}
-                                onChange={handleStartChange}
-                                inputProps={{ IconComponent: () => null }}
-                            >
-                                {
-                                    locationData.map((location) => {
-                                        const address = location.address;
-
-                                        return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-
-                        <img src={arrowIcon} alt="arrow icon" />
-
-                        {/* Arrival */}
-                        <FormControl fullWidth>
-                            <Select
-                                id="end"
-                                value={arrival}
-                                onChange={handleEndChange}
-                                inputProps={{ IconComponent: () => null }}
-                            >
-                                {
-                                    locationData.map((location) => {
-                                        const address = location.address;
-
-                                        return <MenuItem key={`${location.id}`} value={address}>{location.name}</MenuItem>
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-                    </div>
+                    <DirectionControl
+                        openTimeModal={openTimeModal}
+                        restoreDefault={restoreDefault}
+                        swapLocations={swapLocations}
+                        isHome={false}
+                    />
+                    <LocationSelection
+                        locationData={locationData}
+                        departure={departure}
+                        handleStartChange={handleStartChange}
+                        arrival={arrival}
+                        handleEndChange={handleEndChange}
+                    />
                 </div>
 
                 {/* Display Direction Output */}
-                <div className='direction-detail__container'>
-                    <div className="direction-detail__text-container">
-                        <p className='direction-detail__text'>{sessionStorage.type === "arrival" ? "You need to leave by..." : "You will get there at..."}</p>
-                    </div>
-                    <div className="direction-detail__display-container">
-                        <img src={transitIcon} alt="transit icon" className='direction-detail__mode-icon' />
-                        <div className='direction-detail__time-box'>
-                            <h3 className='direction-detail__time'>{sessionStorage.type === "arrival" ? `${directionData!.departureTime}` : `${directionData!.arrivalTime}`}</h3>
-                        </div>
-                    </div>
-                </div>
+                <DirectionTimeOutput directionData={directionData} isHome={false}/>
+
+                {/* Display Instruction */}
                 <div className="direction-detail__info-box">
 
                     <div className="direction-detail__time-cont">

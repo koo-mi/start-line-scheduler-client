@@ -1,21 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { Container, Box, Select, MenuItem, FormControl, Modal, Snackbar, Alert, SelectChangeEvent, IconButton, Tooltip } from "@mui/material"
-import arrowIcon from "../../assets/icons/arrow_icon.svg";
-import transitIcon from "../../assets/icons/transit_icon.svg";
+import { Container, Box, Modal, Snackbar, Alert, SelectChangeEvent } from "@mui/material"
 import Loading from '../../components/Loading/Loading';
 import ChecklistItemSimplified from '../../components/ChecklistItemSimplified/ChecklistItemSimplified';
 import WeatherWidget from '../../components/WeatherWidget/WeatherWidget';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import './HomePage.scss';
-import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
-import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined';
-import SwapHorizRoundedIcon from '@mui/icons-material/SwapHorizRounded';
 import TimeSelectModal from '../../components/TimeSelectModal/TimeSelectModal';
 import { checklistSummary, directionSummary, locationSummary } from '../../model/type';
 import { URL } from '../../utils/variables';
-import { chooseType, formatTargetTime } from '../../utils/functions';
+import DirectionControl from '../../components/DirectionControl/DirectionControl';
+import LocationSelection from '../../components/LocationSelection/LocationSelection';
+import DirectionTimeOutput from '../../components/DirectionTimeOutput/DirectionTimeOutput';
 
 
 const HomePage = () => {
@@ -159,9 +155,13 @@ const HomePage = () => {
         sessionStorage.end = sessionStorage.defEnd;
     }
 
+    function openTimeModal() {
+        setShowTimeModal(true);
+    }
+
+    // Render
     return (
         <Container id='main-container' component="main" sx={{ mb: "4.5rem" }}>
-
             <Modal
                 open={showTimeModal}
                 onClose={handleTimeClose}
@@ -187,81 +187,23 @@ const HomePage = () => {
             <Box sx={{ bgcolor: '#cfe8fc', mt: 2, display: "flex", flexDirection: "column" }} borderRadius={3}>
                 {/* Select Location */}
                 <div className="select-location__container">
-                    <div className='select-location__actions'>
-                        <div className='select-location__time-selection' onClick={() => { setShowTimeModal(true) }}>
-                            <p>{chooseType()} {formatTargetTime(sessionStorage.time)}</p>
-                            <ArrowDropDownIcon />
-                        </div>
-
-                        <div className='select-location__icons'>
-                            <Tooltip title="swap location" placement='top'>
-                                <IconButton color='inherit' onClick={swapLocations}>
-                                    <SwapHorizRoundedIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="restore default" placement='top'>
-                                <IconButton color='inherit' onClick={restoreDefault}>
-                                    <SettingsBackupRestoreIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="location page" placement='top'>
-                                <IconButton color='inherit' onClick={() => { navigate("./direction/location") }}>
-                                    <AddLocationAltOutlinedIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                    </div>
-
-                    <div className='select-location__location-selection'>
-
-                        {/* Departure */}
-                        <FormControl fullWidth>
-                            <Select
-                                id="start"
-                                value={departure}
-                                onChange={handleStartChange}
-                                inputProps={{ IconComponent: () => null }}
-                            >
-                                {
-                                    locationData.map((location) => {
-                                        return <MenuItem key={`${location.id}`} value={location.address}>{location.name}</MenuItem>
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-
-                        <img src={arrowIcon} alt="arrow icon" />
-
-                        {/* Arrival */}
-                        <FormControl fullWidth>
-                            <Select
-                                id="end"
-                                value={arrival}
-                                onChange={handleEndChange}
-                                inputProps={{ IconComponent: () => null }}
-                            >
-                                {
-                                    locationData.map((location) => {
-                                        return <MenuItem key={`${location.id}`} value={location.address}>{location.name}</MenuItem>
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-                    </div>
+                    <DirectionControl
+                        openTimeModal={openTimeModal}
+                        restoreDefault={restoreDefault}
+                        swapLocations={swapLocations}
+                        isHome={true}
+                    />
+                    <LocationSelection
+                        locationData={locationData}
+                        departure={departure}
+                        handleStartChange={handleStartChange}
+                        arrival={arrival}
+                        handleEndChange={handleEndChange}
+                    />
                 </div>
+
                 {/* Display Direction Output */}
-                <div className='direction__container'>
-                    <div className="direction__text-container">
-                        <p className='direction__text'>{sessionStorage.type === "arrival" ? "You need to leave by..." : "You will get there at..."}</p>
-                    </div>
-                    <div className="direction__display-container">
-                        <img src={transitIcon} alt="transit icon" className='direction__mode-icon' />
-                        <div className='direction__time-box'>
-                            <h3 className='direction__time'>
-                                {sessionStorage.type === "arrival" ? `${directionData!.departureTime}` : `${directionData!.arrivalTime}`}</h3>
-                        </div>
-                    </div>
-                </div>
+                <DirectionTimeOutput directionData={directionData} isHome={true} />
             </Box>
 
             {/* Checklist Component */}

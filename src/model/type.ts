@@ -1,3 +1,6 @@
+import { SelectChangeEvent } from "@mui/material"
+
+
 /* Data Summary */
 
 export type directionSummary = {
@@ -97,4 +100,21 @@ export type ForecastItem = {
     },
     weather: WeatherInfo,
     wind: Wind
+}
+
+/* Direction Components */
+
+export type DirectionControlComponent = {
+    openTimeModal():void,
+    restoreDefault():void,
+    swapLocations():void,
+    isHome: boolean
+}
+
+export type LocationSelectionComponent = {
+    departure: string,
+    arrival: string,
+    handleStartChange(e: SelectChangeEvent<string>):void,
+    handleEndChange(e: SelectChangeEvent<string>):void,
+    locationData: locationSummary
 }
