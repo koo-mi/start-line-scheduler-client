@@ -9,10 +9,21 @@
     &__item-box {
         @include flex-column;
         width: 100%;
-        background-color: #CFE8FC;
+        background-color: #FFF0DF;
+        border: 1px solid #FFC700;
         padding: 1rem;
         border-radius: 10px;
         gap: 0.5rem;
+
+        &--high {
+            background-color: #FFDFDF;
+            border: 1px solid #FF7373;
+        }
+
+        &--low {
+            background-color: #CFE8FC;
+            border: 1px solid #6AB8FF;
+        }
     }
 
     &__item-title-box {
@@ -21,10 +32,15 @@
     }
 
     &__item-title {
+        @include flex-center;
         word-break: break-word;
         &--crossed {
             @include crossed;
         }
+    }
+
+    &__daily-emoji {
+        
     }
 
     &__item-icons {
