@@ -18,13 +18,20 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
 
     const token = sessionStorage.authToken;
 
+    /* Search */
+    const [address, setAddress] = useState<string>("");
+
+    async function handleAddressSelect(value: string) {
+        const result = await geocodeByAddress(value);
+        const formattedAddress: string = result[0].formatted_address;
+
+        setAddress(formattedAddress);
+    }
+
     // Formik
     const { values, errors, handleChange, handleBlur } = useFormik({
         initialValues: {
             "name": "",
-            "street": "",
-            "city": "",
-            "province": "",
             "isWork": false,
             "isHome": false
         },
@@ -62,21 +69,14 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
                     }
                 });
 
+            if (values.isHome) { sessionStorage.defStart = address };
+            if (values.isWork) { sessionStorage.defEnd = address };
+
             handleClose();
             updateList();
         } catch (err) {
             console.log(err);
         }
-    }
-
-    /* Search */
-    const [address, setAddress] = useState<string>("");
-
-    async function handleAddressSelect(value: string) {
-        const result = await geocodeByAddress(value);
-        const formattedAddress: string = result[0].formatted_address;
-      
-        setAddress(formattedAddress);
     }
 
     // Default onChange
@@ -128,8 +128,6 @@ const LocationAdd = ({ handleClose, updateList }: OwnProps) => {
                                         label="Address"
                                         fullWidth
                                         required
-                                        error={!!errors.street}
-                                        helperText={errors.street}
                                         {...getInputProps({
                                             placeholder: 'Search Address ...',
                                             className: 'location-search-input',

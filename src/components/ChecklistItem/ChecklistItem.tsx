@@ -40,7 +40,7 @@ const ChecklistItem = ({ id, title, description, isChecked, handleEditOpen, hand
                     <h3 className={`checklist__item-title ${checked ? "checklist__item-title--crossed" : ""}`}>{title}
                         {
                             isDaily &&
-                            (<span role='img' aria-label='daily'>
+                            (<span role='img' aria-label='daily' className='checklist__daily'>
                                 &#128257;
                             </span>)
                         }

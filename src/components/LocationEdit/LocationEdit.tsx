@@ -75,7 +75,6 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
         const checkAddress = addressRe.test(address);
 
         if (!checkAddress) {
-            console.log('regex error');
             return
         }
 
@@ -92,14 +91,9 @@ const LocationEdit = ({ handleClose, updateList, id }: OwnProps) => {
                 }
             });
 
-        // Edit session storage data if it is currently selected location
-        if (values.isHome) {
-            sessionStorage.start = address;
-        }
-
-        if (values.isWork) {
-            sessionStorage.end = address;
-        }
+        // Edit session storage data if it is default
+        if (values.isHome) { sessionStorage.defStart = address; }
+        if (values.isWork) { sessionStorage.defEnd = address; }
 
         handleClose();
         updateList();
