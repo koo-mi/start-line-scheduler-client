@@ -28,11 +28,11 @@ This is my first project using Vite, TypeScript, MUI and Prisma.
 
 Client
 ```bash
-    - git clone https://github.com/koo-mi/start-line-scheduler-client.git
+  git clone https://github.com/koo-mi/start-line-scheduler-client.git
 ```
 Server
 ```bash 
-    - git clone https://github.com/koo-mi/start-line-scheduler-server.git
+  git clone https://github.com/koo-mi/start-line-scheduler-server.git
 ```
 
 **Go to the project directory**
