@@ -13,6 +13,7 @@ const LoginPage = ({ changeLoginState }: LoginState) => {
 
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [loginErrMsg, setLoginErrMsg] = useState<string>("");
+    const [rememberMe, setRememberMe] = useState<boolean>(localStorage.rememberMe);
 
     const navigate = useNavigate();
 
@@ -26,7 +27,7 @@ const LoginPage = ({ changeLoginState }: LoginState) => {
     // Validation using formik
     const { values, errors, handleChange, handleBlur, handleSubmit, submitCount } = useFormik({
         initialValues: {
-            "email": "",
+            "email": localStorage.email || "",
             "password": "",
         },
         validationSchema: loginValidationSchema,
@@ -39,6 +40,14 @@ const LoginPage = ({ changeLoginState }: LoginState) => {
     async function onSubmit(val: any): Promise<void> {
 
         setLoginErrMsg("");     // Reset error message
+        console.log(rememberMe);
+        if (rememberMe) {
+            localStorage.rememberMe = true;
+            localStorage.email = val.email;
+        } else {
+            localStorage.rememberMe = false;
+            localStorage.removeItem("email");
+        }
 
         try {
             // Get token from the server
@@ -50,7 +59,12 @@ const LoginPage = ({ changeLoginState }: LoginState) => {
         } catch (err: any) {
             // Display error alert
             setLoginErrMsg(err.response.data.error.message);
+            val.password = "";
         }
+    }
+
+    function handleRemember() {
+        setRememberMe(!rememberMe);
     }
 
     // Start validating after user submits
@@ -76,10 +90,10 @@ const LoginPage = ({ changeLoginState }: LoginState) => {
                     value={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    autoFocus
                     fullWidth
                     required
                     error={!!errors.email}
+                    // @ts-ignore
                     helperText={errors.email}
                     sx={{ mt: 2, mb: 2 }}
                 />
@@ -99,7 +113,7 @@ const LoginPage = ({ changeLoginState }: LoginState) => {
                 <Grid container justifyContent={"space-between"} alignItems={"center"} sx={{ mt: 1, mb: 1.5 }}>
                     <Grid item>
                         <FormControlLabel
-                            control={<Checkbox value="remember" />}
+                            control={<Checkbox checked={rememberMe} onChange={handleRemember} />}
                             color="primary"
                             label="Remember me"
                         />
