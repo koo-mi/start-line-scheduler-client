@@ -1,34 +1,33 @@
-@use "../../styles/partials/mixin" as *;
+@use '../../styles/partials/mixin' as *;
 
 .error {
-  @include flex-center;
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  flex-direction: column;
-  gap: 2rem;
+	@include flex-center;
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	flex-direction: column;
+	gap: 2rem;
 
-  &__heading {
-    @include flex-center;
-    flex-direction: column;
-    color: #d32f2f;
-  }
-  
-  &__code {
-    font-size: 4rem;
-  }
+	&__heading {
+		@include flex-center;
+		flex-direction: column;
+		color: #d32f2f;
+	}
 
-  &__title {
-    font-size: 2rem;
-    color: #d32f2f;
-  }
-  
-  &__text {
-    @extend .error__heading;
-    color: black;
-    font-size: 1.1rem;
-    gap:0.5rem;
-  }
+	&__code {
+		font-size: 4rem;
+	}
 
+	&__title {
+		font-size: 2rem;
+		color: #d32f2f;
+	}
+
+	&__text {
+		@extend .error__heading;
+		color: black;
+		font-size: 1.1rem;
+		gap: 0.5rem;
+	}
 }

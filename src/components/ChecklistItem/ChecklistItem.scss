@@ -1,58 +1,57 @@
 @use '../../styles/partials/mixin' as *;
 .checklist {
+	&__item {
+		width: 100%;
+		display: flex;
+	}
 
-    &__item {
-        width: 100%;
-        display: flex;
-    }
+	&__item-box {
+		@include flex-column;
+		width: 100%;
+		background-color: #fff0df;
+		border: 1px solid #ffc700;
+		padding: 1rem;
+		border-radius: 10px;
+		gap: 0.5rem;
 
-    &__item-box {
-        @include flex-column;
-        width: 100%;
-        background-color: #FFF0DF;
-        border: 1px solid #FFC700;
-        padding: 1rem;
-        border-radius: 10px;
-        gap: 0.5rem;
+		&--high {
+			background-color: #ffdfdf;
+			border: 1px solid #ff7373;
+		}
 
-        &--high {
-            background-color: #FFDFDF;
-            border: 1px solid #FF7373;
-        }
+		&--low {
+			background-color: #cfe8fc;
+			border: 1px solid #6ab8ff;
+		}
+	}
 
-        &--low {
-            background-color: #CFE8FC;
-            border: 1px solid #6AB8FF;
-        }
-    }
+	&__item-title-box {
+		display: flex;
+		justify-content: space-between;
+	}
 
-    &__item-title-box {
-        display: flex;
-        justify-content: space-between;
-    }
+	&__item-title {
+		display: flex;
+		word-break: break-word;
+		gap: 0.25rem;
+		&--crossed {
+			@include crossed;
+		}
+	}
 
-    &__item-title {
-        display: flex;
-        word-break: break-word;
-        gap: 0.25rem;
-        &--crossed {
-            @include crossed;
-        }
-    }
+	&__daily {
+		transform: translateY(-0.16rem);
+	}
 
-    &__daily {
-        transform: translateY(-0.16rem);
-    }
+	&__item-icons {
+		display: flex;
+		gap: 0.5rem;
+	}
 
-    &__item-icons {
-        display: flex;
-        gap: 0.5rem;
-    }   
-
-    &__item-text {
-        word-break: break-word;
-        &--crossed {
-            @include crossed;
-        }
-    }
+	&__item-text {
+		word-break: break-word;
+		&--crossed {
+			@include crossed;
+		}
+	}
 }

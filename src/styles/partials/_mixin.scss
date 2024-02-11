@@ -1,17 +1,17 @@
 @use './variable' as *;
 
 @mixin flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 @mixin flex-column {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 @mixin crossed {
-    color: grey;
-    text-decoration: line-through;
+	color: grey;
+	text-decoration: line-through;
 }

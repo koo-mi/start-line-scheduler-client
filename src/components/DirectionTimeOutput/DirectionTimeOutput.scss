@@ -1,49 +1,49 @@
 @use '../../styles/partials/mixin' as *;
 
 .direction {
-    &__container {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding: 1rem 1.5rem;
+	&__container {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		padding: 1rem 1.5rem;
 
-        &--border-bottom {
-            border-bottom: 1px solid white;
-        }
-    }
+		&--border-bottom {
+			border-bottom: 1px solid white;
+		}
+	}
 
-    &__text-container {
-        width: 100%;
-    }
+	&__text-container {
+		width: 100%;
+	}
 
-    &__text {
-        font-weight: 700;
-    }
+	&__text {
+		font-weight: 700;
+	}
 
-    &__display-container {
-        @include flex-center;
-        
-        position: relative;
-        width: 100%;
-    }
+	&__display-container {
+		@include flex-center;
 
-    &__mode-icon {
-        width: 1.875rem;
-        position: absolute;
-        left: 0;
-    }
+		position: relative;
+		width: 100%;
+	}
 
-    &__time-box {
-        @include flex-center;
-        padding: 1rem;
-        background-color: white;
-        width: 210px;
-        border-radius: 10px;
-        margin: 0.75rem;
-    }
+	&__mode-icon {
+		width: 1.875rem;
+		position: absolute;
+		left: 0;
+	}
 
-    &__time {
-        font-size: 1.5rem;
-        color: red;
-    }
+	&__time-box {
+		@include flex-center;
+		padding: 1rem;
+		background-color: white;
+		width: 210px;
+		border-radius: 10px;
+		margin: 0.75rem;
+	}
+
+	&__time {
+		font-size: 1.5rem;
+		color: red;
+	}
 }

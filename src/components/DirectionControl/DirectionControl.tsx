@@ -10,40 +10,49 @@ import { chooseType, formatTargetTime } from '../../utils/functions';
 import { useNavigate } from 'react-router-dom';
 import { DirectionControlComponent } from '../../model/type';
 
+const DirectionControl = ({
+	openTimeModal,
+	restoreDefault,
+	swapLocations,
+	isHome
+}: DirectionControlComponent) => {
+	const navigate = useNavigate();
 
-const DirectionControl = ({ openTimeModal, restoreDefault, swapLocations, isHome }: DirectionControlComponent) => {
+	return (
+		<div className="select-location__actions">
+			<div className="select-location__time-selection" onClick={openTimeModal}>
+				<p>
+					{chooseType()} {formatTargetTime(sessionStorage.time)}
+				</p>
+				<ArrowDropDownIcon />
+			</div>
 
-    const navigate = useNavigate();
-
-    return (
-        <div className='select-location__actions'>
-            <div className='select-location__time-selection' onClick={openTimeModal}>
-                <p>{chooseType()} {formatTargetTime(sessionStorage.time)}</p>
-                <ArrowDropDownIcon />
-            </div>
-
-            <div className='select-location__icons'>
-                <Tooltip title="swap location" placement='top'>
-                    <IconButton color='inherit' onClick={swapLocations}>
-                        <SwapHorizRoundedIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="restore default" placement='top'>
-                    <IconButton color='inherit' onClick={restoreDefault}>
-                        <SettingsBackupRestoreIcon />
-                    </IconButton>
-                </Tooltip>
-                {
-                    isHome &&
-                    <Tooltip title="location page" placement='top'>
-                        <IconButton color='inherit' onClick={() => { navigate("./direction/location") }}>
-                            <AddLocationAltOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
-                }
-            </div>
-        </div>
-    );
+			<div className="select-location__icons">
+				<Tooltip title="swap location" placement="top">
+					<IconButton color="inherit" onClick={swapLocations}>
+						<SwapHorizRoundedIcon />
+					</IconButton>
+				</Tooltip>
+				<Tooltip title="restore default" placement="top">
+					<IconButton color="inherit" onClick={restoreDefault}>
+						<SettingsBackupRestoreIcon />
+					</IconButton>
+				</Tooltip>
+				{isHome && (
+					<Tooltip title="location page" placement="top">
+						<IconButton
+							color="inherit"
+							onClick={() => {
+								navigate('./direction/location');
+							}}
+						>
+							<AddLocationAltOutlinedIcon />
+						</IconButton>
+					</Tooltip>
+				)}
+			</div>
+		</div>
+	);
 };
 
 export default DirectionControl;

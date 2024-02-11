@@ -1,37 +1,35 @@
 @use '../../styles/partials/mixin' as *;
 
 .location {
+	&__header {
+		@include flex-center;
+		width: 100%;
+		position: relative;
+		padding: 1rem 0 1.5rem;
+	}
 
-    &__header {
-        @include flex-center;
-        width: 100%;
-        position: relative;
-        padding: 1rem 0 1.5rem;
-    }
+	&__add-icon {
+		position: absolute;
+		right: 0.5rem;
+	}
 
-    &__add-icon {
-        position: absolute;
-        right: 0.5rem;
-    }
+	&__item-box {
+		@include flex-column;
+		width: 100%;
+		gap: 0.75rem;
+		background-color: white;
+		padding: 0.75rem 1rem;
+		border-radius: 10px;
+	}
 
-    &__item-box {
-        @include flex-column;
-        width: 100%;
-        gap: 0.75rem;
-        background-color: white;
-        padding: 0.75rem 1rem;
-        border-radius: 10px;
-    }
+	&__item-heading-box {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 
-    &__item-heading-box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    &__item-icon-box {
-        display: flex;
-        gap: 0.5rem;
-    }
+	&__item-icon-box {
+		display: flex;
+		gap: 0.5rem;
+	}
 }
-

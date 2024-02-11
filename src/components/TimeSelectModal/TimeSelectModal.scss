@@ -1,8 +1,7 @@
 @use '../../styles/partials/mixin' as *;
 
 .time-modal {
-
-    &__select-type{
-        padding: 0.5rem 0 0;
-    }
+	&__select-type {
+		padding: 0.5rem 0 0;
+	}
 }

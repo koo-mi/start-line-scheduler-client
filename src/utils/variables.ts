@@ -7,8 +7,8 @@ export const FORECAST_API_URL: string = import.meta.env.VITE_FORECAST_API_URL;
 
 // Limit the address search to only to US / Canada
 export const searchOptions = {
-    componentRestrictions: { country: ["us", "ca"] }
-}
+	componentRestrictions: { country: ['us', 'ca'] }
+};
 
 // Regex
 

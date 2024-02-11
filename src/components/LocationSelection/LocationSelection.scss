@@ -1,13 +1,14 @@
 @use '../../styles/partials/mixin' as *;
 
-.select-location{
-    &__location-selection {
-        @include flex-center;
-        gap: 0.75rem;
-        width: 100%;
-    }
+.select-location {
+	&__location-selection {
+		@include flex-center;
+		gap: 0.75rem;
+		width: 100%;
+	}
 }
 
-#start, #end {
-    text-align: center;
+#start,
+#end {
+	text-align: center;
 }

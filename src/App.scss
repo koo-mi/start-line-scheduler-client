@@ -1,45 +1,45 @@
-@use "./styles/partials/variable" as *;
-@use "./styles/partials/mixin" as *;
-@use "./styles/partials/fonts";
-@use "./styles/partials/text";
+@use './styles/partials/variable' as *;
+@use './styles/partials/mixin' as *;
+@use './styles/partials/fonts';
+@use './styles/partials/text';
 
-
-*, *::before, *::after {
-    font-family: 'Roboto', sans-serif;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+*,
+*::before,
+*::after {
+	font-family: 'Roboto', sans-serif;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 #root {
-    @include flex-center;
-    flex-direction: column;
+	@include flex-center;
+	flex-direction: column;
 }
 
 #main-container {
-    max-width: 500px;
+	max-width: 500px;
 }
 
 .modal {
-    @include flex-center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+	@include flex-center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 /* For address search box */
 .autocomplete-dropdown-container {
-    position: absolute;
-    z-index: 100;
-    border: 1px solid grey;
+	position: absolute;
+	z-index: 100;
+	border: 1px solid grey;
 }
 
 .suggestion-item {
-    padding: 0.5rem;
+	padding: 0.5rem;
 
-    &--active {
-    padding: 0.5rem;
-
-    }
+	&--active {
+		padding: 0.5rem;
+	}
 }

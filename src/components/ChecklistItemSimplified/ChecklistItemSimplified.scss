@@ -1,36 +1,36 @@
 @use '../../styles/partials/mixin' as *;
 .checklist-home {
-    &__item {
-        display: flex;
-        align-items: center;
-        width: 100%;
-    }
+	&__item {
+		display: flex;
+		align-items: center;
+		width: 100%;
+	}
 
-    &__item-title-box {
-        width: 100%;
-        background-color: white;
-        padding: 0.5rem;
-        border-radius: 10px;
-    }
+	&__item-title-box {
+		width: 100%;
+		background-color: white;
+		padding: 0.5rem;
+		border-radius: 10px;
+	}
 
-    &__item-title {
-        font-size: 1rem;
-        padding-left: 0.5rem;
-        word-break: break-word;
+	&__item-title {
+		font-size: 1rem;
+		padding-left: 0.5rem;
+		word-break: break-word;
 
-        &--crossed {
-            @include crossed;
-        }
-    }
+		&--crossed {
+			@include crossed;
+		}
+	}
 
-    &__item-icons {
-        display: flex;
-        gap: 0.5rem;
-    }   
+	&__item-icons {
+		display: flex;
+		gap: 0.5rem;
+	}
 
-    &__item-text {
-        &--crossed {
-            @include crossed;
-        }
-    }
+	&__item-text {
+		&--crossed {
+			@include crossed;
+		}
+	}
 }
